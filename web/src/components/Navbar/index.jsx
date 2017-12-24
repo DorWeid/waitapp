@@ -24,16 +24,18 @@ class Navbar extends Component {
             <div className="navbar-start">
               <a className="navbar-item">Home</a>
               <a className="navbar-item">About</a>
-            </div>            
+            </div>                        
             <div className="navbar-end">
-            <FacebookLogin
+              <div className="navbar-item">
+              <FacebookLogin
               appId={process.env.REACT_APP_FACEBOOK_ID}
               autoLoad
               fields="name,email,picture"
               callback={this.responseFacebook}
-              cssClass="my-facebook-button-class"
-              icon="fa-facebook"
+              cssClass="auth-button"
+              icon={<i className="fa fa-facebook"></i>}
             />
+              </div>
             </div>
           </div>
       </nav>

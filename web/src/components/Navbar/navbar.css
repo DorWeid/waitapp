@@ -5,3 +5,14 @@
 .logo {
     height: 80px;
 }
+
+.auth-button {    
+    background-color: #3b5998;
+    color: white;
+    border: 1px solid black;
+    padding: 5px;
+}
+
+.fa-facebook {
+    margin-right: 5px;  
+}
