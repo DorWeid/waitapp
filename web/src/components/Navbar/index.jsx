@@ -19,14 +19,13 @@ class Navbar extends Component {
     super(props);
     this.responseFacebook = this.responseFacebook.bind(this);
   }
- responseFacebook = (response) => {
-    console.log(response);
+ responseFacebook = (response) => {    
     this.props.authenticate(response);
   }  
   render() {        
     const user = this.props.user;
     return (
-      <nav className="navbar is-fixed-top">
+      <nav className="navbar">
           <div className="navbar-brand">
             <img src={wait} alt="waitapp logo" className="logo"/>
           </div>
