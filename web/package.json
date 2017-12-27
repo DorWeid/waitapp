@@ -25,5 +25,8 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "devDependencies": {
+    "mobx-react-devtools": "^4.2.15"
   }
 }
