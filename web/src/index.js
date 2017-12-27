@@ -5,9 +5,12 @@ import 'font-awesome/css/font-awesome.css'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import './index.css';
-import App from './components/App';
+
+import Routes from './routes';
+
+
 import registerServiceWorker from './registerServiceWorker';
 
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render( <Routes  />, document.getElementById('root'));
 registerServiceWorker();
