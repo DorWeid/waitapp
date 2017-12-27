@@ -1,17 +1,17 @@
-import React from 'react';
-import { BrowserRouter as Router, Route , Switch } from 'react-router-dom';
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 // Routes
-import App from './components/App';
-import About from './components/About';
-import NotFound from './components/NotFound';
+import App from "./components/App";
+import About from "./components/About";
+import NotFound from "./components/NotFound";
 
 const Routes = () => (
   <Router>
     <Switch>
-        <Route exact path="/" component={App}/>    
-        <Route exact path="/about" component={About} />
-        <Route component={NotFound} />
+      <Route exact path="/" component={App} />
+      <Route exact path="/about" component={About} />
+      <Route component={NotFound} />
     </Switch>
   </Router>
 );
