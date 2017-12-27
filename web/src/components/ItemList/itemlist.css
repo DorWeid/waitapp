@@ -1,0 +1,9 @@
+.item-list {    
+    width: 93%;
+    margin: 0 auto;
+    margin-top: -3vw;
+    padding: 1.45833vw 0;
+    background-color: white;
+    position: relative;
+    display: flex;    
+}
