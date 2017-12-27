@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './navbar.css';
 import wait from './wait.svg';
@@ -33,7 +34,7 @@ class Navbar extends Component {
           <div className="navbar-menu">
             <div className="navbar-start">
               <a className="navbar-item">Home</a>
-              <a className="navbar-item">About</a>
+              <a className="navbar-item"><Link to="/about">About</Link></a>
             </div>                        
             <div className="navbar-end">
             <div className="navbar-item">

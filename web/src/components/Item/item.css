@@ -1,0 +1,21 @@
+.card {
+    width: 11vw;    
+    margin: 10px 20px 10px 20px;
+}
+
+.location {
+    font-size: 0.7rem;
+    color: green;
+    text-align: right;
+}
+
+.price {
+    color: green;
+    font-weight: 500;
+}
+
+.item-footer {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}
