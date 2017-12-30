@@ -2,7 +2,7 @@ import { types } from "mobx-state-tree";
 
 // The model definition
 const definition = {
-  id: types.identifier(),
+  id: types.identifier(types.string),
   name: types.string,
   author: types.string,
   price: types.number

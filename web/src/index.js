@@ -11,6 +11,10 @@ import MainStore from "./stores";
 import DevTools from "mobx-react-devtools";
 import Routes from "./routes";
 
+if (process.env.NODE_ENV === "development") {
+  window.store = MainStore;
+}
+
 ReactDOM.render(
   <div>
     <Provider store={MainStore}>

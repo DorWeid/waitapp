@@ -20,6 +20,7 @@ class Navbar extends Component {
     this.responseFacebook = this.responseFacebook.bind(this);
   }
   responseFacebook = response => {
+    debugger;
     this.props.authenticate(response);
   };
   render() {
@@ -44,7 +45,6 @@ class Navbar extends Component {
               ) : (
                 <FacebookLogin
                   appId={process.env.REACT_APP_FACEBOOK_ID}
-                  autoLoad
                   fields="name,email,picture.width(300).height(300)"
                   callback={this.responseFacebook}
                   cssClass="auth-button"
