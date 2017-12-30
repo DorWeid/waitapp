@@ -23,7 +23,7 @@ class Navbar extends Component {
     this.props.authenticate(response);
   };
   render() {
-    const user = this.props.user;
+    const {user} = this.props ;
     return (
       <nav className="navbar">
         <div className="navbar-brand">
@@ -33,6 +33,7 @@ class Navbar extends Component {
         <div className="navbar-menu">
           <div className="navbar-start">
             <Link className="navbar-item" to="/">Home</Link>
+            {user && <Link className="navbar-item" to={`/${user.name}/lists`}>My Lists</Link>}
             <Link className="navbar-item" to="/about">About</Link>            
           </div>
           <div className="navbar-end">
