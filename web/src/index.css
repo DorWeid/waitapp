@@ -1,11 +1,23 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: "Raleway", sans-serif !important;
+}
+
+input {
+  font-family: "Raleway", sans-serif !important;
 }
 
 html {
-  background-color: gainsboro;
+  background-color: white;
+}
+
+::-webkit-input-placeholder {
+  color: white;
+}
+
+input:focus {
+  outline: none;
 }
 
 textarea {
