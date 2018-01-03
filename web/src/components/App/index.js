@@ -5,6 +5,7 @@ import Navbar from "../Navbar";
 import Slider from "../Slider";
 import ItemList from "../ItemList";
 import UserLists from "../UserLists";
+import List from "../../containers/List";
 
 class App extends Component {
   constructor(props) {
@@ -29,14 +30,19 @@ class App extends Component {
           user={this.state.user.name ? this.state.user : null}
         />
         <Switch>
-          <Route exact path='/' component={() => (
-            <React.Fragment>
-              <Slider/>
-              <ItemList/>
-            </React.Fragment>
-          )}/>
+          <Route
+            exact
+            path="/"
+            component={() => (
+              <React.Fragment>
+                <Slider />
+                <ItemList />
+              </React.Fragment>
+            )}
+          />
           <Route path="/:user/lists" component={UserLists} />
-        </Switch>        
+          <Route path="/lists/:id" component={List} />
+        </Switch>
       </div>
     );
   }
