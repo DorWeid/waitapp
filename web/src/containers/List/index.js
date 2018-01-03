@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 
 class List extends Component {
-  render() {
-    const { match } = this.props;
+  render() {    
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
         <div style={{ display: "flex", flexDirection: "row" }}>
