@@ -7,3 +7,28 @@
   width: 100%;
   height: 100%;
 }
+
+.slide-info {
+  width: 200px;
+  height: 40%;
+  position: absolute;
+  top: 100px;
+  margin-left: 100px;
+  z-index: 12;
+  display: flex;
+  flex-direction: column;
+
+  color: #fff;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 30px 0px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.6);
+}
+
+.slide-description {
+  white-space: pre-wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* height: 150px; */
+}

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 class List extends Component {
-  render() {    
+  render() {
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
         <div style={{ display: "flex", flexDirection: "row" }}>
