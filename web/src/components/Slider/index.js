@@ -10,11 +10,16 @@ export default () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    pauseOnHover: true
+    pauseOnHover: true,
+    className: "slider"
   };
   return (
-    <SliderSlick {...settings}>
-      <img src={img} alt="hotel" />
-    </SliderSlick>
+    <div style={{ maxHeight: "100%" }}>
+      <SliderSlick {...settings}>
+        <div style={{ height: "100%", width: "100%" }}>
+          <img src={img} alt="hotel" />
+        </div>
+      </SliderSlick>
+    </div>
   );
 };

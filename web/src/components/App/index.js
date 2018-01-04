@@ -36,7 +36,7 @@ class App extends Component {
             component={() => (
               <React.Fragment>
                 <Slider />
-                <ItemList />
+                {/* <ItemList /> */}
               </React.Fragment>
             )}
           />
