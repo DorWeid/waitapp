@@ -19,7 +19,7 @@ const slides = [
     alt: "Sheraton Suite",
     id: "unique-id",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      "description description description description description description description description description description description",
     title: "Sheraton Suite"
   }
 ];
@@ -28,8 +28,8 @@ const ItemDescriptionThumb = props => {
   const { description, title } = props;
   return (
     <div className="slide-info">
-      <h4 className="title is-4">{title}</h4>
-      <text className="slide-description">{description}</text>
+      <h4 className="title slide-title">{title}</h4>
+      <p className="slide-description">{description}</p>
     </div>
   );
 };
