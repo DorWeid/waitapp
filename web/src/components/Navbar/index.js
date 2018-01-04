@@ -29,64 +29,68 @@ class Navbar extends Component {
     const { user } = this.props;
 
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          position: "absolute",
-          zIndex: 10,
-          top: 10,
-          width: "100%"
-        }}
-      >
+      <div>
         <div
           style={{
             height: 300,
-            backgroundColor: "white",
             position: "absolute",
             top: -10,
-            zIndex: 11,
-            width: "100%"
+            zIndex: 9,
+            width: "100%",
+            background:
+              "linear-gradient(to top, rgba(255,255,255,0), rgba(255,255,255,1))"
           }}
         />
-        <div>
-          <span className="icon" style={{ color: "white" }}>
-            <i className="fa fa-search" style={{ fontSize: 16 }} />
-          </span>
-          <input
-            style={{
-              backgroundColor: "transparent",
-              border: "none",
-              color: "white",
-              marginLeft: "10px"
-            }}
-            type="text"
-            placeholder="Search something..."
-          />
-        </div>
         <div
           style={{
-            borderRadius: "50%",
-            backgroundColor: "rgba(255, 255, 255, 0.7)",
-            height: 45,
-            width: 45,
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "space-between",
             alignItems: "center",
-            boxShadow: "0px 0px 0px 0px rgba(0,0,0,0.75)"
+            position: "absolute",
+            zIndex: 10,
+            top: 10,
+            width: "100%"
           }}
         >
-          <h1 className="title is-4 is-bold">
-            <b>w8</b>
-          </h1>
-        </div>
-        <div style={{ display: "flex", justifyContent: "space-around" }}>
-          {menuItems.map(item => (
-            <a style={{ fontSize: 18, color: "white", paddingRight: 20 }}>
-              <b>{item}</b>
-            </a>
-          ))}
+          <div>
+            <span className="icon" style={{ color: "white" }}>
+              <i className="fa fa-search" style={{ fontSize: 16 }} />
+            </span>
+            <input
+              style={{
+                backgroundColor: "transparent",
+                border: "none",
+                color: "black",
+                marginLeft: "10px"
+              }}
+              type="text"
+              placeholder="Search something..."
+            />
+          </div>
+          <div
+            style={{
+              borderRadius: "50%",
+              backgroundColor: "rgba(255, 255, 255, 0.7)",
+              height: 45,
+              width: 45,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              boxShadow: "0px 1px 5px 0px rgba(0,0,0,0.75)"
+            }}
+          >
+            <h1 className="title is-4 is-bold">w8</h1>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-around" }}>
+            {menuItems.map(item => (
+              <a
+                key={item}
+                style={{ fontSize: 18, color: "black", paddingRight: 20 }}
+              >
+                <b>{item}</b>
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     );

@@ -14,6 +14,8 @@ html {
 
 ::-webkit-input-placeholder {
   color: white;
+  font-weight: bold;
+  text-shadow: 11px 11px 11px rgba(0, 0, 0, 0);
 }
 
 input:focus {
@@ -21,5 +23,5 @@ input:focus {
 }
 
 textarea {
-  resize: none!important;
+  resize: none !important;
 }
