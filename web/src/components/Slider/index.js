@@ -37,17 +37,13 @@ const ItemDescriptionThumb = props => {
 const Slide = props => {
   const { src, alt, id } = props;
   return (
-    <div key={id}>
-      <img alt={alt} src={src} />
+    <div key={id} style={{ width: "100vw", height: "100vh" }}>
+      <img alt={alt} src={src} style={{ width: "100%", height: "100%" }} />
       <ItemDescriptionThumb {...props} />
     </div>
   );
 };
 
 export default () => {
-  return (
-    <SliderSlick {...settings}>
-      <div style={{ height: "100%", width: "100%" }}>{slides.map(Slide)}</div>
-    </SliderSlick>
-  );
+  return <SliderSlick {...settings}>{slides.map(Slide)}</SliderSlick>;
 };

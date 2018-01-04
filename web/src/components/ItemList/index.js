@@ -2,8 +2,6 @@ import React from "react";
 import Item from "../Item";
 import "./itemlist.css";
 
-
-
 const items = [
   {
     name: "Zimmer in Holon",
@@ -23,8 +21,7 @@ const items = [
   },
   {
     name: "FUN in Holon",
-    img:
-      "http://www.nofshim.co.il/images/site_images1903X735/ezel_nano.jpg",
+    img: "http://www.nofshim.co.il/images/site_images1903X735/ezel_nano.jpg",
     description: "Ahlen zimmer in holon",
     price: 550,
     currency: "usd",
@@ -38,11 +35,49 @@ const items = [
     price: 650,
     currency: "ils",
     location: "Acient Holon"
+  },
+  {
+    name: "Zimmer in Acient Holon",
+    img:
+      "https://www.safarihotelsnamibia.com/wp-content/uploads/2014/11/Safari-Court-Hotel-Pool.jpg",
+    description: "Ahlen zimmer in Acient Holon",
+    price: 650,
+    currency: "ils",
+    location: "Acient Holon"
+  },
+  {
+    name: "Zimmer in Acient Holon",
+    img:
+      "https://www.safarihotelsnamibia.com/wp-content/uploads/2014/11/Safari-Court-Hotel-Pool.jpg",
+    description: "Ahlen zimmer in Acient Holon",
+    price: 650,
+    currency: "ils",
+    location: "Acient Holon"
+  },
+  {
+    name: "Zimmer in Acient Holon",
+    img:
+      "https://www.safarihotelsnamibia.com/wp-content/uploads/2014/11/Safari-Court-Hotel-Pool.jpg",
+    description: "Ahlen zimmer in Acient Holon",
+    price: 650,
+    currency: "ils",
+    location: "Acient Holon"
+  },
+  {
+    name: "Zimmer in Acient Holon",
+    img:
+      "https://www.safarihotelsnamibia.com/wp-content/uploads/2014/11/Safari-Court-Hotel-Pool.jpg",
+    description: "Ahlen zimmer in Acient Holon",
+    price: 650,
+    currency: "ils",
+    location: "Acient Holon"
   }
 ];
 
-export default () => (
-  <div className="item-list">
-    {items.map(item => <Item key={item.name} {...item} />)}
-  </div>
-);
+export default () => {
+  return (
+    <div className="item-list">
+      {items.map(item => <Item key={item.name} {...item} />)}
+    </div>
+  );
+};
