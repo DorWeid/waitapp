@@ -3,9 +3,8 @@ import { Route, Switch } from "react-router-dom";
 import "./App.css";
 import Navbar from "../Navbar";
 import Slider from "../Slider";
-import ItemList from "../ItemList";
 import UserLists from "../UserLists";
-import List from "../../containers/List";
+import Lists from "../../containers/Lists";
 
 class App extends Component {
   constructor(props) {
@@ -36,12 +35,11 @@ class App extends Component {
             component={() => (
               <React.Fragment>
                 <Slider />
-                <ItemList />
               </React.Fragment>
             )}
           />
           <Route path="/:user/lists" component={UserLists} />
-          <Route path="/lists/:id" component={List} />
+          <Route path="/lists" component={Lists} />
         </Switch>
       </div>
     );

@@ -55,45 +55,6 @@ class Navbar extends Component {
         </div>
       </div>
     );
-
-    return (
-      <nav className="navbar">
-        <div className="navbar-brand">
-          <img src={wait} alt="waitapp logo" className="logo" />
-        </div>
-
-        <div className="navbar-menu">
-          <div className="navbar-start">
-            <Link className="navbar-item" to="/">
-              Home
-            </Link>
-            {user && (
-              <Link className="navbar-item" to={`/${user.name}/lists`}>
-                My Lists
-              </Link>
-            )}
-            <Link className="navbar-item" to="/about">
-              About
-            </Link>
-          </div>
-          <div className="navbar-end">
-            <div className="navbar-item">
-              {user ? (
-                <Avatar name={user.name} pic={user.picture} />
-              ) : (
-                <FacebookLogin
-                  appId={process.env.REACT_APP_FACEBOOK_ID}
-                  fields="name,email,picture.width(300).height(300)"
-                  callback={this.responseFacebook}
-                  cssClass="auth-button"
-                  icon={<i className="fa fa-facebook" />}
-                />
-              )}
-            </div>
-          </div>
-        </div>
-      </nav>
-    );
   }
 }
 
