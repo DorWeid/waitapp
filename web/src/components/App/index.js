@@ -5,6 +5,7 @@ import Navbar from "../Navbar";
 import Slider from "../Slider";
 import UserLists from "../UserLists";
 import Lists from "../../containers/Lists";
+import List from "../../containers/List";
 
 class App extends Component {
   constructor(props) {
@@ -40,6 +41,7 @@ class App extends Component {
           />
           <Route path="/:user/lists" component={UserLists} />
           <Route path="/lists" component={Lists} />
+          <Route path="/list/:id" component={List} />
         </Switch>
       </div>
     );

@@ -1,20 +1,149 @@
 import React, { Component } from "react";
+import WaitingList from "../../components/WaitingList";
+import SliderSlick from "react-slick";
+import img from "../../pictures/1.jpeg";
+
+const settings = {
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplay: true,
+  pauseOnHover: true
+};
+
+const slides = [
+  {
+    src: img,
+    alt: "Sheraton Suite",
+    id: "unique-id",
+    description:
+      "description description description description description description description description description description description",
+    title: "Sheraton Suite"
+  },
+  {
+    src: img,
+    alt: "Sheraton Suite",
+    id: "unique-id",
+    description:
+      "description description description description description description description description description description description",
+    title: "Sheraton Suite"
+  },
+  {
+    src: img,
+    alt: "Sheraton Suite",
+    id: "unique-id",
+    description:
+      "description description description description description description description description description description description",
+    title: "Sheraton Suite"
+  },
+  {
+    src: img,
+    alt: "Sheraton Suite",
+    id: "unique-id",
+    description:
+      "description description description description description description description description description description description",
+    title: "Sheraton Suite"
+  }
+];
 
 class List extends Component {
+  componentDidMount() {
+    // TODO: load item here
+  }
+
   render() {
+    const { item = {} } = this.props;
+    const {
+      name = "Sheraton Suite",
+      description = "Describing how good sheraton is ...",
+      price = 157,
+      originalPrice = 9000,
+      discountInPercentage = 90,
+      currency = "$"
+    } = item;
+
     return (
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          <div style={{ display: "flex", width: "30%" }}>Col1</div>
-          <div style={{ display: "flex", width: "30%" }}>Col1</div>
-          <div style={{ display: "flex", width: "30%" }}>Col1</div>
+      <div style={{ paddingTop: 100, zIndex: 15, position: "relative" }}>
+        <div className="columns" style={{ paddingBottom: 30 }}>
+          <div className="column">
+            <h1 className="title is-1">{name}</h1>
+            <h6 className="subtitle is-6">{description}</h6>
+          </div>
         </div>
-        <div style={{ overflow: "hidden", height: 600, width: "100%" }}>
-          <img
-            style={{ display: "block", width: "100%", margin: "-10% 0" }}
-            src="http://imagetouristsites.com/wp-content/uploads/2017/12/sanibel-hotels-deals-best-of-island-inn-updated-2017-prices-amp-resort-reviews-sanibel-island-of-sanibel-hotels-deals.jpg"
-            alt="Item"
-          />
+        <div className="columns" style={{ marginLeft: 15 }}>
+          <div className="column is-2">
+            <WaitingList />
+          </div>
+          <div className="column is-3" style={{ marginLeft: 40 }}>
+            <div className="box">
+              <h3 className="title is-4" style={{ marginBottom: 0 }}>
+                ASKING PRICE:
+              </h3>
+              <br />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "baseline",
+                  marginBottom: 0
+                }}
+              >
+                <h2 className="title is-2" style={{ paddingRight: 10 }}>
+                  {price}
+                  {currency}
+                </h2>
+                <text>
+                  <del>{originalPrice}</del>
+                  {currency}
+                </text>
+              </div>
+              <hr />
+              <div>
+                <span class="icon is-small">
+                  <i class="fa fa-percent" />
+                </span>
+                <br />
+                <text className="title is-6">
+                  {discountInPercentage}% DISCOUNT
+                </text>
+              </div>
+              <hr />
+              <div>
+                <span class="icon is-small">
+                  <i class="fa fa-users" />
+                </span>
+                <br />
+                <text className="title is-6">90+ WAITING</text>
+              </div>
+              <hr />
+              <div>
+                <span class="icon is-small">
+                  <i class="fa fa-clock-o" />
+                </span>
+                <br />
+                <text className="title is-6">LIMITED TIME OFFER!</text>
+              </div>
+              <hr />
+              <a class="button is-primary">
+                <span class="icon is-small">
+                  <i class="fa fa-check" />
+                </span>
+                <span>Sign up now !</span>
+              </a>
+            </div>
+          </div>
+          <div className="column is-5 is-offset-1">
+            <SliderSlick {...settings}>
+              {slides.map(item => (
+                <img
+                  src={item.src}
+                  alt={item.alt}
+                  style={{ border: "2px solid white" }}
+                />
+              ))}
+            </SliderSlick>
+          </div>
         </div>
       </div>
     );

@@ -25,12 +25,20 @@ class Navbar extends Component {
     debugger;
     this.props.authenticate(response);
   };
+
+  // NOTE: much arab
+  isHomepage = () => {
+    return document.location.pathname === "/";
+  };
+
   render() {
     const { user } = this.props;
 
     return (
       <div>
-        <div className="navbar-overlay" />
+        <div
+          className={this.isHomepage() ? "navbar-overlay" : "navbar-background"}
+        />
         <div className="navbar-custom">
           <div>
             <span className="icon" style={{ color: "white" }}>
