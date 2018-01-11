@@ -1,8 +1,8 @@
 import { types, flow, getParent } from "mobx-state-tree";
-import { ItemModel } from "./models";
+import ItemModel from "./models/Item";
 
 const definition = {
-  items: types.map(ItemModel)
+  items: types.optional(types.map(ItemModel), {})
 };
 
 const views = self => ({
@@ -20,8 +20,27 @@ const actions = self => {
     return result;
   });
 
+  const getItem = flow(function* getItem(id) {
+    const url = "https://jsonplaceholder.typicode.com/posts";
+    const temporaryResultExample = {
+      id: id.toString(),
+      name: "Sheraton",
+      description: "Best hotel in the world...",
+      price: 1500,
+      originalPrice: 9999,
+      currency: "$"
+    };
+
+    const whatWeShouldDo = yield self.shop.get(`${url}/${id}`);
+    if (temporaryResultExample) {
+      const converted = ItemModel.create(temporaryResultExample);
+      self.items.set(id, converted);
+    }
+  });
+
   return {
-    getItems
+    getItems,
+    getItem
   };
 };
 

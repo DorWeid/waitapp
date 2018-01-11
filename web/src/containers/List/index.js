@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import WaitingList from "../../components/WaitingList";
 import SliderSlick from "react-slick";
+import { observer, inject } from "mobx-react";
 import img from "../../pictures/1.jpeg";
 
 const settings = {
@@ -49,19 +50,23 @@ const slides = [
 
 class List extends Component {
   componentDidMount() {
-    // TODO: load item here
+    const { match } = this.props;
+    const itemStore = this.props.store.itemStore;
+
+    itemStore.getItem(match.params.id);
   }
 
   render() {
-    const { item = {} } = this.props;
+    const { store: { itemStore: { items } } } = this.props;
     const {
-      name = "Sheraton Suite",
-      description = "Describing how good sheraton is ...",
-      price = 157,
-      originalPrice = 9000,
-      discountInPercentage = 90,
-      currency = "$"
-    } = item;
+      name,
+      description,
+      price,
+      originalPrice,
+      discountInPercentage,
+      currency
+    } =
+      items.get("1") || {};
 
     return (
       <div style={{ paddingTop: 100, zIndex: 15, position: "relative" }}>
@@ -150,4 +155,4 @@ class List extends Component {
   }
 }
 
-export default List;
+export default inject("store")(observer(List));

@@ -1,4 +1,5 @@
 import { types, flow } from "mobx-state-tree";
+import { observable } from "mobx";
 import axios from "axios";
 import { Item as ItemStore } from "./Item";
 
@@ -58,16 +59,7 @@ const views = self => {
 
 const store = types
   .model("MainStore", {
-    itemStore: types.optional(ItemStore, {
-      items: {
-        myItem1: {
-          id: "myItem1",
-          name: "The Item 1 Name",
-          author: "Dor",
-          price: 1337
-        }
-      }
-    }),
+    itemStore: types.optional(ItemStore, { items: {} }),
     isLoading: types.optional(types.boolean, false)
   })
   .views(views)
