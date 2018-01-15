@@ -1,13 +1,16 @@
-import { types } from "mobx-state-tree";
+import { types, getParent, flow } from "mobx-state-tree";
 
 // The model definition
 const definition = {
-  id: types.identifier(types.string),
-  name: types.optional(types.string, ""),
+  _id: types.identifier(types.string),
+  title: types.optional(types.string, ""),
   description: types.optional(types.string, ""),
   price: types.optional(types.number, 0),
-  originalPrice: types.optional(types.number, 0),
-  currency: types.optional(types.string, "")
+  startDate: types.optional(types.string, ""),
+  endDate: types.optional(types.string, ""),
+  type: types.enumeration(["car", "hotel", "flight"]),
+  createdAt: types.optional(types.string, ""),
+  users: types.optional(types.array(types.string), [])
 };
 
 // Any fact that can be derived from the state in a pure manner should go here.
@@ -19,6 +22,9 @@ const views = self => {
         Name: ${self.name} 
         Author: ${self.author} 
         Price: ${self.price}`;
+    },
+    get store() {
+      return getParent(self, 3);
     }
   };
 };
@@ -27,14 +33,40 @@ const views = self => {
 // Simply put, state can be changed only by actions
 // NOTE: Your async functions should probably go here
 const actions = self => {
-  return {
-    changeName(newName) {
-      self.name = newName;
-    },
-    enrollToItem(item) {
-      window.alert("hey", item);
-      debugger;
+  const enroll = flow(function*(username) {
+    const url = `/list/${self._id}/addUser`;
+    const options = {
+      data: { username }
+    };
+    try {
+      yield self.store.post(url, options);
+      console.log("Succesfully signed up!");
+    } catch (e) {
+      console.log("Could not sign up. Error:", e.message);
     }
+  });
+
+  const disenroll = flow(function*(username) {
+    const url = `/list/${self._id}/removeUser`;
+    const options = {
+      data: { username }
+    };
+    try {
+      yield self.store.post(url, options);
+      console.log("Succesfully disenrolled from list!");
+    } catch (e) {
+      console.log("Could not disenroll. Error:", e.message);
+    }
+  });
+
+  const isUserInList = username => {
+    return self.users.includes(username);
+  };
+
+  return {
+    enroll,
+    disenroll,
+    isUserInList
   };
 };
 

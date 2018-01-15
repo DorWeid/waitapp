@@ -1,7 +1,9 @@
 import { types, flow } from "mobx-state-tree";
-import { observable } from "mobx";
+// import { observable } from "mobx";
 import axios from "axios";
 import { Item as ItemStore } from "./Item";
+
+const baseUrl = "http://localhost:4040";
 
 const actions = self => {
   return {
@@ -29,7 +31,7 @@ const views = self => {
 
       const response = yield axios({
         method,
-        url,
+        url: `${baseUrl}/api${url}`,
         ...options
       });
 

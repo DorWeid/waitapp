@@ -1,18 +1,18 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import "./navbar.css";
-import wait from "./wait.svg";
-import FacebookLogin from "react-facebook-login";
+// import wait from "./wait.svg";
+// import FacebookLogin from "react-facebook-login";
 
-const Avatar = ({ name, pic }) => (
-  <div>
-    <figure>
-      <img src={pic.data.url} alt={name} className="avatar-pic" />
-    </figure>
-    <span className="avatar-text">Hi, {name}</span>
-  </div>
-);
+// const Avatar = ({ name, pic }) => (
+//   <div>
+//     <figure>
+//       <img src={pic.data.url} alt={name} className="avatar-pic" />
+//     </figure>
+//     <span className="avatar-text">Hi, {name}</span>
+//   </div>
+// );
 
 const menuItems = ["Home", "Lists", "About"];
 
@@ -32,7 +32,7 @@ class Navbar extends Component {
   };
 
   render() {
-    const { user } = this.props;
+    // const { user } = this.props;
 
     return (
       <div>

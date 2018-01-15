@@ -49,6 +49,12 @@ const slides = [
 ];
 
 class List extends Component {
+  constructor(props) {
+    super(props);
+
+    this.enroll = this.disenroll.bind(this);
+    this.disenroll = this.disenroll.bind(this);
+  }
   componentDidMount() {
     const { match } = this.props;
     const itemStore = this.props.store.itemStore;
@@ -56,23 +62,34 @@ class List extends Component {
     itemStore.getItem(match.params.id);
   }
 
+  enroll() {
+    const { match: { params }, store: { itemStore } } = this.props;
+    const username = "dor";
+    // TODO: enable only if user is logged in
+    if (true) {
+      itemStore.items.get(params.id).enroll(username);
+    }
+  }
+
+  disenroll() {}
+
   render() {
     const { store: { itemStore: { items } } } = this.props;
-    const {
-      name,
-      description,
-      price,
-      originalPrice,
-      discountInPercentage,
-      currency
-    } =
-      items.get("1") || {};
+    const currentItem = items.get(this.props.match.params.id);
+
+    // TODO: Loading indicator here plis
+    if (!currentItem) {
+      return <div>Loading ...</div>;
+    }
+
+    const { title, description, price, currency = "$", users = [] } =
+      currentItem || {};
 
     return (
       <div style={{ paddingTop: 100, zIndex: 15, position: "relative" }}>
         <div className="columns" style={{ paddingBottom: 30 }}>
           <div className="column">
-            <h1 className="title is-1">{name}</h1>
+            <h1 className="title is-1">{title}</h1>
             <h6 className="subtitle is-6">{description}</h6>
           </div>
         </div>
@@ -98,50 +115,54 @@ class List extends Component {
                   {price}
                   {currency}
                 </h2>
-                <text>
-                  <del>{originalPrice}</del>
-                  {currency}
-                </text>
               </div>
               <hr />
               <div>
-                <span class="icon is-small">
-                  <i class="fa fa-percent" />
+                <span className="icon is-small">
+                  <i className="fa fa-percent" />
                 </span>
                 <br />
-                <text className="title is-6">
-                  {discountInPercentage}% DISCOUNT
-                </text>
+                <div className="title is-6">90% DISCOUNT</div>
               </div>
               <hr />
               <div>
-                <span class="icon is-small">
-                  <i class="fa fa-users" />
+                <span className="icon is-small">
+                  <i className="fa fa-users" />
                 </span>
                 <br />
-                <text className="title is-6">90+ WAITING</text>
+                <div className="title is-6">{users.length} WAITING</div>
               </div>
               <hr />
               <div>
-                <span class="icon is-small">
-                  <i class="fa fa-clock-o" />
+                <span className="icon is-small">
+                  <i className="fa fa-clock-o" />
                 </span>
                 <br />
-                <text className="title is-6">LIMITED TIME OFFER!</text>
+                <div className="title is-6">LIMITED TIME OFFER!</div>
               </div>
               <hr />
-              <a class="button is-primary">
-                <span class="icon is-small">
-                  <i class="fa fa-check" />
-                </span>
-                <span>Sign up now !</span>
-              </a>
+              {currentItem.isUserInList("dor") ? (
+                <a className="button is-danger" onClick={this.disenroll}>
+                  <span className="icon is-small">
+                    <i className="fa fa-times" />
+                  </span>
+                  <span>Disenroll</span>
+                </a>
+              ) : (
+                <a className="button is-primary" onClick={this.enroll}>
+                  <span className="icon is-small">
+                    <i className="fa fa-check" />
+                  </span>
+                  <span>Enroll now !</span>
+                </a>
+              )}
             </div>
           </div>
           <div className="column is-5 is-offset-1">
             <SliderSlick {...settings}>
-              {slides.map(item => (
+              {slides.map((item, index) => (
                 <img
+                  key={index /* TODO: item.src should be the key*/}
                   src={item.src}
                   alt={item.alt}
                   style={{ border: "2px solid white" }}
