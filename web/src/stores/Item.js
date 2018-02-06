@@ -2,7 +2,8 @@ import { types, flow, getParent } from "mobx-state-tree";
 import ItemModel from "./models/Item";
 
 const definition = {
-  items: types.optional(types.map(ItemModel), {})
+  items: types.optional(types.map(ItemModel), {}),
+  latestListAdded: ""
 };
 
 const views = self => ({
@@ -26,9 +27,22 @@ const actions = self => {
     self.items.set(id, converted);
   });
 
+  const addList = flow(function* addList(creator,type,meta,title,description,price,startDate,endDate) {
+    const url = `/list/`;
+    const options = {
+      data: { creator,type,meta,title,description,price,startDate,endDate }
+    };    
+    const result  = yield self.shop.post(url, options);
+    const list = ItemModel.create(result.data);    
+    self.items.set(list._id, list);
+    self.latestListAdded = list._id;
+    return list;
+  })
+
   return {
     getItems,
-    getItem
+    getItem,
+    addList
   };
 };
 

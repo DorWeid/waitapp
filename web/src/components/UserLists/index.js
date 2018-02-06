@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { observer, inject } from "mobx-react";
 import classnames from 'classnames';
+import {Redirect} from 'react-router';
 import "./index.css";
-import AddListForm from "../AddListForm";
 
 const TABS = [
   { name: "My Lists", icon: "fa-th-list", render: () => (<div>Nothing yet</div>) },
-  { name: "Create New List", icon: "fa-plus-square", render: () => (<AddListForm />) }  
+  { name: "Create New List", icon: "fa-plus-square", render: () => (<Redirect to={`/adir/addList`} />) }  
 ];
 
 class UserLists extends Component {

@@ -1,17 +1,28 @@
 import React, { Component } from "react";
+import { observer, inject } from "mobx-react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
+import {Redirect} from 'react-router';
 
 import "react-datepicker/dist/react-datepicker.css";
 import "./index.css";
-class AddListForm extends Component {
+
+class AddList extends Component {
   constructor(props) {
     super(props);
-
+    
+    this.addList = this.addList.bind(this);
     this.state = {
-      startDate: moment(),
-      endDate: moment()
-    };
+        startDate: moment(),
+        endDate: moment()
+      };
+  }  
+
+   addList() {
+    const { match: { params },store: { itemStore } } = this.props;
+    let username = params.user || 'adir for now'; // TODO : should be taken from wherever we store current user
+    itemStore
+        .addList(username,'hotel', {price: 515} , this.state.title, this.state.description, this.state.price, this.state.startDate, this.state.endDate);    
   }
 
   changeDate(when, date) {
@@ -23,22 +34,29 @@ class AddListForm extends Component {
   }
 
   render() {
+      const { match: { params }, store: {itemStore}} = this.props;
+      
+      if (itemStore.latestListAdded !== "") {
+          return (<Redirect to={`/list/${itemStore.latestListAdded}`} />);
+      } else {
+
     return (
+        <div style={{ paddingTop: 100, zIndex: 15, position: "relative" }}>
       <form className="add-list-form">
         <h1 className="title">Create new list</h1>
         <div className="field">
           <div className="control">
-            <input className="input" type="text" placeholder="Title" />
+            <input className="input" type="text" placeholder="Title" onChange={(e) => this.setState({title : e.target.value})} />
           </div>
         </div>
         <div className="field">
           <div className="control">
-            <textarea className="textarea" placeholder="Description" />
+            <textarea className="textarea" placeholder="Description" onChange={(e) => this.setState({description : e.target.value})} />
           </div>
         </div>
         <div className="field">
           <div className="control">
-            <input className="input" type="text" placeholder="Price" />
+            <input className="input" type="text" placeholder="Price" onChange={(e) => this.setState({price : e.target.value})} />
           </div>
         </div>
         <div className="field">
@@ -62,11 +80,13 @@ class AddListForm extends Component {
           </div>
         </div>        
         
-        <a className="button submit-btn">Submit</a>
+        <a className="button submit-btn" onClick={this.addList}>Submit</a>
         
       </form>
-    );
-  }
+      </div>
+    );  
+}
+}
 }
 
-export default AddListForm;
+export default inject("store")(observer(AddList));
