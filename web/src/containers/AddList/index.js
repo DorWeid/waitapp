@@ -34,14 +34,14 @@ class AddList extends Component {
   }
 
   render() {
-      const { match: { params }, store: {itemStore}} = this.props;
+      const { store: {itemStore}} = this.props;
       
       if (itemStore.latestListAdded !== "") {
           return (<Redirect to={`/list/${itemStore.latestListAdded}`} />);
       } else {
 
     return (
-        <div style={{ paddingTop: 100, zIndex: 15, position: "relative" }}>
+        <div style={{ marginTop: 100, zIndex: 15, position: "relative" }}>
       <form className="add-list-form">
         <h1 className="title">Create new list</h1>
         <div className="field">

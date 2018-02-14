@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import "./navbar.css";
 // import wait from "./wait.svg";
@@ -14,7 +14,7 @@ import "./navbar.css";
 //   </div>
 // );
 
-const menuItems = ["Home", "Lists", "About"];
+const menuItems = [{text: "Home", link: '/'}, {text: "Lists" , link: '/lists'}, {text: "About", link: '/about'}];
 
 class Navbar extends Component {
   constructor(props) {
@@ -55,9 +55,9 @@ class Navbar extends Component {
           </div>
           <div className="navbar-custom-menu">
             {menuItems.map(item => (
-              <a key={item} className="navbar-custom-menuitem">
-                <b>{item}</b>
-              </a>
+              
+                <Link key={item} className="navbar-custom-menuitem" to={item.link}>{item.text}</Link>                
+              
             ))}
           </div>
         </div>

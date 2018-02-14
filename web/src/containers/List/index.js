@@ -86,7 +86,7 @@ class List extends Component {
       currentItem || {};
 
     return (
-      <div style={{ paddingTop: 100, zIndex: 15, position: "relative" }}>
+      <div style={{ marginTop: 100, zIndex: 15, position: "relative" }}>
         <div className="columns" style={{ paddingBottom: 30 }}>
           <div className="column">
             <h1 className="title is-1">{title}</h1>
