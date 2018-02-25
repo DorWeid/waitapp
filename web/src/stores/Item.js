@@ -13,12 +13,20 @@ const views = self => ({
 });
 
 const actions = self => {
-  const getItems = flow(function* getItems() {
-    const result = yield self.shop.get(
-      "https://jsonplaceholder.typicode.com/posts/1"
-    );
-    debugger;
-    return result;
+  function updateItems(json) {
+    json.forEach(itemJson => {
+        self.items.put(itemJson)
+    })
+}
+
+  const loadItems = flow(function* loadItems() {
+    try {
+      const result = yield self.shop.get(`/list/`);
+      updateItems(result.data);
+    
+    } catch (error) {
+      console.error('Couldnt fetch items', error)
+    }
   });
 
   const getItem = flow(function* getItem(id) {
@@ -40,7 +48,7 @@ const actions = self => {
   })
 
   return {
-    getItems,
+    loadItems,
     getItem,
     addList
   };

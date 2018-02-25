@@ -56,7 +56,7 @@ class Navbar extends Component {
           <div className="navbar-custom-menu">
             {menuItems.map(item => (
               
-                <Link key={item} className="navbar-custom-menuitem" to={item.link}>{item.text}</Link>                
+                <Link key={item.text} className="navbar-custom-menuitem" to={item.link}>{item.text}</Link>                
               
             ))}
           </div>

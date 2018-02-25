@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { observer, inject } from "mobx-react";
 import ItemList from "../../components/ItemList";
 import classnames from "classnames";
 import "./Lists.css";
@@ -104,7 +105,12 @@ class Lists extends Component {
 
     this.state = {
       currentTab: 1
-    };
+    };    
+  }
+
+  componentDidMount() {
+    let {store: { itemStore } } = this.props;
+    itemStore.loadItems();
   }
 
   changeTab(tabKey) {
@@ -114,9 +120,10 @@ class Lists extends Component {
   }
 
   render() {
+    let {store: { itemStore } } = this.props;    
     return (
       <div className="lists-container">
-        <div className="tabs is-centered is-medium">
+        {/* <div className="tabs is-centered is-medium">
           <ul className="tab-list">
             {tabs.map((tab, key) => (
               <li
@@ -134,11 +141,12 @@ class Lists extends Component {
               </li>
             ))}
           </ul>
-        </div>
-        <div>{tabs[this.state.currentTab].render()}</div>
+        </div> */}
+        {/* <div>{tabs[this.state.currentTab].render()}</div> */}
+        {itemStore.items.size !== 0  && <ItemList items={itemStore.items.values()} />}
       </div>
     );
   }
 }
 
-export default Lists;
+export default inject("store")(observer(Lists));
