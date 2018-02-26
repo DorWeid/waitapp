@@ -1,103 +1,103 @@
 import React, { Component } from "react";
 import { observer, inject } from "mobx-react";
 import ItemList from "../../components/ItemList";
-import classnames from "classnames";
+//import classnames from "classnames";
 import "./Lists.css";
 
-const items = [
-  {
-    name: "Zimmer in Holon",
-    img: "http://img.mako.co.il/2015/11/17/hamelech_david_i.jpg",
-    description: "Ahlen zimmer in holon",
-    price: 550,
-    currency: "usd",
-    location: "Holon"
-  },
-  {
-    name: "What is Holon",
-    img: "http://img.mako.co.il/2015/11/17/hamelech_david_i.jpg",
-    description: "Ahlen zimmer in holon",
-    price: 550,
-    currency: "usd",
-    location: "Holon"
-  },
-  {
-    name: "FUN in Holon",
-    img: "http://www.nofshim.co.il/images/site_images1903X735/ezel_nano.jpg",
-    description: "Ahlen zimmer in holon",
-    price: 550,
-    currency: "usd",
-    location: "Holon"
-  },
-  {
-    name: "Zimmer in Aciaent Holon",
-    img:
-      "https://www.safarihotelsnamibia.com/wp-content/uploads/2014/11/Safari-Court-Hotel-Pool.jpg",
-    description: "Ahlen zimmer in Acient Holon",
-    price: 650,
-    currency: "ils",
-    location: "Acient Holon"
-  },
-  {
-    name: "Zimsmer in Acient Holon",
-    img:
-      "https://www.safarihotelsnamibia.com/wp-content/uploads/2014/11/Safari-Court-Hotel-Pool.jpg",
-    description: "Ahlen zimmer in Acient Holon",
-    price: 650,
-    currency: "ils",
-    location: "Acient Holon"
-  },
-  {
-    name: "Zimmersin Acient Holon",
-    img:
-      "https://www.safarihotelsnamibia.com/wp-content/uploads/2014/11/Safari-Court-Hotel-Pool.jpg",
-    description: "Ahlen zimmer in Acient Holon",
-    price: 650,
-    currency: "ils",
-    location: "Acient Holon"
-  },
-  {
-    name: "Zimmer in Ascient Holon",
-    img:
-      "https://www.safarihotelsnamibia.com/wp-content/uploads/2014/11/Safari-Court-Hotel-Pool.jpg",
-    description: "Ahlen zimmer in Acient Holon",
-    price: 650,
-    currency: "ils",
-    location: "Acient Holon"
-  },
-  {
-    name: "Zimmer in Acient Holosn",
-    img:
-      "https://www.safarihotelsnamibia.com/wp-content/uploads/2014/11/Safari-Court-Hotel-Pool.jpg",
-    description: "Ahlen zimmer in Acient Holon",
-    price: 650,
-    currency: "ils",
-    location: "Acient Holon"
-  }
-];
+// const items = [
+//   {
+//     name: "Zimmer in Holon",
+//     img: "http://img.mako.co.il/2015/11/17/hamelech_david_i.jpg",
+//     description: "Ahlen zimmer in holon",
+//     price: 550,
+//     currency: "usd",
+//     location: "Holon"
+//   },
+//   {
+//     name: "What is Holon",
+//     img: "http://img.mako.co.il/2015/11/17/hamelech_david_i.jpg",
+//     description: "Ahlen zimmer in holon",
+//     price: 550,
+//     currency: "usd",
+//     location: "Holon"
+//   },
+//   {
+//     name: "FUN in Holon",
+//     img: "http://www.nofshim.co.il/images/site_images1903X735/ezel_nano.jpg",
+//     description: "Ahlen zimmer in holon",
+//     price: 550,
+//     currency: "usd",
+//     location: "Holon"
+//   },
+//   {
+//     name: "Zimmer in Aciaent Holon",
+//     img:
+//       "https://www.safarihotelsnamibia.com/wp-content/uploads/2014/11/Safari-Court-Hotel-Pool.jpg",
+//     description: "Ahlen zimmer in Acient Holon",
+//     price: 650,
+//     currency: "ils",
+//     location: "Acient Holon"
+//   },
+//   {
+//     name: "Zimsmer in Acient Holon",
+//     img:
+//       "https://www.safarihotelsnamibia.com/wp-content/uploads/2014/11/Safari-Court-Hotel-Pool.jpg",
+//     description: "Ahlen zimmer in Acient Holon",
+//     price: 650,
+//     currency: "ils",
+//     location: "Acient Holon"
+//   },
+//   {
+//     name: "Zimmersin Acient Holon",
+//     img:
+//       "https://www.safarihotelsnamibia.com/wp-content/uploads/2014/11/Safari-Court-Hotel-Pool.jpg",
+//     description: "Ahlen zimmer in Acient Holon",
+//     price: 650,
+//     currency: "ils",
+//     location: "Acient Holon"
+//   },
+//   {
+//     name: "Zimmer in Ascient Holon",
+//     img:
+//       "https://www.safarihotelsnamibia.com/wp-content/uploads/2014/11/Safari-Court-Hotel-Pool.jpg",
+//     description: "Ahlen zimmer in Acient Holon",
+//     price: 650,
+//     currency: "ils",
+//     location: "Acient Holon"
+//   },
+//   {
+//     name: "Zimmer in Acient Holosn",
+//     img:
+//       "https://www.safarihotelsnamibia.com/wp-content/uploads/2014/11/Safari-Court-Hotel-Pool.jpg",
+//     description: "Ahlen zimmer in Acient Holon",
+//     price: 650,
+//     currency: "ils",
+//     location: "Acient Holon"
+//   }
+// ];
 
-const tabs = [
-  {
-    name: "Hotels",
-    icon: "fa-th-list",
-    render: () => <ItemList items={items} />
-  },
-  {
-    name: "Flights",
-    icon: "fa-th-list",
-    render: () => <div>Nothing yet</div>
-  },
-  {
-    name: "Zimmers",
-    icon: "fa-th-list",
-    render: () => <div>Nothing yet</div>
-  },
-  {
-    name: "Rentals",
-    icon: "fa-th-list",
-    render: () => <div>Nothing yet</div>
-  }
-];
+// const tabs = [
+//   {
+//     name: "Hotels",
+//     icon: "fa-th-list",
+//     render: () => <ItemList items={items} />
+//   },
+//   {
+//     name: "Flights",
+//     icon: "fa-th-list",
+//     render: () => <div>Nothing yet</div>
+//   },
+//   {
+//     name: "Zimmers",
+//     icon: "fa-th-list",
+//     render: () => <div>Nothing yet</div>
+//   },
+//   {
+//     name: "Rentals",
+//     icon: "fa-th-list",
+//     render: () => <div>Nothing yet</div>
+//   }
+// ];
 
 class Lists extends Component {
   constructor(props) {

@@ -14,11 +14,16 @@
 
 .price {
   color: green;
-  font-weight: 500;
+  font-family: serif;
+  font-weight: 700;
 }
 
 .item-footer {
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.end-date {
+  color: red;
+  text-align: left;
 }
