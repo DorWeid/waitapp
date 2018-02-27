@@ -2,7 +2,7 @@ import React from "react";
 import "./item.css";
 import moment from "moment";
 
-export default ({ _id, title, img, description, price, endDate }) => {
+export default ({ _id, title, img, description, price, endDate, users }) => {
   return (
     <div className="card">
       <div className="card-image">
@@ -35,6 +35,9 @@ export default ({ _id, title, img, description, price, endDate }) => {
 
         <div className="content">
           <p>{description}</p>
+          <p>
+          {users.length === 0 ? 'no blabla yet, be my first one senpai, and pls b gentle' : `${users.length} people already in the list!
+        `} </p>
         </div>
       </div>
       <footer className="item-footer">
