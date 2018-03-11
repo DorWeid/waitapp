@@ -56,9 +56,9 @@ class Navbar extends Component {
           </div>
           <div className="navbar-logo">
             <h1 className="title is-4">
-              <a href="/" style={{ color: "inherit" }}>
+              <Link to="/" style={{ color: "inherit" }}>
                 w8
-              </a>
+              </Link>
             </h1>
           </div>
           <div className="navbar-custom-menu">
