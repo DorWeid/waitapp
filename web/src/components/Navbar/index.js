@@ -14,7 +14,11 @@ import "./navbar.css";
 //   </div>
 // );
 
-const menuItems = [{text: "Home", link: '/'}, {text: "Lists" , link: '/lists'}, {text: "About", link: '/about'}];
+const menuItems = [
+  { text: "Home", link: "/" },
+  { text: "Lists", link: "/lists" },
+  { text: "About", link: "/about" }
+];
 
 class Navbar extends Component {
   constructor(props) {
@@ -51,13 +55,21 @@ class Navbar extends Component {
             />
           </div>
           <div className="navbar-logo">
-            <h1 className="title is-4">w8</h1>
+            <h1 className="title is-4">
+              <a href="/" style={{ color: "inherit" }}>
+                w8
+              </a>
+            </h1>
           </div>
           <div className="navbar-custom-menu">
             {menuItems.map(item => (
-              
-                <Link key={item.text} className="navbar-custom-menuitem" to={item.link}>{item.text}</Link>                
-              
+              <Link
+                key={item.text}
+                className="navbar-custom-menuitem"
+                to={item.link}
+              >
+                {item.text}
+              </Link>
             ))}
           </div>
         </div>
