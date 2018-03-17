@@ -9,27 +9,10 @@ import List from "../../containers/List";
 import AddList from "../../containers/AddList";
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.authenticate = this.authenticate.bind(this);
-    this.state = {
-      user: {}
-    };
-  }
-
-  authenticate = response => {
-    this.setState({
-      user: response
-    });
-  };
-
   render() {
     return (
       <div className="App">
-        <Navbar
-          authenticate={this.authenticate}
-          user={this.state.user.name ? this.state.user : null}
-        />
+        <Navbar />
         <Switch>
           <Route
             exact
