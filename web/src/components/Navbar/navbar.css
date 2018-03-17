@@ -36,6 +36,7 @@
   font-size: 18px;
   color: black;
   padding-right: 20px;
+  cursor: pointer;
 }
 
 .navbar-overlay {

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import CategoryPopUp from "../CategoryPopUp";
 import "./navbar.css";
 // import wait from "./wait.svg";
 // import FacebookLogin from "react-facebook-login";
@@ -21,8 +22,13 @@ const menuItems = [
 ];
 
 class Navbar extends Component {
+  
   constructor(props) {
     super(props);
+    this.state = {
+      showPopup : false
+
+    }
     this.responseFacebook = this.responseFacebook.bind(this);
   }
   responseFacebook = response => {
@@ -33,6 +39,12 @@ class Navbar extends Component {
   // NOTE: much arab
   isHomepage = () => {
     return document.location.pathname === "/";
+  };
+
+  togglePopup() {
+    this.setState({
+      showPopup: !this.state.showPopup
+    });
   };
 
   render() {
@@ -71,8 +83,10 @@ class Navbar extends Component {
                 {item.text}
               </Link>
             ))}
+            <div className="navbar-custom-menuitem" onClick={this.togglePopup.bind(this)}>Categories</div>
           </div>
         </div>
+        {this.state.showPopup && <CategoryPopUp closePopup={this.togglePopup.bind(this)}/>}
       </div>
     );
   }
