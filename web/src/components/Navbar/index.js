@@ -1,13 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-<<<<<<< HEAD
 import CategoryPopUp from "../CategoryPopUp";
-=======
 import { observer, inject } from "mobx-react";
 import FacebookLogin from "react-facebook-login";
 
->>>>>>> 2af06ad439cac6dec18ad110299cd987f93bd241
 import "./navbar.css";
 
 // import FacebookLogin from "react-facebook-login";
@@ -90,9 +87,7 @@ class Navbar extends Component {
                 {item.text}
               </Link>
             ))}
-<<<<<<< HEAD
             <div className="navbar-custom-menuitem" onClick={this.togglePopup.bind(this)}>Categories</div>
-=======
             <FacebookLogin
               appId={process.env.REACT_APP_FACEBOOK_ID}
               fields="name,email,picture.width(300).height(300)"
@@ -101,7 +96,6 @@ class Navbar extends Component {
               cookie
               icon={<i className="fa fa-facebook" />}
             />
->>>>>>> 2af06ad439cac6dec18ad110299cd987f93bd241
           </div>
         </div>
         {this.state.showPopup && <CategoryPopUp closePopup={this.togglePopup.bind(this)}/>}
