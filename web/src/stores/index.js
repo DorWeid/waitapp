@@ -1,9 +1,9 @@
 import { types, flow } from "mobx-state-tree";
-// import { observable } from "mobx";
 import axios from "axios";
-import { Item as ItemStore } from "./Item";
 
-const baseUrl = "http://localhost:4040";
+// Stores
+import { Item as ItemStore } from "./Item";
+import { User as UserStore } from "./User";
 
 const actions = self => {
   return {
@@ -31,7 +31,7 @@ const views = self => {
 
       const response = yield axios({
         method,
-        url: `${baseUrl}/api${url}`,
+        url: `/api${url}`,
         ...options
       });
 
@@ -62,6 +62,7 @@ const views = self => {
 const store = types
   .model("MainStore", {
     itemStore: types.optional(ItemStore, { items: {} }),
+    userStore: types.optional(UserStore, {}),
     isLoading: types.optional(types.boolean, false)
   })
   .views(views)
