@@ -59,6 +59,7 @@ const actions = self => {
     }
   });
 
+  // TODO: This should be in views
   const isUserInList = username => {
     return self.users.includes(username);
   };

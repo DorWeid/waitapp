@@ -6,7 +6,8 @@ const definition = {
   _id: types.identifier(types.string),
   username: types.optional(types.string, ""),
   email: types.optional(types.string, ""),
-  createdAt: types.optional(types.string, "")
+  createdAt: types.optional(types.string, ""),
+  picUrl: types.optional(types.string, "")
 };
 
 const views = self => {
@@ -28,10 +29,9 @@ const actions = self => {
 
     try {
       const response = yield self.store.post(url, options);
-      debugger;
-      return response;
+      return response.data.user;
     } catch (e) {
-      console.log("Could not sign up. Error:", e.message);
+      console.log("Could not login. Error:", e.message);
     }
   });
 

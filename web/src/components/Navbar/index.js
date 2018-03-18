@@ -2,21 +2,10 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import CategoryPopUp from "../CategoryPopUp";
+import UserAvatar from "../UserAvatar";
 import { observer, inject } from "mobx-react";
 import FacebookLogin from "react-facebook-login";
-
 import "./navbar.css";
-
-// import FacebookLogin from "react-facebook-login";
-
-// const Avatar = ({ name, pic }) => (
-//   <div>
-//     <figure>
-//       <img src={pic.data.url} alt={name} className="avatar-pic" />
-//     </figure>
-//     <span className="avatar-text">Hi, {name}</span>
-//   </div>
-// );
 
 const menuItems = [
   { text: "Home", link: "/" },
@@ -25,19 +14,22 @@ const menuItems = [
 ];
 
 class Navbar extends Component {
-  
   constructor(props) {
     super(props);
-    this.state = {
-      showPopup : false
 
-    }
+    this.state = {
+      showPopup: false
+    };
+
     this.responseFacebook = this.responseFacebook.bind(this);
   }
 
   responseFacebook = response => {
     const { userStore } = this.props.store;
-    userStore.authenticateCurrentUser(response.accessToken);
+    userStore.authenticateCurrentUser({
+      accessToken: response.accessToken,
+      picUrl: response.picture.data.url
+    });
   };
 
   // NOTE: much arab
@@ -49,10 +41,10 @@ class Navbar extends Component {
     this.setState({
       showPopup: !this.state.showPopup
     });
-  };
+  }
 
   render() {
-    // const { user } = this.props;
+    const { userStore } = this.props.store;
 
     return (
       <div>
@@ -60,7 +52,7 @@ class Navbar extends Component {
           className={this.isHomepage() ? "navbar-overlay" : "navbar-background"}
         />
         <div className="navbar-custom">
-          <div>
+          <div className="navbar-search">
             <span className="icon" style={{ color: "white" }}>
               <i className="fa fa-search" style={{ fontSize: 16 }} />
             </span>
@@ -87,18 +79,29 @@ class Navbar extends Component {
                 {item.text}
               </Link>
             ))}
-            <div className="navbar-custom-menuitem" onClick={this.togglePopup.bind(this)}>Categories</div>
-            <FacebookLogin
-              appId={process.env.REACT_APP_FACEBOOK_ID}
-              fields="name,email,picture.width(300).height(300)"
-              callback={this.responseFacebook}
-              cssClass="auth-button"
-              cookie
-              icon={<i className="fa fa-facebook" />}
-            />
+            <div
+              className="navbar-custom-menuitem"
+              onClick={this.togglePopup.bind(this)}
+            >
+              Categories
+            </div>
+            {userStore.isUserLoggedIn ? (
+              <UserAvatar {...userStore.currentUser} />
+            ) : (
+              <FacebookLogin
+                appId={process.env.REACT_APP_FACEBOOK_ID}
+                fields="name,email,picture.width(300).height(300)"
+                callback={this.responseFacebook}
+                cssClass="auth-button"
+                cookie
+                icon={<i className="fa fa-facebook" />}
+              />
+            )}
           </div>
         </div>
-        {this.state.showPopup && <CategoryPopUp closePopup={this.togglePopup.bind(this)}/>}
+        {this.state.showPopup && (
+          <CategoryPopUp closePopup={this.togglePopup.bind(this)} />
+        )}
       </div>
     );
   }
