@@ -19,8 +19,8 @@ class AddList extends Component {
   }  
 
    addList() {
-    const { match: { params },store: { itemStore } } = this.props;
-    let username = params.user || 'adir for now'; // TODO : should be taken from wherever we store current user
+    const { store: { itemStore, userStore } } = this.props;
+    let username = userStore.currentUser._id;
     itemStore
         .addList(username,'hotel', {price: 515} , this.state.title, this.state.description, this.state.price, this.state.startDate, this.state.endDate);    
   }
@@ -34,12 +34,13 @@ class AddList extends Component {
   }
 
   render() {
-      const { store: {itemStore}} = this.props;
+      const { store: {itemStore, userStore}} = this.props;
       
       if (itemStore.latestListAdded !== "") {
           return (<Redirect to={`/list/${itemStore.latestListAdded}`} />);
+      } else if(!userStore.currentUser.username) {
+        return (<Redirect to={`/`} />);
       } else {
-
     return (
         <div style={{ marginTop: 100, zIndex: 15, position: "relative" }}>
       <form className="add-list-form">

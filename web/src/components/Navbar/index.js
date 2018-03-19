@@ -86,7 +86,9 @@ class Navbar extends Component {
               Categories
             </div>
             {userStore.isUserLoggedIn ? (
-              <UserAvatar {...userStore.currentUser} />
+              <Link to={`/${userStore.currentUser.username}/lists`}>
+                <UserAvatar {...userStore.currentUser} />
+              </Link>
             ) : (
               <FacebookLogin
                 appId={process.env.REACT_APP_FACEBOOK_ID}
