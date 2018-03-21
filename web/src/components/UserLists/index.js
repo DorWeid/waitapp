@@ -2,13 +2,21 @@ import React, { Component } from "react";
 import { observer, inject } from "mobx-react";
 import classnames from 'classnames';
 import {Redirect} from 'react-router';
+import ItemList from '../ItemList';
 import "./index.css";
 
-const TABS = [
-  { name: "My Lists", icon: "fa-th-list", render: () => (<div>Nothing yet</div>) },
-  { name: "Create New List", icon: "fa-plus-square", render: (props) => (<Redirect to={`/${props.store.userStore.currentUser.username}/addList`} />) }  
-];
-
+const TABS = [{
+      name: "My Lists",
+      icon: "fa-th-list",
+      render: ({store: {userStore}}) => ( <ItemList items={userStore.items.values()} />) }
+      , {
+        name: "Create New List",
+        icon: "fa-plus-square",
+        render: ({store: {userStore}}) => ( <Redirect to = {
+            `/${userStore.currentUser.username}/addList`
+          }
+          />) }  
+        ];
 class UserLists extends Component {
   constructor(props) {
     super(props);
@@ -16,6 +24,11 @@ class UserLists extends Component {
     this.state = {
       currentTab: 0,
     };
+  }
+
+  componentDidMount() {
+    let {store: { userStore } } = this.props;
+    userStore.getUserLists();
   }
 
   changeTab(tabKey) {

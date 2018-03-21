@@ -52,7 +52,7 @@ class List extends Component {
   constructor(props) {
     super(props);
 
-    this.enroll = this.disenroll.bind(this);
+    this.enroll = this.enroll.bind(this);
     this.disenroll = this.disenroll.bind(this);
   }
   componentDidMount() {
@@ -63,11 +63,11 @@ class List extends Component {
   }
 
   enroll() {
-    const { match: { params }, store: { itemStore } } = this.props;
-    const username = "dor";
+    console.log('shitface')
+    const { match: { params }, store: { itemStore, userStore } } = this.props;
     // TODO: enable only if user is logged in
     if (true) {
-      itemStore.items.get(params.id).enroll(username);
+      itemStore.items.get(params.id).enroll(userStore.currentUser.username);
     }
   }
 

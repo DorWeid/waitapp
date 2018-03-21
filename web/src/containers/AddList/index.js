@@ -19,10 +19,9 @@ class AddList extends Component {
   }  
 
    addList() {
-    const { store: { itemStore, userStore } } = this.props;
-    let username = userStore.currentUser._id;
+    const { store: { itemStore } } = this.props;
     itemStore
-        .addList(username,'hotel', {price: 515} , this.state.title, this.state.description, this.state.price, this.state.startDate, this.state.endDate);    
+        .addList('hotel', {price: 515} , this.state.title, this.state.description, this.state.price, this.state.startDate, this.state.endDate);    
   }
 
   changeDate(when, date) {
