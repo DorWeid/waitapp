@@ -22,6 +22,20 @@ class Navbar extends Component {
     };
 
     this.responseFacebook = this.responseFacebook.bind(this);
+
+    if (!process.env.REACT_APP_FACEBOOK_ID) {
+      console.error(
+        "Missing REACT_APP_FACEBOOK_ID env variable. Facebook auth will not work!"
+      );
+    }
+  }
+
+  componentDidMount() {
+    const { userStore } = this.props.store;
+
+    if (userStore.currentUser.isUserAuthenticated) {
+      userStore.setUserAuthData();
+    }
   }
 
   responseFacebook = response => {

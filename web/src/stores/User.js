@@ -19,17 +19,21 @@ const actions = self => {
 
   const authenticateCurrentUser = flow(function*({ accessToken, picUrl }) {
     try {
-      const userData = yield self.currentUser.login(accessToken);
-      self.currentUser = {
-        ...userData,
-        picUrl
-      };
+      const userData = yield self.currentUser.login({ accessToken, picUrl });
+      setUserAuthData({ ...userData, picUrl });
     } catch (error) {}
   });
 
+  const setUserAuthData = data => {
+    self.currentUser = {
+      ...(data ? data : self.currentUser.getUserAuthDataFromStorage)
+    };
+  };
+
   return {
     getUser,
-    authenticateCurrentUser
+    authenticateCurrentUser,
+    setUserAuthData
   };
 };
 
