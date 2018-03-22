@@ -35,10 +35,10 @@ const actions = self => {
     self.items.set(id, converted);
   });
 
-  const addList = flow(function* addList(creator,type,meta,title,description,price,startDate,endDate) {
+  const addList = flow(function* addList(type,meta,title,description,price,startDate,endDate) {
     const url = `/list/`;
     const options = {
-      data: { creator,type,meta,title,description,price,startDate,endDate }
+      data: { type,meta,title,description,price,startDate,endDate }
     };    
     const result  = yield self.shop.post(url, options);
     const list = ItemModel.create(result.data);    
