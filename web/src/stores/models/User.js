@@ -2,6 +2,14 @@ import { types, getParent, flow } from "mobx-state-tree";
 
 // NOTE: Refer to Item.js model for explanation
 
+const LOCAL_STORAGE_KEYS = {
+  LOCAL_STORAGE_PROFILE_IMG_URL: "picUrl",
+  LOCAL_STORAGE_PROFILE_USER_NAME: "username",
+  LOCAL_STORAGE_PROFILE_EMAIL: "email",
+  LOCAL_STORAGE_PROFILE_CREATED_AT: "createdAt",
+  LOCAL_STORAGE_PROFILE_USER_MONGO_ID: "_id"
+};
+
 const definition = {
   _id: types.identifier(types.string),
   username: types.optional(types.string, ""),
@@ -14,12 +22,26 @@ const views = self => {
   return {
     get store() {
       return getParent(self, 2);
+    },
+    get isUserAuthenticated() {
+      return Object.keys(LOCAL_STORAGE_KEYS).every(key =>
+        localStorage.getItem(LOCAL_STORAGE_KEYS[key])
+      );
+    },
+    get getUserAuthDataFromStorage() {
+      return Object.keys(LOCAL_STORAGE_KEYS).reduce((acc, key) => {
+        acc[LOCAL_STORAGE_KEYS[key]] = localStorage.getItem(
+          LOCAL_STORAGE_KEYS[key]
+        );
+
+        return acc;
+      }, {});
     }
   };
 };
 
 const actions = self => {
-  const login = flow(function*(accessToken) {
+  const login = flow(function*({ accessToken, picUrl }) {
     const url = "/auth";
 
     const options = {
@@ -29,6 +51,14 @@ const actions = self => {
 
     try {
       const response = yield self.store.post(url, options);
+
+      Object.keys(LOCAL_STORAGE_KEYS).forEach(function(key) {
+        localStorage.setItem(
+          LOCAL_STORAGE_KEYS[key],
+          this[LOCAL_STORAGE_KEYS[key]]
+        );
+      }, Object.assign({ picUrl }, response.data.user));
+
       return response.data.user;
     } catch (e) {
       console.log("Could not login. Error:", e.message);
