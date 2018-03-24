@@ -65,8 +65,39 @@ const actions = self => {
     }
   });
 
+  const acceptList = flow(function*({ listId}) {
+    try {
+      yield self.store.post(`/list/${listId}/accept`)
+      return listId;
+    } catch (error) {
+      console.log(`Couldnt accept list ${listId}`,error);
+    }
+  });
+
+  const denyList = flow(function*({ listId}) {
+    try {
+      yield self.store.post(`/list/${listId}/deny`)
+      return listId;
+    } catch (error) {
+      console.log(`Couldnt deny list ${listId}`,error);
+    }
+  });
+
+  const getPendingLists = flow(function* () {
+    try {
+      const lists = yield self.store.get('/list/all')
+      return lists;
+    } catch (error) {
+      console.log(`Couldnt fetch pending lists `,error);
+
+    }
+  })
+
   return {
-    login
+    login,
+    acceptList,
+    denyList,
+    getPendingLists
   };
 };
 

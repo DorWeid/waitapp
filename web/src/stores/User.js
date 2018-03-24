@@ -48,7 +48,7 @@ const actions = self => {
     getUser,
     authenticateCurrentUser,
     setUserAuthData,
-    getUserLists
+    getUserLists,
   };
 };
 
