@@ -31,8 +31,8 @@ class UserLists extends Component {
   }
 
   componentDidMount() {
-    let { store: { userStore } } = this.props;
-    userStore.currentUser.getUserLists();
+    let { match, store: { userStore } } = this.props;
+    userStore.currentUser.getUserLists(match.params.userId);
   }
 
   changeTab(tabKey) {

@@ -69,7 +69,9 @@ const actions = self => {
 
   const getUserLists = flow(function*(id) {
     try {
-      const userLists = yield self.shop.get(`/users/${self._id}/createdLists`);
+      debugger;
+      const userLists = yield self.store.get(`/users/${id}/createdLists`);
+      debugger;
       userLists.forEach(item => self.items.put(item));
     } catch (error) {
       console.error("Couldnt fetch items", error);
