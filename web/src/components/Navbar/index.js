@@ -100,7 +100,7 @@ class Navbar extends Component {
               Categories
             </div>
             {userStore.isUserLoggedIn ? (
-              <Link to={`/${userStore.currentUser.username}/lists`}>
+              <Link to={`/${userStore.currentUser._id}/profile`}>
                 <UserAvatar {...userStore.currentUser} />
               </Link>
             ) : (

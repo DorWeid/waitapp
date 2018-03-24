@@ -15,17 +15,16 @@ const views = self => ({
 const actions = self => {
   function updateItems(json) {
     json.forEach(itemJson => {
-        self.items.put(itemJson)
-    })
-}
+      self.items.put(itemJson);
+    });
+  }
 
   const loadItems = flow(function* loadItems() {
     try {
       const result = yield self.shop.get(`/list/`);
       updateItems(result.data);
-    
     } catch (error) {
-      console.error('Couldnt fetch items', error)
+      console.error("Couldnt fetch items", error);
     }
   });
 
@@ -35,17 +34,25 @@ const actions = self => {
     self.items.set(id, converted);
   });
 
-  const addList = flow(function* addList(type,meta,title,description,price,startDate,endDate) {
+  const addList = flow(function* addList(
+    type,
+    meta,
+    title,
+    description,
+    price,
+    startDate,
+    endDate
+  ) {
     const url = `/list/`;
     const options = {
-      data: { type,meta,title,description,price,startDate,endDate }
-    };    
-    const result  = yield self.shop.post(url, options);
-    const list = ItemModel.create(result.data);    
+      data: { type, meta, title, description, price, startDate, endDate }
+    };
+    const result = yield self.shop.post(url, options);
+    const list = ItemModel.create(result.data);
     self.items.set(list._id, list);
     self.latestListAdded = list._id;
     return list;
-  })
+  });
 
   return {
     loadItems,

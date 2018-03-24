@@ -1,10 +1,9 @@
 import { types, flow, getParent } from "mobx-state-tree";
 import UserModel from "./models/User";
-import ItemModel from "./models/Item";
 
 const definition = {
   currentUser: types.optional(UserModel, { _id: "-1" }),
-  items: types.optional(types.map(ItemModel), {})
+  users: types.optional(types.map(UserModel), {})
 };
 
 const views = self => ({
@@ -17,17 +16,12 @@ const views = self => ({
 });
 
 const actions = self => {
-  const getUser = flow(function*(id) {});
-
-  const getUserLists = flow(function*(id) {
+  const getUser = flow(function*(id) {
     try {
-      console.log("curr", self.currentUser);
-      const userLists = yield self.shop.get(
-        `/users/${self.currentUser._id}/createdLists`
-      );
-      userLists.forEach(item => self.items.put(item));
+      const user = yield self.shop.get(`/user/profile/${id}`);
+      self.users.put(user.data);
     } catch (error) {
-      console.error("Couldnt fetch items", error);
+      console.error("Could find user,", error);
     }
   });
 
@@ -47,8 +41,7 @@ const actions = self => {
   return {
     getUser,
     authenticateCurrentUser,
-    setUserAuthData,
-    getUserLists
+    setUserAuthData
   };
 };
 

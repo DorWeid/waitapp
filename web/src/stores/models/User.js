@@ -1,4 +1,5 @@
 import { types, getParent, flow } from "mobx-state-tree";
+import ItemModel from "./Item";
 
 // NOTE: Refer to Item.js model for explanation
 
@@ -15,7 +16,8 @@ const definition = {
   username: types.optional(types.string, ""),
   email: types.optional(types.string, ""),
   createdAt: types.optional(types.string, ""),
-  picUrl: types.optional(types.string, "")
+  picUrl: types.optional(types.string, ""),
+  items: types.optional(types.map(ItemModel), {})
 };
 
 const views = self => {
@@ -65,8 +67,21 @@ const actions = self => {
     }
   });
 
+  const getUserLists = flow(function*(id) {
+    try {
+      const userLists = yield self.shop.get(`/users/${self._id}/createdLists`);
+      userLists.forEach(item => self.items.put(item));
+    } catch (error) {
+      console.error("Couldnt fetch items", error);
+    }
+  });
+
+  const update = flow(function*(fields) {});
+
   return {
-    login
+    login,
+    getUserLists,
+    update
   };
 };
 

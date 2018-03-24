@@ -7,6 +7,7 @@ import UserLists from "../UserLists";
 import Lists from "../../containers/Lists";
 import List from "../../containers/List";
 import AddList from "../../containers/AddList";
+import UserProfile from "../../containers/UserProfile";
 
 class App extends Component {
   render() {
@@ -27,6 +28,7 @@ class App extends Component {
           <Route path="/lists" component={Lists} />
           <Route path="/list/:id" component={List} />
           <Route path="/:user/addList" component={AddList} />
+          <Route path="/:userId/profile" component={UserProfile} />
         </Switch>
       </div>
     );
