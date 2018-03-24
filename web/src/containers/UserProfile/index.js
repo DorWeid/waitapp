@@ -1,6 +1,7 @@
 import React from "react";
 import { observer, inject } from "mobx-react";
 import Cards from "react-credit-cards";
+import { ItemList } from "../../components";
 import "./UserProfile.css";
 
 // Needed for credit-card component
@@ -20,9 +21,10 @@ class UserProfile extends React.Component {
   }
 
   componentDidMount() {
-    const { match, store: { userStore } } = this.props;
+    const { match, store: { userStore, itemStore } } = this.props;
+    itemStore.loadItems(); // TODO: remove this when route for created list is done
 
-    if (this.isCurrentUserProfile()) {
+    if (!this.isCurrentUserProfile()) {
       userStore.getUser(match.params.userId);
     }
   }
@@ -74,7 +76,7 @@ class UserProfile extends React.Component {
   };
 
   renderCurrentUserProfile = () => {
-    const { store: { userStore } } = this.props;
+    const { store: { userStore, itemStore } } = this.props;
     const { name, number, expiry, cvc, focused } = this.state;
 
     return (
@@ -87,6 +89,32 @@ class UserProfile extends React.Component {
           alt={userStore.currentUser.username}
           className="image is-96x96 profile-user-img"
         />
+        <section
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: "100%",
+            marginTop: 50
+          }}
+        >
+          <div
+            style={{
+              width: "50%",
+              borderRight: "1px solid rgba(0, 0, 0, 0.1)"
+            }}
+          >
+            <h4 className="title is-4">
+              <u>Lists</u>
+            </h4>
+            <br />
+            <ItemList items={itemStore.items.values()} />
+          </div>
+          <div style={{ width: "50%" }}>
+            <h4 className="title is-4">
+              <u>Comments</u>
+            </h4>
+          </div>
+        </section>
         <section className="section profile-bottom">
           <div className="profile-credit">
             <h4 className="title is-5">Add Credit Card Details</h4>
@@ -151,7 +179,7 @@ class UserProfile extends React.Component {
   };
 
   renderRandomUserProfile = () => {
-    const { match, store: { userStore } } = this.props;
+    const { match, store: { userStore, itemStore } } = this.props;
     const randomUserObject = userStore.users.get(match.params.userId);
 
     // If user has not been loaded yet or not found...
@@ -185,6 +213,8 @@ class UserProfile extends React.Component {
             <h4 className="title is-4">
               <u>Lists</u>
             </h4>
+            <br />
+            <ItemList items={itemStore.items.values()} />
           </div>
           <div style={{ width: "50%" }}>
             <h4 className="title is-4">
@@ -197,7 +227,7 @@ class UserProfile extends React.Component {
   };
 
   render() {
-    return !this.isCurrentUserProfile()
+    return this.isCurrentUserProfile()
       ? this.renderCurrentUserProfile()
       : this.renderRandomUserProfile();
   }
