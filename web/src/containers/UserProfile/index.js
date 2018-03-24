@@ -16,16 +16,20 @@ class UserProfile extends React.Component {
       name: "",
       expiry: "",
       cvc: "",
-      focused: ""
+      focused: "",
+      updateMessage: ""
     };
   }
 
   componentDidMount() {
-    const { match, store: { userStore, itemStore } } = this.props;
-    itemStore.loadItems(); // TODO: remove this when route for created list is done
+    const { match, store: { userStore } } = this.props;
 
     if (!this.isCurrentUserProfile()) {
-      userStore.getUser(match.params.userId);
+      userStore.getUser(match.params.userId).then(user => {
+        user.getUserLists();
+      });
+    } else {
+      userStore.currentUser.getUserLists();
     }
   }
 
@@ -60,9 +64,22 @@ class UserProfile extends React.Component {
   updateUserCreditCard = () => {
     const { store: { userStore } } = this.props;
 
-    userStore.currentUser.update({
-      // TODO: Send input from state
-    });
+    userStore.currentUser
+      .update({
+        creditCard: {
+          number: this.state.number,
+          name: this.state.name,
+          expire: this.state.expiry,
+          cvc: this.state.cvc
+        }
+      })
+      .then(success => {
+        this.setState({
+          updateMessage: success
+            ? "Updated credit card!"
+            : "Something went wrong.."
+        });
+      });
 
     this.setState({
       number: "",
@@ -76,7 +93,7 @@ class UserProfile extends React.Component {
   };
 
   renderCurrentUserProfile = () => {
-    const { store: { userStore, itemStore } } = this.props;
+    const { store: { userStore } } = this.props;
     const { name, number, expiry, cvc, focused } = this.state;
 
     return (
@@ -107,7 +124,11 @@ class UserProfile extends React.Component {
               <u>Lists</u>
             </h4>
             <br />
-            <ItemList items={itemStore.items.values()} />
+            {userStore.currentUser.items.size ? (
+              <ItemList items={userStore.currentUser.items.values()} />
+            ) : (
+              <p>You dont have any lists yet...</p>
+            )}
           </div>
           <div style={{ width: "50%" }}>
             <h4 className="title is-4">
@@ -115,6 +136,13 @@ class UserProfile extends React.Component {
             </h4>
           </div>
         </section>
+        <hr
+          style={{
+            marginTop: 80,
+            backgroundColor: "rgba(0, 0, 0, 0.1)",
+            width: "100%"
+          }}
+        />
         <section className="section profile-bottom">
           <div className="profile-credit">
             <h4 className="title is-5">Add Credit Card Details</h4>
@@ -172,6 +200,11 @@ class UserProfile extends React.Component {
             >
               Submit
             </a>
+            {this.state.updateMessage && (
+              <p>
+                <b>{this.state.updateMessage}</b>
+              </p>
+            )}
           </div>
         </section>
       </div>

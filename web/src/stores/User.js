@@ -20,6 +20,7 @@ const actions = self => {
     try {
       const user = yield self.shop.get(`/user/profile/${id}`);
       self.users.put(user.data);
+      return self.users.get(id);
     } catch (error) {
       console.error("Could find user,", error);
     }

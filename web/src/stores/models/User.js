@@ -67,18 +67,33 @@ const actions = self => {
     }
   });
 
-  const getUserLists = flow(function*(id) {
+  const getUserLists = flow(function*() {
     try {
-      debugger;
-      const userLists = yield self.store.get(`/users/${id}/createdLists`);
-      debugger;
-      userLists.forEach(item => self.items.put(item));
+      const userLists = yield self.store.get(`/user/${self._id}/createdLists`);
+
+      userLists.data.forEach(item => self.items.put(item));
     } catch (error) {
       console.error("Couldnt fetch items", error);
     }
   });
 
-  const update = flow(function*(fields) {});
+  const update = flow(function*(fields = {}) {
+    const options = {
+      data: fields
+    };
+
+    try {
+      const updated = yield self.store.put(`/user/${self._id}`, options);
+
+      if (!updated.data.success) {
+        throw new Error("Something on the server went wrong...");
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Couldnt update user.", error);
+    }
+  });
 
   return {
     login,
