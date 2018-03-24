@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { observer, inject } from "mobx-react";
 import classnames from 'classnames';
-import {Redirect} from 'react-router';
+import { Redirect } from 'react-router';
 import ItemList from '../ItemList';
 import "./index.css";
 
@@ -15,7 +15,7 @@ const TABS = [{
         render: ({store: {userStore}}) => ( <Redirect to = {
             `/${userStore.currentUser.username}/addList`
           }
-          />) }  
+          />) }
         ];
 class UserLists extends Component {
   constructor(props) {
@@ -47,7 +47,7 @@ class UserLists extends Component {
           <section className="hero is-info">
             <div className="hero-body">
               <div className="container">
-                <h1 className="title">{user.username}'s lists</h1>
+                <h1 className="title">{`${user.username}'s lists`}</h1>
                 <h2 className="subtitle">You can find your lists here!</h2>
               </div>
             </div>
@@ -56,7 +56,7 @@ class UserLists extends Component {
             <ul className="tab-list">
               {TABS.map((tab, key) => (
                 <li
-                  className={classnames({'is-active': this.state.currentTab === key})                
+                  className={classnames({'is-active': this.state.currentTab === key})
                   }
                   key={TABS[key].name}
                 >

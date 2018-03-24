@@ -2,7 +2,7 @@ import React from "react";
 import "./item.css";
 import moment from "moment";
 
-export default ({ _id, title, img, description, price, endDate, users }) => {
+export default ({ _id, title, img, description, price, endDate, users, location }) => {
   return (
     <div className="card">
       <div className="card-image">
@@ -22,28 +22,27 @@ export default ({ _id, title, img, description, price, endDate, users }) => {
         <div className="media">
           <div className="media-content">
             <a href={`/list/${_id}`} target="_blank">
-              <p className="title is-3">{title}</p>
+              <p className="title is-5">{title}</p>
             </a>
           </div>
           <div className="media-right">
             <p className="price">
-              <span style={{ fontSize: "xx-large" }}>{price}</span>
+              <span className="title is-5">{price}</span>
               <i className={`fa fa-shekel`} style={{ marginLeft: "2px" }} />
             </p>
           </div>
         </div>
 
         <div className="content">
-          <p>{description}</p>
           <p>
-          {users.length === 0 ? 'no blabla yet, be my first one senpai, and pls b gentle' : `${users.length} people already in the list!
+          {users.length === 0 ? 'be the first to w8' : `${users.length} people already in the list!
         `} </p>
         </div>
       </div>
       <footer className="item-footer">
         <p className="location">
           <i className="fa fa-map-marker" style={{ marginRight: "3px" }} />
-          should be location here
+          {location}
         </p>
         <p className="end-date">
           ends{" "}

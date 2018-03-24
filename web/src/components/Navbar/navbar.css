@@ -59,7 +59,7 @@
 }
 
 .navbar-background {
-  height: 200px;
+  height: 9vh;
   position: absolute;
   top: 0px;
   z-index: 10;

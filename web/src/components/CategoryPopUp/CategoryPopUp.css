@@ -1,8 +1,10 @@
 .popup_inner {
   padding: 0.3vh;
-  width: 20vw;
-  height: 50vh;
+  width: 15vw;
+  /* height: 50vh; */
   background: white;
+  display: flex;
+  flex-direction: column;
 }
 
 .category_image{

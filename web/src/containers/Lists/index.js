@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { observer, inject } from "mobx-react";
-import ItemList from "../../components/ItemList";
+import { Link } from "react-router-dom";
+import Item from "../../components/Item";
+import "./lists.css";
 //import classnames from "classnames";
-import "./Lists.css";
 
 // const items = [
 //   {
@@ -76,74 +77,35 @@ import "./Lists.css";
 //   }
 // ];
 
-// const tabs = [
-//   {
-//     name: "Hotels",
-//     icon: "fa-th-list",
-//     render: () => <ItemList items={items} />
-//   },
-//   {
-//     name: "Flights",
-//     icon: "fa-th-list",
-//     render: () => <div>Nothing yet</div>
-//   },
-//   {
-//     name: "Zimmers",
-//     icon: "fa-th-list",
-//     render: () => <div>Nothing yet</div>
-//   },
-//   {
-//     name: "Rentals",
-//     icon: "fa-th-list",
-//     render: () => <div>Nothing yet</div>
-//   }
-// ];
-
 class Lists extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      currentTab: 1
-    };    
-  }
 
   componentDidMount() {
     let {store: { itemStore } } = this.props;
-    itemStore.loadItems();
-  }
 
-  changeTab(tabKey) {
-    this.setState({
-      currentTab: tabKey
-    });
+    itemStore.loadItems();
+    itemStore.loadCategories();
   }
 
   render() {
-    let {store: { itemStore } } = this.props;    
+    let {store: { itemStore: {items = [], categories = []} } } = this.props;
+    const size = 5;
+
     return (
       <div className="lists-container">
-        {/* <div className="tabs is-centered is-medium">
-          <ul className="tab-list">
-            {tabs.map((tab, key) => (
-              <li
-                className={classnames({
-                  "is-active": this.state.currentTab === key
-                })}
-                key={tabs[key].name}
-              >
-                <a onClick={this.changeTab.bind(this, key)}>
-                  <span className="icon is-small">
-                    <i className={`fa ${tabs[key].icon}`} />
-                  </span>
-                  <span>{tabs[key].name}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div> */}
-        {/* <div>{tabs[this.state.currentTab].render()}</div> */}
-        {itemStore.items.size !== 0  && <ItemList items={itemStore.items.values()} />}
+        {items.size !== 0  &&
+          categories.map(category =>
+            <div className="item-list-category" key={category.en}>
+              <div className="item-list-category-title">
+              {category.en} <Link className="item-list-category-subtitle" to={`/list/type/${category.en}`}>
+                view all <span className="icon">
+                  <i className="fas fa-arrow-right"></i>
+                </span>
+              </Link>
+              </div>
+              <div className="item-list">{items.values().filter(item => item.type === category.en).slice(0, size).map(item => <Item key={item._id} {...item} />)}</div>
+            </div>
+          )
+        }
       </div>
     );
   }

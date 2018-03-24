@@ -7,6 +7,7 @@ import UserLists from "../UserLists";
 import Lists from "../../containers/Lists";
 import List from "../../containers/List";
 import AddList from "../../containers/AddList";
+import CategoryLists from "../../containers/CategoryLists";
 
 class App extends Component {
   render() {
@@ -25,6 +26,7 @@ class App extends Component {
           />
           <Route path="/:user/lists" component={UserLists} />
           <Route path="/lists" component={Lists} />
+          <Route path="/list/type/:type" component={CategoryLists} />
           <Route path="/list/:id" component={List} />
           <Route path="/:user/addList" component={AddList} />
         </Switch>
