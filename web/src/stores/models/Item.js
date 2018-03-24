@@ -1,26 +1,34 @@
 import { types, getParent, flow } from "mobx-state-tree";
 
+export const categories = [
+  { en: "car", he: "מכוניות" },
+  { en: "hotel", he: "מלונות" },
+  { en: "flight", he: "טיסות" }
+];
+
 // The model definition
 const definition = {
   _id: types.identifier(types.string),
   title: types.optional(types.string, ""),
   description: types.optional(types.string, ""),
-  price: types.optional(types.number, 0),
+  price: types.optional(types.string, ""),
   startDate: types.optional(types.string, ""),
   endDate: types.optional(types.string, ""),
-  type: types.enumeration(["car", "hotel", "flight"]),
+  type: types.enumeration(categories.map(c => c.en)),
   createdAt: types.optional(types.string, ""),
+  location: types.optional(types.string, ""),
   users: types.optional(types.array(types.string), [])
 };
+
 
 // Any fact that can be derived from the state in a pure manner should go here.
 const views = self => {
   return {
     get describeMe() {
       return `
-        ID: ${self.id} 
-        Name: ${self.name} 
-        Author: ${self.author} 
+        ID: ${self.id}
+        Name: ${self.name}
+        Author: ${self.author}
         Price: ${self.price}`;
     },
     get store() {

@@ -51,7 +51,7 @@ class UserLists extends Component {
           <section className="hero is-info">
             <div className="hero-body">
               <div className="container">
-                <h1 className="title">{user.username}'s lists</h1>
+                <h1 className="title">{`${user.username}'s lists`}</h1>
                 <h2 className="subtitle">You can find your lists here!</h2>
               </div>
             </div>

@@ -1,3 +1,4 @@
+import "react-awesome-popover/dest/react-awesome-popover.css";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -5,6 +6,7 @@ import CategoryPopUp from "../CategoryPopUp";
 import UserAvatar from "../UserAvatar";
 import { observer, inject } from "mobx-react";
 import FacebookLogin from "react-facebook-login";
+import Popover from 'react-awesome-popover';
 import "./navbar.css";
 
 const menuItems = [
@@ -51,12 +53,6 @@ class Navbar extends Component {
     return document.location.pathname === "/";
   };
 
-  togglePopup() {
-    this.setState({
-      showPopup: !this.state.showPopup
-    });
-  }
-
   render() {
     const { userStore } = this.props.store;
 
@@ -95,9 +91,11 @@ class Navbar extends Component {
             ))}
             <div
               className="navbar-custom-menuitem"
-              onClick={this.togglePopup.bind(this)}
             >
-              Categories
+              <Popover>
+                Categories
+                <CategoryPopUp />
+              </Popover>
             </div>
             {userStore.isUserLoggedIn ? (
               <Link to={`/${userStore.currentUser._id}/profile`}>
@@ -115,8 +113,6 @@ class Navbar extends Component {
             )}
           </div>
         </div>
-        {this.state.showPopup && (
-          <CategoryPopUp closePopup={this.togglePopup.bind(this)} />
         )}
       </div>
     );

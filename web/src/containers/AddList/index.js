@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { observer, inject } from "mobx-react";
 import DatePicker from "react-datepicker";
+import Select from 'react-select';
 import moment from "moment";
 import {Redirect} from 'react-router';
 
@@ -10,18 +11,24 @@ import "./index.css";
 class AddList extends Component {
   constructor(props) {
     super(props);
-    
+
     this.addList = this.addList.bind(this);
     this.state = {
         startDate: moment(),
         endDate: moment()
       };
-  }  
+  }
+
+  componentDidMount() {
+    let {store: { itemStore } } = this.props;
+
+    itemStore.loadCategories();
+  }
 
    addList() {
     const { store: { itemStore } } = this.props;
     itemStore
-        .addList('hotel', {price: 515} , this.state.title, this.state.description, this.state.price, this.state.startDate, this.state.endDate);    
+        .addList(this.state.type, {price: 515} , this.state.title, this.state.description, this.state.price, this.state.location, this.state.startDate, this.state.endDate);
   }
 
   changeDate(when, date) {
@@ -34,7 +41,7 @@ class AddList extends Component {
 
   render() {
       const { store: {itemStore, userStore}} = this.props;
-      
+
       if (itemStore.latestListAdded !== "") {
           return (<Redirect to={`/list/${itemStore.latestListAdded}`} />);
       } else if(!userStore.currentUser.username) {
@@ -55,8 +62,22 @@ class AddList extends Component {
           </div>
         </div>
         <div className="field">
+          <Select
+            name="form-field-name"
+            value={this.state.type || ''}
+            placeholder="Category"
+            onChange={(option) => this.setState({type : option.value})}
+            options={itemStore.categories.map(c => ({value: c.en, label: c.en}))}
+          />
+        </div>
+        <div className="field">
           <div className="control">
             <input className="input" type="text" placeholder="Price" onChange={(e) => this.setState({price : e.target.value})} />
+          </div>
+        </div>
+        <div className="field">
+          <div className="control">
+            <input className="input" type="text" placeholder="Location" onChange={(e) => this.setState({location : e.target.value})} />
           </div>
         </div>
         <div className="field">
@@ -78,13 +99,13 @@ class AddList extends Component {
               />
             </span>
           </div>
-        </div>        
-        
+        </div>
+
         <a className="button submit-btn" onClick={this.addList}>Submit</a>
-        
+
       </form>
       </div>
-    );  
+    );
 }
 }
 }
