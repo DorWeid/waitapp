@@ -17,7 +17,8 @@ const definition = {
   type: types.enumeration(categories.map(c => c.en)),
   createdAt: types.optional(types.string, ""),
   location: types.optional(types.string, ""),
-  users: types.optional(types.array(types.string), [])
+  users: types.optional(types.array(types.string), []),
+  status: types.optional(types.string, "pending")
 };
 
 
