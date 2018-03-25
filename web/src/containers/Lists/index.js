@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { observer, inject } from "mobx-react";
 import { Link } from "react-router-dom";
 import Item from "../../components/Item";
-import "./Lists.css";
+import "./lists.css";
 //import classnames from "classnames";
 
 // const items = [

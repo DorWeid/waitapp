@@ -67,17 +67,17 @@ const actions = self => {
     }
   });
 
-  const acceptList = flow(function*({ listId }) {
+  const acceptList = flow(function*(listId) {
     try {
-      yield self.store.post(`/list/${listId}/accept`);
+      yield self.store.post(`/admin/list/${listId}/accept`);
     } catch (error) {
       console.log(`Couldnt accept list ${listId}`, error);
     }
   });
 
-  const denyList = flow(function*({ listId }) {
+  const denyList = flow(function*(listId) {
     try {
-      yield self.store.post(`/list/${listId}/deny`);
+      yield self.store.post(`/admin/list/${listId}/deny`);
     } catch (error) {
       console.log(`Couldnt deny list ${listId}`, error);
     }

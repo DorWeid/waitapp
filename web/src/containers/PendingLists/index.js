@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { observer, inject } from "mobx-react";
 import { Redirect } from "react-router";
+import ItemList from "../../components/ItemList";
+import './index.css';
 
 class PendingLists extends Component {
   constructor(props) {
@@ -10,18 +12,27 @@ class PendingLists extends Component {
       pendingLists: []
     };
   }
-  componentDidMount() {
+  async componentDidMount() {
     const { store: { userStore } } = this.props;
-    this.setState({ pendingLists: [] }); //userStore.currentUser.getPendingLists()});
+    if (userStore.currentUser.admin) {
+        const response  = await fetch('/api/admin/list/pending',  {
+          credentials: "include"
+        });
+        const pendingLists = await response.json();
+        this.setState({pendingLists});
+    }
   }
 
   render() {
     const { store: { userStore } } = this.props;
-    console.log(userStore.currentUser);
     if (!userStore.currentUser.admin) {
       return <Redirect to="/" />;
     }
-    return <div>{userStore.currentUser.admin}</div>;
+    return (
+      <div className="lists-container">
+        <ItemList items={this.state.pendingLists} />
+      </div>
+    );
   }
 }
 

@@ -41,6 +41,7 @@ const actions = self => {
   const getItem = flow(function* getItem(id) {
     const result = yield self.shop.get(`/list/${id}`);
     const converted = ItemModel.create(result.data);
+    console.log('gg',result)
     self.items.set(id, converted);
   });
 
@@ -60,6 +61,10 @@ const actions = self => {
     self.categories = categories;
   }
 
+  const clearLatest = () => {
+    self.latestListAdded = "";
+  }
+
   const getListsOfCategory = flow(function* getListsOfCategory(type) {
     try {
       const result = yield self.shop.get(`/list?type=${type}`);
@@ -76,6 +81,7 @@ const actions = self => {
     addList,
     loadCategories,
     getListsOfCategory,
+    clearLatest
   };
 };
 
