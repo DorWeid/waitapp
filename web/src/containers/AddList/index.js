@@ -21,8 +21,13 @@ class AddList extends Component {
 
   componentDidMount() {
     let {store: { itemStore } } = this.props;
-
     itemStore.loadCategories();
+    itemStore.clearLatest();
+  }
+
+  componentWillUnmount() {
+    let {store: { itemStore } } = this.props;
+    itemStore.clearLatest();
   }
 
    addList() {

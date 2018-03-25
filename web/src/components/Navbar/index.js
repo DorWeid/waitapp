@@ -6,7 +6,7 @@ import CategoryPopUp from "../CategoryPopUp";
 import UserAvatar from "../UserAvatar";
 import { observer, inject } from "mobx-react";
 import FacebookLogin from "react-facebook-login";
-import Popover from 'react-awesome-popover';
+import Popover from "react-awesome-popover";
 import "./navbar.css";
 
 const menuItems = [
@@ -32,13 +32,7 @@ class Navbar extends Component {
     }
   }
 
-  componentDidMount() {
-    const { userStore } = this.props.store;
-
-    if (userStore.currentUser.isUserAuthenticated) {
-      userStore.setUserAuthData();
-    }
-  }
+  componentDidMount() {}
 
   responseFacebook = response => {
     const { userStore } = this.props.store;
@@ -89,14 +83,21 @@ class Navbar extends Component {
                 {item.text}
               </Link>
             ))}
-            <div
-              className="navbar-custom-menuitem"
-            >
+            <div className="navbar-custom-menuitem">
               <Popover>
                 Categories
                 <CategoryPopUp />
               </Popover>
             </div>
+            {
+              userStore.currentUser.admin ? (
+                <Link to="/pendingLists">
+                  <div className="navbar-custom-menuitem">
+                    Pending Lists                    
+                  </div>
+                </Link>
+              ) : null
+            }
             {userStore.isUserLoggedIn ? (
               <Link to={`/${userStore.currentUser._id}/profile`}>
                 <UserAvatar {...userStore.currentUser} />

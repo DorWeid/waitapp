@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import WaitingList from "../../components/WaitingList";
 import SliderSlick from "react-slick";
 import { observer, inject } from "mobx-react";
+import {Redirect} from "react-router";
 import img from "../../pictures/1.jpeg";
+import './index.css';
 
 const settings = {
   infinite: true,
@@ -54,6 +56,8 @@ class List extends Component {
 
     this.enroll = this.enroll.bind(this);
     this.disenroll = this.disenroll.bind(this);
+    this.accept = this.accept.bind(this);
+    this.deny = this.deny.bind(this);
   }
   componentDidMount() {
     const { match } = this.props;
@@ -63,7 +67,6 @@ class List extends Component {
   }
 
   enroll() {
-    console.log('shitface')
     const { match: { params }, store: { itemStore, userStore } } = this.props;
     // TODO: enable only if user is logged in
     if (true) {
@@ -73,8 +76,20 @@ class List extends Component {
 
   disenroll() {}
 
+  async accept() {
+    const { match: { params }, store: { userStore: {currentUser}, itemStore } } = this.props;
+    await currentUser.acceptList(params.id);
+    await itemStore.getItem(params.id);
+  }
+
+  async deny() {
+    const { match: { params }, store: { userStore: {currentUser}, itemStore } } = this.props;
+    await currentUser.denyList(params.id);
+    await itemStore.getItem(params.id);
+  }
+
   render() {
-    const { store: { itemStore: { items } } } = this.props;
+    const { store: { itemStore: { items }, userStore: {currentUser} } } = this.props;
     const currentItem = items.get(this.props.match.params.id);
 
     // TODO: Loading indicator here plis
@@ -82,8 +97,12 @@ class List extends Component {
       return <div>Loading ...</div>;
     }
 
-    const { title, description, price, currency = "$", users = [] } =
+    const { title, description, price, currency = "$", users = [] , status } =
       currentItem || {};
+
+    if (status === "pending" && (!currentUser || !currentUser.admin)) {
+      return <Redirect to="/" />
+    }
 
     return (
       <div style={{ marginTop: 100, zIndex: 15, position: "relative" }}>
@@ -141,7 +160,24 @@ class List extends Component {
                 <div className="title is-6">LIMITED TIME OFFER!</div>
               </div>
               <hr />
-              {currentItem.isUserInList("dor") ? (
+              {
+                status === "pending" ? (
+                  <span className="admin-buttons">
+                    <a className="button is-primary" onClick={this.accept}>
+                        <span className="icon is-small">
+                          <i className="fa fa-times" />
+                        </span>
+                        <span>Accept List</span>
+                      </a>
+                      <a className="button is-danger" onClick={this.deny}>
+                      <span className="icon is-small">
+                        <i className="fa fa-times" />
+                      </span>
+                      <span>Deny List</span>
+                    </a>
+                </span>
+                ) :
+                currentItem.isUserInList("dor") ? (
                 <a className="button is-danger" onClick={this.disenroll}>
                   <span className="icon is-small">
                     <i className="fa fa-times" />

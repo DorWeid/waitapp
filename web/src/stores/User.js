@@ -29,6 +29,7 @@ const actions = self => {
   const authenticateCurrentUser = flow(function*({ accessToken, picUrl }) {
     try {
       const userData = yield self.currentUser.login({ accessToken, picUrl });
+      console.log(userData);
       setUserAuthData({ ...userData, picUrl });
     } catch (error) {}
   });

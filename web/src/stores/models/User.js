@@ -8,7 +8,8 @@ const LOCAL_STORAGE_KEYS = {
   LOCAL_STORAGE_PROFILE_USER_NAME: "username",
   LOCAL_STORAGE_PROFILE_EMAIL: "email",
   LOCAL_STORAGE_PROFILE_CREATED_AT: "createdAt",
-  LOCAL_STORAGE_PROFILE_USER_MONGO_ID: "_id"
+  LOCAL_STORAGE_PROFILE_USER_MONGO_ID: "_id",
+  LOCAL_STORAGE_PROFILE_ADMIN: "admin"
 };
 
 const definition = {
@@ -17,6 +18,7 @@ const definition = {
   email: types.optional(types.string, ""),
   createdAt: types.optional(types.string, ""),
   picUrl: types.optional(types.string, ""),
+  admin: types.optional(types.string, ""),
   items: types.optional(types.map(ItemModel), {})
 };
 
@@ -67,6 +69,31 @@ const actions = self => {
     }
   });
 
+  const acceptList = flow(function*(listId) {
+    try {
+      yield self.store.post(`/admin/list/${listId}/accept`);
+    } catch (error) {
+      console.log(`Couldnt accept list ${listId}`, error);
+    }
+  });
+
+  const denyList = flow(function*(listId) {
+    try {
+      yield self.store.post(`/admin/list/${listId}/deny`);
+    } catch (error) {
+      console.log(`Couldnt deny list ${listId}`, error);
+    }
+  });
+
+  const getPendingLists = flow(function*() {
+    try {
+      const lists = yield self.store.get("/list/all");
+      return lists;
+    } catch (error) {
+      console.log(`Couldnt fetch pending lists `, error);
+    }
+  });
+  
   const getUserLists = flow(function*() {
     try {
       const userLists = yield self.store.get(`/user/${self._id}/createdLists`);
@@ -97,6 +124,9 @@ const actions = self => {
 
   return {
     login,
+    acceptList,
+    denyList,
+    getPendingLists,
     getUserLists,
     update
   };
