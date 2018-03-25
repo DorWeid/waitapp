@@ -1,34 +1,38 @@
 import React, { Component } from "react";
 import { observer, inject } from "mobx-react";
-import classnames from 'classnames';
-import { Redirect } from 'react-router';
-import ItemList from '../ItemList';
+import classnames from "classnames";
+import { Redirect } from "react-router";
+import ItemList from "../ItemList";
 import "./index.css";
 
-const TABS = [{
-      name: "My Lists",
-      icon: "fa-th-list",
-      render: ({store: {userStore}}) => ( <ItemList items={userStore.items.values()} />) }
-      , {
-        name: "Create New List",
-        icon: "fa-plus-square",
-        render: ({store: {userStore}}) => ( <Redirect to = {
-            `/${userStore.currentUser.username}/addList`
-          }
-          />) }
-        ];
+const TABS = [
+  {
+    name: "My Lists",
+    icon: "fa-th-list",
+    render: ({ store: { userStore } }) => (
+      <ItemList items={userStore.items.values()} />
+    )
+  },
+  {
+    name: "Create New List",
+    icon: "fa-plus-square",
+    render: ({ store: { userStore } }) => (
+      <Redirect to={`/${userStore.currentUser.username}/addList`} />
+    )
+  }
+];
 class UserLists extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      currentTab: 0,
+      currentTab: 0
     };
   }
 
   componentDidMount() {
-    let {store: { userStore } } = this.props;
-    userStore.getUserLists();
+    let { match, store: { userStore } } = this.props;
+    userStore.currentUser.getUserLists(match.params.userId);
   }
 
   changeTab(tabKey) {
@@ -38,11 +42,11 @@ class UserLists extends Component {
   }
 
   render() {
-    const { store: { userStore : { currentUser : user} } } = this.props;
+    const { store: { userStore: { currentUser: user } } } = this.props;
     if (!user.username) {
-      return (<Redirect to="/"/>)
+      return <Redirect to="/" />;
     } else {
-    return (
+      return (
         <div className="user-lists-container">
           <section className="hero is-info">
             <div className="hero-body">
@@ -56,8 +60,9 @@ class UserLists extends Component {
             <ul className="tab-list">
               {TABS.map((tab, key) => (
                 <li
-                  className={classnames({'is-active': this.state.currentTab === key})
-                  }
+                  className={classnames({
+                    "is-active": this.state.currentTab === key
+                  })}
                   key={TABS[key].name}
                 >
                   <a onClick={this.changeTab.bind(this, key)}>
@@ -72,8 +77,8 @@ class UserLists extends Component {
           </div>
           <div>{TABS[this.state.currentTab].render(this.props)}</div>
         </div>
-    );
-  }
+      );
+    }
   }
 }
 

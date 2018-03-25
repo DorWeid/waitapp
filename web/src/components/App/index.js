@@ -8,6 +8,7 @@ import Lists from "../../containers/Lists";
 import List from "../../containers/List";
 import AddList from "../../containers/AddList";
 import PendingLists from "../../containers/PendingLists";
+import UserProfile from "../../containers/UserProfile";
 import CategoryLists from "../../containers/CategoryLists";
 import { observer, inject } from "mobx-react";
 
@@ -35,12 +36,13 @@ class App extends Component {
               </React.Fragment>
             )}
           />
-          <Route path="/:user/lists" component={UserLists} />
+          <Route path="/:userId/lists" component={UserLists} />
           <Route path="/lists" component={Lists} />
           <Route path="/list/type/:type" component={CategoryLists} />
           <Route path="/list/:id" component={List} />
-          <Route path="/:user/addList" component={AddList} />
           <Route path="/pendingLists" component={PendingLists} />
+          <Route path="/:userId/addList" component={AddList} />
+          <Route path="/:userId/profile" component={UserProfile} />
         </Switch>
       </div>
     );

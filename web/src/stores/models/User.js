@@ -1,4 +1,5 @@
 import { types, getParent, flow } from "mobx-state-tree";
+import ItemModel from "./Item";
 
 // NOTE: Refer to Item.js model for explanation
 
@@ -17,7 +18,8 @@ const definition = {
   email: types.optional(types.string, ""),
   createdAt: types.optional(types.string, ""),
   picUrl: types.optional(types.string, ""),
-  admin: types.optional(types.string, "")
+  admin: types.optional(types.string, ""),
+  items: types.optional(types.map(ItemModel), {})
 };
 
 const views = self => {
@@ -89,6 +91,31 @@ const actions = self => {
       return lists;
     } catch (error) {
       console.log(`Couldnt fetch pending lists `, error);
+  const getUserLists = flow(function*() {
+    try {
+      const userLists = yield self.store.get(`/user/${self._id}/createdLists`);
+
+      userLists.data.forEach(item => self.items.put(item));
+    } catch (error) {
+      console.error("Couldnt fetch items", error);
+    }
+  });
+
+  const update = flow(function*(fields = {}) {
+    const options = {
+      data: fields
+    };
+
+    try {
+      const updated = yield self.store.put(`/user/${self._id}`, options);
+
+      if (!updated.data.success) {
+        throw new Error("Something on the server went wrong...");
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Couldnt update user.", error);
     }
   });
 
@@ -97,6 +124,8 @@ const actions = self => {
     acceptList,
     denyList,
     getPendingLists
+    getUserLists,
+    update
   };
 };
 
