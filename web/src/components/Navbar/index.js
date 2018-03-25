@@ -89,6 +89,15 @@ class Navbar extends Component {
                 <CategoryPopUp />
               </Popover>
             </div>
+            {
+              userStore.currentUser.admin ? (
+                <Link to="/pendingLists">
+                  <div className="navbar-custom-menuitem">
+                    Pending Lists                    
+                  </div>
+                </Link>
+              ) : null
+            }
             {userStore.isUserLoggedIn ? (
               <Link to={`/${userStore.currentUser._id}/profile`}>
                 <UserAvatar {...userStore.currentUser} />
