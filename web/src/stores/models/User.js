@@ -1,5 +1,6 @@
 import { types, getParent, flow } from "mobx-state-tree";
 import ItemModel from "./Item";
+import CommentModel from "./Comment.js";
 
 // NOTE: Refer to Item.js model for explanation
 
@@ -17,7 +18,8 @@ const definition = {
   email: types.optional(types.string, ""),
   createdAt: types.optional(types.string, ""),
   picUrl: types.optional(types.string, ""),
-  items: types.optional(types.map(ItemModel), {})
+  items: types.optional(types.map(ItemModel), {}),
+  comments: types.optional(types.map(CommentModel), {})
 };
 
 const views = self => {
@@ -77,6 +79,48 @@ const actions = self => {
     }
   });
 
+  const getCommentsOnUser = flow(function*() {
+    try {
+      // meh..
+      const user = yield self.store.get(`/user/${self._id}`);
+      const { comments = [] } = user.data;
+
+      comments.forEach(cmt => self.comments.put(cmt));
+    } catch (error) {
+      console.error("Couldnt fetch items", error);
+    }
+  });
+
+  const addComment = flow(function*({ content, rating }) {
+    const options = {
+      data: {
+        content,
+        rating
+      }
+    };
+    try {
+      const result = yield self.store.post(
+        `/user/${self._id}/comment`,
+        options
+      );
+
+      if (!result.data.success) {
+        throw new Error("Something went wrong in the server...");
+      }
+
+      // TODO: Push data from server here
+      self.comments.put({
+        content,
+        rating,
+        userId: self._id
+      });
+
+      return true;
+    } catch (error) {
+      console.error("Couldnt add comment: ", error);
+    }
+  });
+
   const update = flow(function*(fields = {}) {
     const options = {
       data: fields
@@ -98,6 +142,8 @@ const actions = self => {
   return {
     login,
     getUserLists,
+    getCommentsOnUser,
+    addComment,
     update
   };
 };

@@ -1,0 +1,19 @@
+.comment-container {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.comment-content {
+  background-color: white;
+  border-radius: 15px 15px 15px 15px;
+  width: 80%;
+  border: 1px solid white;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.4);
+  word-wrap: break-word;
+}
+
+.comment-author {
+  background-color: whitesmoke;
+  border-radius: 15px 15px 0px 0px;
+}

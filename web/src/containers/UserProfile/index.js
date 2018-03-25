@@ -1,7 +1,8 @@
 import React from "react";
 import { observer, inject } from "mobx-react";
 import Cards from "react-credit-cards";
-import { ItemList } from "../../components";
+import { ItemList, Comment } from "../../components";
+import StarRatingComponent from "react-star-rating-component";
 import "./UserProfile.css";
 
 // Needed for credit-card component
@@ -17,7 +18,9 @@ class UserProfile extends React.Component {
       expiry: "",
       cvc: "",
       focused: "",
-      updateMessage: ""
+      updateMessage: "",
+      content: "",
+      rating: 0
     };
   }
 
@@ -30,6 +33,7 @@ class UserProfile extends React.Component {
       });
     } else {
       userStore.currentUser.getUserLists();
+      userStore.currentUser.getCommentsOnUser();
     }
   }
 
@@ -134,6 +138,7 @@ class UserProfile extends React.Component {
             <h4 className="title is-4">
               <u>Comments</u>
             </h4>
+            {this.renderComments(userStore.currentUser.comments.values())}
           </div>
         </section>
         <hr
@@ -254,6 +259,62 @@ class UserProfile extends React.Component {
               <u>Comments</u>
             </h4>
           </div>
+        </div>
+      </div>
+    );
+  };
+
+  addComment = () => {
+    this.props.store.userStore.currentUser.addComment({
+      rating: this.state.rating,
+      content: this.state.content
+    });
+
+    this.setState({ rating: 0 });
+    document.getElementById("add-comment").reset();
+  };
+
+  renderComments = (comments = []) => {
+    const { store: { userStore } } = this.props;
+    const hasUserCommented = !!comments.find(
+      cmt => cmt._id === userStore.currentUser._id
+    );
+    return (
+      <div>
+        {hasUserCommented ? (
+          <form id="add-comment" className="add-list-form">
+            <h1 className="title is-4">Add a comment</h1>
+            <StarRatingComponent
+              name="input-comment-rating"
+              onStarClick={rating => this.setState({ rating })}
+              value={this.state.rating}
+            />
+            <div className="field">
+              <div className="control">
+                <textarea
+                  className="textarea"
+                  type="text"
+                  placeholder="Content"
+                  onChange={e => this.setState({ content: e.target.value })}
+                />
+              </div>
+            </div>
+            <a className="button submit-btn" onClick={this.addComment}>
+              Submit
+            </a>
+          </form>
+        ) : (
+          "You have already commented"
+        )}
+        <div>
+          {comments.map(cmt => (
+            <Comment
+              key={cmt.userId}
+              content={cmt.content}
+              author={"Dor Weidman"} // This should be taken from server
+              picUrl={userStore.currentUser.picUrl} // This should be taken from server
+            />
+          ))}
         </div>
       </div>
     );
