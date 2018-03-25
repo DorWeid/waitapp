@@ -91,6 +91,9 @@ const actions = self => {
       return lists;
     } catch (error) {
       console.log(`Couldnt fetch pending lists `, error);
+    }
+  });
+  
   const getUserLists = flow(function*() {
     try {
       const userLists = yield self.store.get(`/user/${self._id}/createdLists`);
@@ -123,7 +126,7 @@ const actions = self => {
     login,
     acceptList,
     denyList,
-    getPendingLists
+    getPendingLists,
     getUserLists,
     update
   };
