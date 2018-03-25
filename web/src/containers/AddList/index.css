@@ -10,6 +10,34 @@
     position: relative;
 }
 
+.fields-group {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.fa-dollar-sign {
+    vertical-align: -webkit-baseline-middle;
+}
+
+.input {
+    width: 26vw;
+}
+
+.location-field {
+    width: 41vw;
+}
+
+.price-field {
+    width: 10vw;
+    margin-right: 0.5vw;
+}
+
+.form-field-select {
+    width: 26vw;
+}
+
 .date-header {
     color: #363636;    
     font-size: 1rem;
