@@ -3,6 +3,7 @@ import { observer, inject } from "mobx-react";
 import Cards from "react-credit-cards";
 import { ItemList, Comment } from "../../components";
 import StarRatingComponent from "react-star-rating-component";
+import { Link } from "react-router-dom";
 import "./UserProfile.css";
 
 // Needed for credit-card component
@@ -127,6 +128,15 @@ class UserProfile extends React.Component {
             <h4 className="title is-4">
               <u>Lists</u>
             </h4>
+            <Link
+              to={`/${userStore.currentUser._id}/addList`}
+              className="button"
+            >
+              <span className="icon is-small">
+                <i className="fas fa-plus" />
+              </span>
+            </Link>
+            <br />
             <br />
             {userStore.currentUser.items.size ? (
               <ItemList items={userStore.currentUser.items.values()} />
