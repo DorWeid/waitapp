@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { observer, inject } from "mobx-react";
 import { Link } from "react-router-dom";
 import Item from "../../components/Item";
-import "./lists.css";
+import "./Lists.css";
 //import classnames from "classnames";
 
 // const items = [
@@ -78,34 +78,43 @@ import "./lists.css";
 // ];
 
 class Lists extends Component {
-
   componentDidMount() {
-    let {store: { itemStore } } = this.props;
+    let { store: { itemStore } } = this.props;
 
     itemStore.loadItems();
     itemStore.loadCategories();
   }
 
   render() {
-    let {store: { itemStore: {items = [], categories = []} } } = this.props;
+    let { store: { itemStore: { items = [], categories = [] } } } = this.props;
     const size = 5;
 
     return (
       <div className="lists-container">
-        {items.size !== 0  &&
-          categories.map(category =>
+        {items.size !== 0 &&
+          categories.map(category => (
             <div className="item-list-category" key={category.en}>
               <div className="item-list-category-title">
-              {category.en} <Link className="item-list-category-subtitle" to={`/list/type/${category.en}`}>
-                view all <span className="icon">
-                  <i className="fas fa-arrow-right"></i>
-                </span>
-              </Link>
+                {category.en}{" "}
+                <Link
+                  className="item-list-category-subtitle"
+                  to={`/list/type/${category.en}`}
+                >
+                  view all{" "}
+                  <span className="icon">
+                    <i className="fas fa-arrow-right" />
+                  </span>
+                </Link>
               </div>
-              <div className="item-list">{items.values().filter(item => item.type === category.en).slice(0, size).map(item => <Item key={item._id} {...item} />)}</div>
+              <div className="item-list">
+                {items
+                  .values()
+                  .filter(item => item.type === category.en)
+                  .slice(0, size)
+                  .map(item => <Item key={item._id} {...item} />)}
+              </div>
             </div>
-          )
-        }
+          ))}
       </div>
     );
   }

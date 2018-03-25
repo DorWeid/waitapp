@@ -9,8 +9,18 @@ import List from "../../containers/List";
 import AddList from "../../containers/AddList";
 import PendingLists from "../../containers/PendingLists";
 import CategoryLists from "../../containers/CategoryLists";
+import { observer, inject } from "mobx-react";
 
 class App extends Component {
+  componentWillMount() {
+    const { userStore } = this.props.store;
+
+    // This is sync
+    if (userStore.currentUser.isUserAuthenticated) {
+      userStore.setUserAuthData();
+    }
+  }
+
   render() {
     return (
       <div className="App">
@@ -37,4 +47,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default inject("store")(observer(App));
