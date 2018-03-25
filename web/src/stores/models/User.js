@@ -18,7 +18,7 @@ const definition = {
   email: types.optional(types.string, ""),
   createdAt: types.optional(types.string, ""),
   picUrl: types.optional(types.string, ""),
-  admin: types.optional(types.string, ""),
+  admin: types.optional(types.boolean, false),
   items: types.optional(types.map(ItemModel), {})
 };
 
@@ -28,15 +28,18 @@ const views = self => {
       return getParent(self, 2);
     },
     get isUserAuthenticated() {
-      return Object.keys(LOCAL_STORAGE_KEYS).every(key =>
-        localStorage.getItem(LOCAL_STORAGE_KEYS[key])
-      );
+      return Object.keys(LOCAL_STORAGE_KEYS)
+        .filter(key => key !== LOCAL_STORAGE_KEYS.LOCAL_STORAGE_PROFILE_ADMIN)
+        .every(key => localStorage.getItem(LOCAL_STORAGE_KEYS[key]));
     },
     get getUserAuthDataFromStorage() {
       return Object.keys(LOCAL_STORAGE_KEYS).reduce((acc, key) => {
-        acc[LOCAL_STORAGE_KEYS[key]] = localStorage.getItem(
-          LOCAL_STORAGE_KEYS[key]
-        );
+        const fromStorage = localStorage.getItem(LOCAL_STORAGE_KEYS[key]);
+
+        acc[LOCAL_STORAGE_KEYS[key]] =
+          key === LOCAL_STORAGE_KEYS.LOCAL_STORAGE_PROFILE_ADMIN
+            ? fromStorage === true
+            : fromStorage;
 
         return acc;
       }, {});
@@ -93,7 +96,7 @@ const actions = self => {
       console.log(`Couldnt fetch pending lists `, error);
     }
   });
-  
+
   const getUserLists = flow(function*() {
     try {
       const userLists = yield self.store.get(`/user/${self._id}/createdLists`);
