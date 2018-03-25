@@ -277,11 +277,11 @@ class UserProfile extends React.Component {
   renderComments = (comments = []) => {
     const { store: { userStore } } = this.props;
     const hasUserCommented = !!comments.find(
-      cmt => cmt._id === userStore.currentUser._id
+      cmt => cmt.userId === userStore.currentUser._id
     );
     return (
       <div>
-        {hasUserCommented ? (
+        {!hasUserCommented ? (
           <form id="add-comment" className="add-list-form">
             <h1 className="title is-4">Add a comment</h1>
             <StarRatingComponent
