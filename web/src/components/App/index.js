@@ -7,6 +7,7 @@ import UserLists from "../UserLists";
 import Lists from "../../containers/Lists";
 import List from "../../containers/List";
 import AddList from "../../containers/AddList";
+import PendingLists from "../../containers/PendingLists";
 import CategoryLists from "../../containers/CategoryLists";
 
 class App extends Component {
@@ -29,6 +30,7 @@ class App extends Component {
           <Route path="/list/type/:type" component={CategoryLists} />
           <Route path="/list/:id" component={List} />
           <Route path="/:user/addList" component={AddList} />
+          <Route path="/pendingLists" component={PendingLists} />
         </Switch>
       </div>
     );

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { observer, inject } from "mobx-react";
+import {Redirect} from 'react-router';
 
 class PendingLists extends Component {
     constructor(props) {
@@ -15,9 +16,14 @@ class PendingLists extends Component {
     }
 
     render(){ 
+        const {store: {userStore}} = this.props;
+        console.log('sg', userStore.currentUser.email)
+        if (!userStore.currentUser.admin) {
+            return (<Redirect to="/"/>);
+        }
         return (
             <div>
-                
+                Shut
             </div>
         )
     }

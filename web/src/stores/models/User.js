@@ -15,7 +15,8 @@ const definition = {
   username: types.optional(types.string, ""),
   email: types.optional(types.string, ""),
   createdAt: types.optional(types.string, ""),
-  picUrl: types.optional(types.string, "")
+  picUrl: types.optional(types.string, ""),
+  admin: types.union(types.boolean, types.undefined)
 };
 
 const views = self => {
@@ -68,7 +69,6 @@ const actions = self => {
   const acceptList = flow(function*({ listId}) {
     try {
       yield self.store.post(`/list/${listId}/accept`)
-      return listId;
     } catch (error) {
       console.log(`Couldnt accept list ${listId}`,error);
     }
@@ -77,7 +77,6 @@ const actions = self => {
   const denyList = flow(function*({ listId}) {
     try {
       yield self.store.post(`/list/${listId}/deny`)
-      return listId;
     } catch (error) {
       console.log(`Couldnt deny list ${listId}`,error);
     }
