@@ -40,20 +40,32 @@ class AddList extends Component {
   }
 
   render() {
-      const { store: {itemStore, userStore}} = this.props;
+      const { store: {itemStore, userStore}, match} = this.props;
 
       if (itemStore.latestListAdded !== "") {
           return (<Redirect to={`/list/${itemStore.latestListAdded}`} />);
-      } else if(!userStore.currentUser.username) {
+      } else if(!userStore.currentUser.username && !match.params.userId) { // TODO: Check if match condition is needed
         return (<Redirect to={`/`} />);
       } else {
     return (
         <div style={{ marginTop: 100, zIndex: 15, position: "relative" }}>
       <form className="add-list-form">
         <h1 className="title">Create new list</h1>
-        <div className="field">
-          <div className="control">
-            <input className="input" type="text" placeholder="Title" onChange={(e) => this.setState({title : e.target.value})} />
+        <div className="fields-group">
+          <div className="field">
+            <div className="control">
+              <input className="input" type="text" placeholder="Title" onChange={(e) => this.setState({title : e.target.value})} />
+            </div>
+          </div>
+          <div className="field">
+            <Select
+              name="form-field-select"
+              className="form-field-select"
+              value={this.state.type || ''}
+              placeholder="Category"
+              onChange={(option) => this.setState({type : option.value})}
+              options={itemStore.categories.map(c => ({value: c.en, label: c.en}))}
+            />
           </div>
         </div>
         <div className="field">
@@ -61,23 +73,17 @@ class AddList extends Component {
             <textarea className="textarea" placeholder="Description" onChange={(e) => this.setState({description : e.target.value})} />
           </div>
         </div>
-        <div className="field">
-          <Select
-            name="form-field-name"
-            value={this.state.type || ''}
-            placeholder="Category"
-            onChange={(option) => this.setState({type : option.value})}
-            options={itemStore.categories.map(c => ({value: c.en, label: c.en}))}
-          />
-        </div>
-        <div className="field">
-          <div className="control">
-            <input className="input" type="text" placeholder="Price" onChange={(e) => this.setState({price : e.target.value})} />
+        <div className="fields-group">        
+          <div className="field">
+            <div className="control">
+              <input className="input price-field" type="text" placeholder="Price" onChange={(e) => this.setState({price : e.target.value})} />
+              <i className="fas fa-dollar-sign" />                              
+            </div>
           </div>
-        </div>
-        <div className="field">
-          <div className="control">
-            <input className="input" type="text" placeholder="Location" onChange={(e) => this.setState({location : e.target.value})} />
+          <div className="field">
+            <div className="control">
+              <input className="input location-field" type="text" placeholder="Location" onChange={(e) => this.setState({location : e.target.value})} />
+            </div>
           </div>
         </div>
         <div className="field">
