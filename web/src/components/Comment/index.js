@@ -4,7 +4,7 @@ import "./Comment.css";
 
 export default class Comment extends React.Component {
   render() {
-    const { author, content, picUrl, rating = 3 } = this.props;
+    const { author, content, picUrl, rating } = this.props;
     return (
       <div className="comment-container">
         <div style={{ paddingRight: 25 }}>

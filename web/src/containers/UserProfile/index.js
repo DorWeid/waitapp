@@ -310,6 +310,7 @@ class UserProfile extends React.Component {
           {comments.map(cmt => (
             <Comment
               key={cmt.userId}
+              rating={cmt.rating}
               content={cmt.content}
               author={"Dor Weidman"} // This should be taken from server
               picUrl={userStore.currentUser.picUrl} // This should be taken from server
