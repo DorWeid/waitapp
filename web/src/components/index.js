@@ -1,3 +1,4 @@
 import ItemList from "./ItemList";
+import Comment from "./Comment";
 
-export { ItemList };
+export { ItemList, Comment };

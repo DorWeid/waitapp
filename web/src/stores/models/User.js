@@ -1,5 +1,6 @@
 import { types, getParent, flow } from "mobx-state-tree";
 import ItemModel from "./Item";
+import CommentModel from "./Comment.js";
 
 // NOTE: Refer to Item.js model for explanation
 
@@ -18,8 +19,19 @@ const definition = {
   email: types.optional(types.string, ""),
   createdAt: types.optional(types.string, ""),
   picUrl: types.optional(types.string, ""),
+  comments: types.optional(types.map(CommentModel), {}),
   admin: types.optional(types.boolean, false),
-  items: types.optional(types.map(ItemModel), {})
+  items: types.optional(types.map(ItemModel), {}),
+  registeredTo: types.optional(types.map(ItemModel), {}),
+  creditCard: types.optional(
+    types.model({
+      number: types.optional(types.string, ""),
+      expire: types.optional(types.string, ""),
+      name: types.optional(types.string, ""),
+      cvc: types.optional(types.string, "")
+    }),
+    {}
+  )
 };
 
 const views = self => {
@@ -36,7 +48,7 @@ const views = self => {
       return Object.keys(LOCAL_STORAGE_KEYS).reduce((acc, key) => {
         const fromStorage = localStorage.getItem(LOCAL_STORAGE_KEYS[key]);
         acc[LOCAL_STORAGE_KEYS[key]] =
-          key === 'LOCAL_STORAGE_PROFILE_ADMIN'
+          key === "LOCAL_STORAGE_PROFILE_ADMIN"
             ? fromStorage === "true"
             : fromStorage;
 
@@ -106,6 +118,59 @@ const actions = self => {
     }
   });
 
+  const getRegisteredLists = flow(function*() {
+    try {
+      const userLists = yield self.store.get(`/user/${self._id}/lists`);
+
+      userLists.data.forEach(item => self.registeredTo.put(item));
+    } catch (error) {
+      console.error("Couldnt fetch items", error);
+    }
+  });
+
+  const getUserDetails = flow(function*() {
+    try {
+      // meh..
+      const user = yield self.store.get(`/user/${self._id}`);
+      const { comments = [], creditCard = {} } = user.data;
+
+      comments.forEach(cmt => self.comments.put(cmt));
+      self.creditCard = creditCard;
+    } catch (error) {
+      console.error("Couldnt fetch items", error);
+    }
+  });
+
+  const addComment = flow(function*({ content, rating }) {
+    const options = {
+      data: {
+        content,
+        rating
+      }
+    };
+    try {
+      const result = yield self.store.post(
+        `/user/${self._id}/comment`,
+        options
+      );
+
+      if (!result.data.success) {
+        throw new Error("Something went wrong in the server...");
+      }
+
+      // TODO: Push data from server here
+      self.comments.put({
+        content,
+        rating,
+        userId: self._id
+      });
+
+      return true;
+    } catch (error) {
+      console.error("Couldnt add comment: ", error);
+    }
+  });
+
   const update = flow(function*(fields = {}) {
     const options = {
       data: fields
@@ -130,6 +195,9 @@ const actions = self => {
     denyList,
     getPendingLists,
     getUserLists,
+    getRegisteredLists,
+    getUserDetails,
+    addComment,
     update
   };
 };
