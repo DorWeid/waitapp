@@ -21,7 +21,17 @@ const definition = {
   picUrl: types.optional(types.string, ""),
   comments: types.optional(types.map(CommentModel), {}),
   admin: types.optional(types.boolean, false),
-  items: types.optional(types.map(ItemModel), {})
+  items: types.optional(types.map(ItemModel), {}),
+  registeredTo: types.optional(types.map(ItemModel), {}),
+  creditCard: types.optional(
+    types.model({
+      number: types.optional(types.string, ""),
+      expire: types.optional(types.string, ""),
+      name: types.optional(types.string, ""),
+      cvc: types.optional(types.string, "")
+    }),
+    {}
+  )
 };
 
 const views = self => {
@@ -108,13 +118,24 @@ const actions = self => {
     }
   });
 
-  const getCommentsOnUser = flow(function*() {
+  const getRegisteredLists = flow(function*() {
+    try {
+      const userLists = yield self.store.get(`/user/${self._id}/lists`);
+
+      userLists.data.forEach(item => self.registeredTo.put(item));
+    } catch (error) {
+      console.error("Couldnt fetch items", error);
+    }
+  });
+
+  const getUserDetails = flow(function*() {
     try {
       // meh..
       const user = yield self.store.get(`/user/${self._id}`);
-      const { comments = [] } = user.data;
+      const { comments = [], creditCard = {} } = user.data;
 
       comments.forEach(cmt => self.comments.put(cmt));
+      self.creditCard = creditCard;
     } catch (error) {
       console.error("Couldnt fetch items", error);
     }
@@ -174,7 +195,8 @@ const actions = self => {
     denyList,
     getPendingLists,
     getUserLists,
-    getCommentsOnUser,
+    getRegisteredLists,
+    getUserDetails,
     addComment,
     update
   };

@@ -34,7 +34,8 @@ class UserProfile extends React.Component {
       });
     } else {
       userStore.currentUser.getUserLists();
-      userStore.currentUser.getCommentsOnUser();
+      userStore.currentUser.getRegisteredLists();
+      userStore.currentUser.getUserDetails();
     }
   }
 
@@ -111,56 +112,67 @@ class UserProfile extends React.Component {
           alt={userStore.currentUser.username}
           className="image is-96x96 profile-user-img"
         />
-        <section
+        <div
           style={{
-            display: "flex",
-            justifyContent: "space-between",
             width: "100%",
-            marginTop: 50
+            marginTop: 40
           }}
         >
-          <div
-            style={{
-              width: "50%",
-              borderRight: "1px solid rgba(0, 0, 0, 0.1)"
-            }}
-          >
-            <h4 className="title is-4">
-              <u>Lists</u>
-            </h4>
-            <Link
-              to={`/${userStore.currentUser._id}/addList`}
-              className="button"
-            >
-              <span className="icon is-small">
-                <i className="fas fa-plus" />
-              </span>
-            </Link>
-            <br />
-            <br />
-            {userStore.currentUser.items.size ? (
-              <ItemList items={userStore.currentUser.items.values()} />
-            ) : (
-              <p>You dont have any lists yet...</p>
-            )}
-          </div>
-          <div style={{ width: "50%" }}>
-            <h4 className="title is-4">
-              <u>Comments</u>
-            </h4>
-            {this.renderComments(userStore.currentUser.comments.values())}
-          </div>
-        </section>
-        <hr
+          <h4 className="title is-4">
+            <u>My Lists</u>
+          </h4>
+          {userStore.currentUser.items.size ? (
+            <ItemList items={userStore.currentUser.items.values()} />
+          ) : (
+            <p>You have not signed up to a list yet...</p>
+          )}
+        </div>
+
+        <div
           style={{
-            marginTop: 80,
-            backgroundColor: "rgba(0, 0, 0, 0.1)",
-            width: "100%"
+            width: "100%",
+            marginTop: 40
           }}
-        />
+        >
+          <h4 className="title is-4">
+            <u>Created Lists</u>
+          </h4>
+          <Link to={`/${userStore.currentUser._id}/addList`} className="button">
+            <span className="icon is-small">
+              <i className="fas fa-plus" />
+            </span>
+          </Link>
+          <br />
+          <br />
+          {userStore.currentUser.items.size ? (
+            <ItemList items={userStore.currentUser.items.values()} />
+          ) : (
+            <p>You dont have any lists yet...</p>
+          )}
+        </div>
+        <div style={{ width: "100%", marginTop: 40 }}>
+          <h4 className="title is-4">
+            <u>Comments</u>
+          </h4>
+          {this.renderComments(userStore.currentUser.comments.values())}
+        </div>
         <section className="section profile-bottom">
           <div className="profile-credit">
             <h4 className="title is-5">Add Credit Card Details</h4>
+            {userStore.currentUser.creditCard.number && (
+              <div>
+                <p>Your current credit card:</p>
+                ****-****-****-
+                <b>
+                  {userStore.currentUser.creditCard.number.slice(
+                    userStore.currentUser.creditCard.number.length - 4,
+                    userStore.currentUser.creditCard.number.length
+                  )}
+                </b>
+                <br />
+                <br />
+              </div>
+            )}
             <Cards
               number={number}
               name={name}
@@ -239,6 +251,10 @@ class UserProfile extends React.Component {
       );
     }
 
+    const hasUserCommented = !!randomUserObject.comments
+      .values()
+      .find(cmt => cmt.userId === userStore.currentUser._id);
+
     return (
       <div className="profile-bg">
         <h1 className="title is-1 profile-title">
@@ -268,6 +284,31 @@ class UserProfile extends React.Component {
             <h4 className="title is-4">
               <u>Comments</u>
             </h4>
+            {!hasUserCommented ? (
+              <form id="add-comment" className="add-list-form">
+                <h1 className="title is-4">Add a comment</h1>
+                <StarRatingComponent
+                  name="input-comment-rating"
+                  onStarClick={rating => this.setState({ rating })}
+                  value={this.state.rating}
+                />
+                <div className="field">
+                  <div className="control">
+                    <textarea
+                      className="textarea"
+                      type="text"
+                      placeholder="Content"
+                      onChange={e => this.setState({ content: e.target.value })}
+                    />
+                  </div>
+                </div>
+                <a className="button submit-btn" onClick={this.addComment}>
+                  Submit
+                </a>
+              </form>
+            ) : (
+              "You have already commented"
+            )}
           </div>
         </div>
       </div>
@@ -286,47 +327,22 @@ class UserProfile extends React.Component {
 
   renderComments = (comments = []) => {
     const { store: { userStore } } = this.props;
-    const hasUserCommented = !!comments.find(
-      cmt => cmt.userId === userStore.currentUser._id
-    );
+
+    if (!comments.length) {
+      return <p>No comments yet...</p>;
+    }
+
     return (
       <div>
-        {!hasUserCommented ? (
-          <form id="add-comment" className="add-list-form">
-            <h1 className="title is-4">Add a comment</h1>
-            <StarRatingComponent
-              name="input-comment-rating"
-              onStarClick={rating => this.setState({ rating })}
-              value={this.state.rating}
-            />
-            <div className="field">
-              <div className="control">
-                <textarea
-                  className="textarea"
-                  type="text"
-                  placeholder="Content"
-                  onChange={e => this.setState({ content: e.target.value })}
-                />
-              </div>
-            </div>
-            <a className="button submit-btn" onClick={this.addComment}>
-              Submit
-            </a>
-          </form>
-        ) : (
-          "You have already commented"
-        )}
-        <div>
-          {comments.map(cmt => (
-            <Comment
-              key={cmt.userId}
-              rating={cmt.rating}
-              content={cmt.content}
-              author={"Dor Weidman"} // This should be taken from server
-              picUrl={userStore.currentUser.picUrl} // This should be taken from server
-            />
-          ))}
-        </div>
+        {comments.map(cmt => (
+          <Comment
+            key={cmt.userId}
+            rating={cmt.rating}
+            content={cmt.content}
+            author={cmt.username} // This should be taken from server
+            picUrl={userStore.currentUser.picUrl} // This should be taken from server
+          />
+        ))}
       </div>
     );
   };
