@@ -40,7 +40,6 @@ const actions = self => {
   const getItem = flow(function* getItem(id) {
     const result = yield self.shop.get(`/list/${id}`);
     const converted = ItemModel.create(result.data);
-    console.log('gg',result)
     self.items.set(id, converted);
   });
 
