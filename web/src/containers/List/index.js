@@ -91,7 +91,6 @@ class List extends Component {
   render() {
     const { store: { itemStore: { items }, userStore: {currentUser} } } = this.props;
     const currentItem = items.get(this.props.match.params.id);
-
     // TODO: Loading indicator here plis
     if (!currentItem) {
       return <div>Loading ...</div>;
@@ -99,6 +98,9 @@ class List extends Component {
 
     const { title, description, price, currency = "$", users = [] , status } =
       currentItem || {};
+
+    console.log(status)
+
     if ((status === "pending" && (!currentUser || !currentUser.admin)) || status === 'deny') {
       return <Redirect to="/" />
     }
@@ -176,6 +178,7 @@ class List extends Component {
                     </a>
                 </span>
                 ) :
+                status === 'done' ? (<span>This list as already ended!</span>) :
                 currentItem.isUserInList("dor") ? (
                 <a className="button is-danger" onClick={this.disenroll}>
                   <span className="icon is-small">
