@@ -7,7 +7,7 @@ const definition = {
 };
 
 const views = self => ({
-  get shop() {
+  get store() {
     return getParent(self, 1);
   },
   get isUserLoggedIn() {
@@ -18,8 +18,15 @@ const views = self => ({
 const actions = self => {
   const getUser = flow(function*(id) {
     try {
-      const user = yield self.shop.get(`/user/profile/${id}`);
-      self.users.put(user.data);
+      const user = yield self.store.get(`/user/${id}`);
+
+      const userObject = UserModel.create({
+        _id: user.data._id
+      });
+
+      userObject.setUser(user.data);
+
+      self.users.put(userObject);
       return self.users.get(id);
     } catch (error) {
       console.error("Could find user,", error);

@@ -37,7 +37,14 @@ const definition = {
 const views = self => {
   return {
     get store() {
-      return getParent(self, 2);
+      // For some reason, if the user is inside the map (and not the current user) then his father is 3 levels high
+      const parent = getParent(self, 2);
+
+      if (parent.store) {
+        return parent.store;
+      }
+
+      return parent;
     },
     get isUserAuthenticated() {
       return Object.keys(LOCAL_STORAGE_KEYS)
@@ -59,6 +66,17 @@ const views = self => {
 };
 
 const actions = self => {
+  const setUser = function(user) {
+    self._id = user._id;
+    self.username = user.username;
+    self.email = user.email;
+    self.createdAt = user.createdAt;
+    self.picUrl = user.picture_url;
+    self.admin = user.admin;
+
+    user.comments.forEach(cmt => self.comments.put(cmt));
+  };
+
   const login = flow(function*({ accessToken, picUrl }) {
     const url = "/auth";
 
@@ -198,7 +216,8 @@ const actions = self => {
     getRegisteredLists,
     getUserDetails,
     addComment,
-    update
+    update,
+    setUser
   };
 };
 
