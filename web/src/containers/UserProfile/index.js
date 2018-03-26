@@ -64,7 +64,7 @@ class UserProfile extends React.Component {
   isCurrentUserProfile = () => {
     const { match, store: { userStore } } = this.props;
 
-    return match.params.userId === userStore.currentUser._id;
+    return match.params.userId !== userStore.currentUser._id;
   };
 
   updateUserCreditCard = () => {
@@ -267,24 +267,28 @@ class UserProfile extends React.Component {
         />
         <div
           style={{
-            display: "flex",
-            justifyContent: "space-between",
             width: "100%",
             marginTop: 50
           }}
         >
-          <div style={{ width: "50%", borderRight: "1px solid #000" }}>
+          <div style={{ width: "100%" }}>
             <h4 className="title is-4">
               <u>Lists</u>
             </h4>
-            <br />
-            <ItemList items={itemStore.items.values()} />
+            {itemStore.items.size ? (
+              <ItemList items={itemStore.items.values()} />
+            ) : (
+              <p>This user has not created a list yet..</p>
+            )}
           </div>
-          <div style={{ width: "50%" }}>
+          <br />
+          <br />
+          <br />
+          <div style={{ width: "100%" }}>
             <h4 className="title is-4">
               <u>Comments</u>
             </h4>
-            {!hasUserCommented ? (
+            {!hasUserCommented && (
               <form id="add-comment" className="add-list-form">
                 <h1 className="title is-4">Add a comment</h1>
                 <StarRatingComponent
@@ -306,9 +310,8 @@ class UserProfile extends React.Component {
                   Submit
                 </a>
               </form>
-            ) : (
-              "You have already commented"
             )}
+            {this.renderComments(randomUserObject.comments.values())}
           </div>
         </div>
       </div>

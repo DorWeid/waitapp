@@ -14,7 +14,7 @@ const definition = {
 };
 
 const views = self => ({
-  get shop() {
+  get store() {
     return getParent(self, 1);
   }
 });
@@ -30,7 +30,7 @@ const actions = self => {
 
   const loadItems = flow(function* loadItems() {
     try {
-      const result = yield self.shop.get(`/list`);
+      const result = yield self.store.get(`/list`);
       updateItems(result.data);
     } catch (error) {
       console.error("Couldnt fetch items", error);
@@ -38,7 +38,7 @@ const actions = self => {
   });
 
   const getItem = flow(function* getItem(id) {
-    const result = yield self.shop.get(`/list/${id}`);
+    const result = yield self.store.get(`/list/${id}`);
     const converted = ItemModel.create(result.data);
     self.items.set(id, converted);
   });
@@ -68,7 +68,7 @@ const actions = self => {
         amount
       }
     };
-    const result = yield self.shop.post(url, options);
+    const result = yield self.store.post(url, options);
     const list = ItemModel.create(result.data);
     self.items.set(list._id, list);
     self.latestListAdded = list._id;
@@ -81,11 +81,11 @@ const actions = self => {
 
   const clearLatest = () => {
     self.latestListAdded = "";
-  }
+  };
 
   const getListsOfCategory = flow(function* getListsOfCategory(type) {
     try {
-      const result = yield self.shop.get(`/list?type=${type}`);
+      const result = yield self.store.get(`/list?type=${type}`);
       updateItems(result.data);
     } catch (error) {
       console.error("Couldnt fetch items", error);
