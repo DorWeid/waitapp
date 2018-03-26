@@ -4,6 +4,15 @@ import Item from "../../components/Item";
 import ItemList from "../../components/ItemList";
 import "./categoryLists.css";
 import Select from 'react-select';
+import scrollToElement from 'scroll-to-element';
+
+function importAll(r) {
+  let images = {};
+  r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+  return images;
+}
+
+const images = importAll(require.context('../../pictures/', false, /\.(png|jpe?g|svg)$/));
 
 class CategoryLists extends Component {
   sortOptions = [
@@ -35,7 +44,7 @@ class CategoryLists extends Component {
     let {store: { itemStore }, match } = this.props;
 
     if (nextProps.match.params.type !== match.params.type) {
-      itemStore.getListsOfCategory(nextProps.match.params.type);
+      itemStore.getListsOfCategory(nextProps.match.params.type);    
     }
   }
 
@@ -62,23 +71,32 @@ class CategoryLists extends Component {
 
     return (
       <div className="category-lists-container">
-        <div className="category-lists-header">
-          <span className="category-lists-title"> {match.params.type} lists </span>
-          <Select
-            className="category-lists-select"
-            value={this.state.currentSort}
-            placeholder="Sort by"
-            onChange={this.handleSortChange}
-            options={this.sortOptions.map(o => ({ value: o.value, label: o.label }))}
-          />
+        <div>
+          <img alt='categoryImg' src={images[`category_${match.params.type}.jpg`]} style={{ width: "100%", height: "90vh" }} />
         </div>
+        <div className="arrow-icon-container" onClick={() => {scrollToElement(document.querySelector('#category-lists'));}}><i className="fas fa-arrow-circle-down"/></div>      
         {displayedItems.length !== 0 ?
-          <div>
-            <div style={{ marginLeft: '1.5vw' }}><Item key={displayedItems[0]._id} {...displayedItems[0]} /></div>
+          <div id="category-lists">
+            <div className="category-lists-header">
+              {/* <span className="category-lists-title"> {match.params.type} lists </span> */}
+              <Select
+                className="category-lists-select"
+                value={this.state.currentSort}
+                placeholder="Sort by"
+                onChange={this.handleSortChange}
+                options={this.sortOptions.map(o => ({ value: o.value, label: o.label }))}
+              />
+            </div>
+            <div className="category-lists-speacials-container">
+              <div className="category-lists-specials-title">Don't miss our Specials:</div>
+              <div className="category-lists-speacials">
+                {displayedItems.slice(0, 3).map(item => <Item key={item._id} {...item} />)}
+              </div>              
+            </div>
             <br />
-            <ItemList items={displayedItems.slice(1)} />
+            <div style={{ width: '90%' }}> <ItemList items={displayedItems.slice(1)} /> </div>
           </div>
-          : <div>There are no lists of this category yet. B the first to create one!</div>
+          : <div id="category-lists">There are no lists of this category yet. B the first to create one!</div>
         }
       </div>
     );

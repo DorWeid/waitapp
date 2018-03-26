@@ -26,6 +26,8 @@
 
 .slide-title {
   margin-top: -45px;
+  font-size: 4vh;
+  font-weight: 800;
 }
 
 .slide-description {
@@ -33,4 +35,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   color: black;
+  font-size: 2.7vh;  
+  font-weight: 800;  
 }
