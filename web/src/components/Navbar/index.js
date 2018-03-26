@@ -84,7 +84,7 @@ class Navbar extends Component {
               </Link>
             ))}
             <div className="navbar-custom-menuitem">
-              <Popover>
+              <Popover> 
                 Categories
                 <CategoryPopUp />
               </Popover>
@@ -105,12 +105,11 @@ class Navbar extends Component {
                 callback={this.responseFacebook}
                 cssClass="auth-button"
                 cookie
-                icon={<i className="fa fa-facebook" />}
+                icon={<i className="fas fa-facebook" />}
               />
             )}
           </div>
         </div>
-        )}
       </div>
     );
   }

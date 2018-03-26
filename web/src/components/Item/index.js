@@ -28,7 +28,7 @@ export default ({ _id, title, img, description, price, endDate, users, location 
           <div className="media-right">
             <p className="price">
               <span className="title is-5">{price}</span>
-              <i className={`fa fa-shekel`} style={{ marginLeft: "2px" }} />
+              <i className={`fas fa-shekel-sign`} style={{ marginLeft: "2px" }} />
             </p>
           </div>
         </div>

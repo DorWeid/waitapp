@@ -155,7 +155,7 @@ class List extends Component {
               <hr />
               <div>
                 <span className="icon is-small">
-                  <i className="fa fa-clock-o" />
+                  <i className="fas fa-clock" />
                 </span>
                 <br />
                 <div className="title is-6">LIMITED TIME OFFER!</div>
