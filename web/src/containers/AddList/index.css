@@ -26,7 +26,11 @@
 }
 
 .location-field {
-    width: 41vw;
+    width: 31vw;
+}
+
+.amount-field {
+    width: 10vw;
 }
 
 .price-field {

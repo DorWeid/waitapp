@@ -51,7 +51,8 @@ const actions = self => {
     price,
     location,
     startDate,
-    endDate
+    endDate,
+    amount
   ) {
     const url = `/list/`;
     const options = {
@@ -63,7 +64,8 @@ const actions = self => {
         price,
         startDate,
         endDate,
-        location
+        location,
+        amount
       }
     };
     const result = yield self.shop.post(url, options);

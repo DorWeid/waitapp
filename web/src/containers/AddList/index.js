@@ -33,7 +33,7 @@ class AddList extends Component {
    addList() {
     const { store: { itemStore } } = this.props;
     itemStore
-        .addList(this.state.type, {price: 515} , this.state.title, this.state.description, this.state.price, this.state.location, this.state.startDate, this.state.endDate);
+    .addList(this.state.type, {price: 515} , this.state.title, this.state.description, this.state.price, this.state.location, this.state.startDate, this.state.endDate, this.state.amount);
   }
 
   changeDate(when, date) {
@@ -88,6 +88,11 @@ class AddList extends Component {
           <div className="field">
             <div className="control">
               <input className="input location-field" type="text" placeholder="Location" onChange={(e) => this.setState({location : e.target.value})} />
+            </div>
+          </div>
+          <div className="field">
+            <div className="control">
+              <input className="input amount-field" type="text" placeholder="Max users in list" onChange={(e) => this.setState({amount : e.target.value})} />
             </div>
           </div>
         </div>
