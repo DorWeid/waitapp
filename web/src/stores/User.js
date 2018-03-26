@@ -1,6 +1,5 @@
 import { types, flow, getParent } from "mobx-state-tree";
 import UserModel from "./models/User";
-import CommentModel from "./models/Comment";
 
 const definition = {
   currentUser: types.optional(UserModel, { _id: "-1" }),

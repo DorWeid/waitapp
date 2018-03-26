@@ -64,7 +64,7 @@ class UserProfile extends React.Component {
   isCurrentUserProfile = () => {
     const { match, store: { userStore } } = this.props;
 
-    return match.params.userId !== userStore.currentUser._id;
+    return match.params.userId === userStore.currentUser._id;
   };
 
   updateUserCreditCard = () => {
@@ -121,8 +121,8 @@ class UserProfile extends React.Component {
           <h4 className="title is-4">
             <u>My Lists</u>
           </h4>
-          {userStore.currentUser.items.size ? (
-            <ItemList items={userStore.currentUser.items.values()} />
+          {userStore.currentUser.registeredTo.size ? (
+            <ItemList items={userStore.currentUser.registeredTo.values()} />
           ) : (
             <p>You have not signed up to a list yet...</p>
           )}
@@ -288,30 +288,36 @@ class UserProfile extends React.Component {
             <h4 className="title is-4">
               <u>Comments</u>
             </h4>
-            {!hasUserCommented && (
-              <form id="add-comment" className="add-list-form">
-                <h1 className="title is-4">Add a comment</h1>
-                <StarRatingComponent
-                  name="input-comment-rating"
-                  onStarClick={rating => this.setState({ rating })}
-                  value={this.state.rating}
-                />
-                <div className="field">
-                  <div className="control">
-                    <textarea
-                      className="textarea"
-                      type="text"
-                      placeholder="Content"
-                      onChange={e => this.setState({ content: e.target.value })}
-                    />
+            {!hasUserCommented &&
+              userStore.currentUser.isUserLoggedIn && (
+                <form id="add-comment" className="add-list-form">
+                  <h1 className="title is-4">Add a comment</h1>
+                  <StarRatingComponent
+                    name="input-comment-rating"
+                    onStarClick={rating => this.setState({ rating })}
+                    value={this.state.rating}
+                  />
+                  <div className="field">
+                    <div className="control">
+                      <textarea
+                        className="textarea"
+                        type="text"
+                        placeholder="Content"
+                        onChange={e =>
+                          this.setState({ content: e.target.value })
+                        }
+                      />
+                    </div>
                   </div>
-                </div>
-                <a className="button submit-btn" onClick={this.addComment}>
-                  Submit
-                </a>
-              </form>
-            )}
+                  <a className="button submit-btn" onClick={this.addComment}>
+                    Submit
+                  </a>
+                </form>
+              )}
             {this.renderComments(randomUserObject.comments.values())}
+            <br />
+            <br />
+            <br />
           </div>
         </div>
       </div>
@@ -329,8 +335,6 @@ class UserProfile extends React.Component {
   };
 
   renderComments = (comments = []) => {
-    const { store: { userStore } } = this.props;
-
     if (!comments.length) {
       return <p>No comments yet...</p>;
     }
@@ -342,8 +346,8 @@ class UserProfile extends React.Component {
             key={cmt.userId}
             rating={cmt.rating}
             content={cmt.content}
-            author={cmt.username} // This should be taken from server
-            picUrl={userStore.currentUser.picUrl} // This should be taken from server
+            author={cmt.username}
+            picUrl={cmt.picture_url}
           />
         ))}
       </div>
