@@ -77,6 +77,10 @@ const actions = self => {
     self.categories = categories;
   };
 
+  const clearLatest = () => {
+    self.latestListAdded = "";
+  }
+
   const getListsOfCategory = flow(function* getListsOfCategory(type) {
     try {
       const result = yield self.shop.get(`/list?type=${type}`);
@@ -91,7 +95,8 @@ const actions = self => {
     getItem,
     addList,
     loadCategories,
-    getListsOfCategory
+    getListsOfCategory,
+    clearLatest
   };
 };
 
