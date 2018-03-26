@@ -35,10 +35,9 @@ const views = self => {
     get getUserAuthDataFromStorage() {
       return Object.keys(LOCAL_STORAGE_KEYS).reduce((acc, key) => {
         const fromStorage = localStorage.getItem(LOCAL_STORAGE_KEYS[key]);
-
         acc[LOCAL_STORAGE_KEYS[key]] =
-          key === LOCAL_STORAGE_KEYS.LOCAL_STORAGE_PROFILE_ADMIN
-            ? fromStorage === true
+          key === 'LOCAL_STORAGE_PROFILE_ADMIN'
+            ? fromStorage === "true"
             : fromStorage;
 
         return acc;
