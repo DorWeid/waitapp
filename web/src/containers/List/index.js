@@ -99,8 +99,7 @@ class List extends Component {
 
     const { title, description, price, currency = "$", users = [] , status } =
       currentItem || {};
-
-    if (status === "pending" && (!currentUser || !currentUser.admin)) {
+    if ((status === "pending" && (!currentUser || !currentUser.admin)) || status === 'deny') {
       return <Redirect to="/" />
     }
 
