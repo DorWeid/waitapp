@@ -33,11 +33,17 @@ const actions = self => {
     }
   });
 
-  const authenticateCurrentUser = flow(function*({ accessToken, picUrl }) {
+  const authenticateCurrentUser = flow(function*({ accessToken }) {
     try {
-      const userData = yield self.currentUser.login({ accessToken, picUrl });
-      setUserAuthData({ ...userData, picUrl });
-    } catch (error) {}
+      const userData = yield self.currentUser.login({ accessToken });
+      const userObject = UserModel.create({
+        _id: userData._id
+      });
+      self.currentUser = userObject;
+      self.currentUser.setUser(userData);
+    } catch (error) {
+      console.log("Error:", error);
+    }
   });
 
   const setUserAuthData = data => {
