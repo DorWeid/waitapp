@@ -5,7 +5,7 @@ import CommentModel from "./Comment.js";
 // NOTE: Refer to Item.js model for explanation
 
 const LOCAL_STORAGE_KEYS = {
-  LOCAL_STORAGE_PROFILE_IMG_URL: "picUrl",
+  LOCAL_STORAGE_PROFILE_IMG_URL: "picture_url",
   LOCAL_STORAGE_PROFILE_USER_NAME: "username",
   LOCAL_STORAGE_PROFILE_EMAIL: "email",
   LOCAL_STORAGE_PROFILE_CREATED_AT: "createdAt",
@@ -18,7 +18,7 @@ const definition = {
   username: types.optional(types.string, ""),
   email: types.optional(types.string, ""),
   createdAt: types.optional(types.string, ""),
-  picUrl: types.optional(types.string, ""),
+  picture_url: types.optional(types.string, ""),
   comments: types.optional(types.map(CommentModel), {}),
   admin: types.optional(types.boolean, false),
   items: types.optional(types.map(ItemModel), {}),
@@ -71,13 +71,13 @@ const actions = self => {
     self.username = user.username;
     self.email = user.email;
     self.createdAt = user.createdAt;
-    self.picUrl = user.picture_url;
+    self.picture_url = user.picture_url;
     self.admin = user.admin;
 
     user.comments.forEach(cmt => self.comments.put(cmt));
   };
 
-  const login = flow(function*({ accessToken, picUrl }) {
+  const login = flow(function*({ accessToken }) {
     const url = "/auth";
 
     const options = {
@@ -93,7 +93,7 @@ const actions = self => {
           LOCAL_STORAGE_KEYS[key],
           this[LOCAL_STORAGE_KEYS[key]]
         );
-      }, Object.assign({ picUrl }, response.data.user));
+      }, Object.assign({}, response.data.user));
 
       return response.data.user;
     } catch (e) {

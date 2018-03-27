@@ -4,12 +4,12 @@ import "./Comment.css";
 
 export default class Comment extends React.Component {
   render() {
-    const { author, content, picUrl, rating } = this.props;
+    const { author, content, picture_url, rating } = this.props;
     return (
       <div className="comment-container">
         <div style={{ paddingRight: 25 }}>
           <img
-            src={picUrl}
+            src={picture_url}
             alt={author}
             className="image is-64x64 profile-user-img"
           />

@@ -37,8 +37,7 @@ class Navbar extends Component {
   responseFacebook = response => {
     const { userStore } = this.props.store;
     userStore.authenticateCurrentUser({
-      accessToken: response.accessToken,
-      picUrl: response.picture.data.url
+      accessToken: response.accessToken
     });
   };
 
@@ -84,7 +83,7 @@ class Navbar extends Component {
               </Link>
             ))}
             <div className="navbar-custom-menuitem">
-              <Popover> 
+              <Popover>
                 Categories
                 <CategoryPopUp />
               </Popover>

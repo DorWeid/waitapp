@@ -108,7 +108,7 @@ class UserProfile extends React.Component {
           {userStore.currentUser.username}
         </h1>
         <img
-          src={userStore.currentUser.picUrl}
+          src={userStore.currentUser.picture_url}
           alt={userStore.currentUser.username}
           className="image is-96x96 profile-user-img"
         />
@@ -264,7 +264,7 @@ class UserProfile extends React.Component {
           {randomUserObject.username}
         </h1>
         <img
-          src={randomUserObject.picUrl}
+          src={randomUserObject.picture_url}
           alt={randomUserObject.username}
           className="image is-96x96 profile-user-img"
         />
@@ -350,7 +350,7 @@ class UserProfile extends React.Component {
             rating={cmt.rating}
             content={cmt.content}
             author={cmt.username}
-            picUrl={cmt.picture_url}
+            picture_url={cmt.picture_url}
           />
         ))}
       </div>
