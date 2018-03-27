@@ -61,7 +61,7 @@ const actions = self => {
       data: { username }
     };
     try {
-      yield self.store.post(url, options);
+      yield self.store.delete(url, options);
       console.log("Succesfully disenrolled from list!");
     } catch (e) {
       console.log("Could not disenroll. Error:", e.message);

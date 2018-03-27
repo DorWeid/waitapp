@@ -11,6 +11,7 @@ export default ({
   endDate,
   users,
   location,
+  status,
   cardWidth = "15%"
 }) => {
   const cardStyle = { width: cardWidth };
@@ -34,7 +35,12 @@ export default ({
         <div className="media">
           <div className="media-content">
             <a href={`/list/${_id}`} target="_blank">
-              <p className="title is-5">{title}</p>
+              <p className="title is-5">
+                {title}
+                {status !== "active" ? (
+                  <span style={{ color: "red" }}> - {status}</span>
+                ) : null}
+              </p>
             </a>
           </div>
           <div className="media-right">

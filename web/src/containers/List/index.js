@@ -66,15 +66,24 @@ class List extends Component {
     itemStore.getItem(match.params.id);
   }
 
-  enroll() {
+  async enroll() {
     const { match: { params }, store: { itemStore, userStore } } = this.props;
     // TODO: enable only if user is logged in
-    if (true) {
-      itemStore.items.get(params.id).enroll(userStore.currentUser.username);
+    if (userStore.isUserLoggedIn) {
+      await itemStore.items.get(params.id).enroll(userStore.currentUser.username);
+      await itemStore.getItem(params.id);
     }
+
   }
 
-  disenroll() {}
+  async disenroll() {
+    const { match: { params }, store: { itemStore, userStore } } = this.props;
+    // TODO: enable only if user is logged in
+    if (userStore.isUserLoggedIn) {
+      await itemStore.items.get(params.id).disenroll(userStore.currentUser.username);
+      await itemStore.getItem(params.id)
+    }
+  }
 
   async accept() {
     const { match: { params }, store: { userStore: {currentUser}, itemStore } } = this.props;
@@ -98,9 +107,7 @@ class List extends Component {
 
     const { title, description, price, currency = "$", users = [] , status } =
       currentItem || {};
-
-    console.log(status)
-
+    let isSigned = users.includes(currentUser._id);
     if ((status === "pending" && (!currentUser || !currentUser.admin)) || status === 'deny') {
       return <Redirect to="/" />
     }
@@ -115,7 +122,7 @@ class List extends Component {
         </div>
         <div className="columns" style={{ marginLeft: 15 }}>
           <div className="column is-2">
-            <WaitingList />
+            <WaitingList users={users}/>
           </div>
           <div className="column is-3" style={{ marginLeft: 40 }}>
             <div className="box">
@@ -179,7 +186,7 @@ class List extends Component {
                 </span>
                 ) :
                 status === 'done' ? (<span>This list as already ended!</span>) :
-                currentItem.isUserInList("dor") ? (
+                isSigned ? (
                 <a className="button is-danger" onClick={this.disenroll}>
                   <span className="icon is-small">
                     <i className="fa fa-times" />
