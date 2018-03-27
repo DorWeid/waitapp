@@ -34,6 +34,7 @@ class AddList extends Component {
     const { store: { itemStore } } = this.props;
     itemStore
     .addList(this.state.type, {price: 515} , this.state.title, this.state.description, this.state.price, this.state.location, this.state.startDate, this.state.endDate, this.state.amount);
+    alert('List has been added! we will let you know when we approve or deny it');
   }
 
   changeDate(when, date) {
