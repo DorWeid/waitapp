@@ -2,7 +2,7 @@ import React from "react";
 import "./item.css";
 import moment from "moment";
 
-export default ({ _id, title, img, description, price, endDate, users, location }) => {
+export default ({ _id, title, img, description, price, endDate, users, location, status }) => {
   return (
     <div className="card">
       <div className="card-image">
@@ -22,7 +22,10 @@ export default ({ _id, title, img, description, price, endDate, users, location 
         <div className="media">
           <div className="media-content">
             <a href={`/list/${_id}`} target="_blank">
-              <p className="title is-5">{title}</p>
+              <p className="title is-5">
+                {title} 
+                {status !== 'active' ? (<span style={{color: 'red'}}> - {status}</span>) : null }
+              </p>
             </a>
           </div>
           <div className="media-right">
