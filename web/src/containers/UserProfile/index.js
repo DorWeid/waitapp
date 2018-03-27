@@ -122,7 +122,10 @@ class UserProfile extends React.Component {
             <u>My Lists</u>
           </h4>
           {userStore.currentUser.registeredTo.size ? (
-            <ItemList items={userStore.currentUser.registeredTo.values()} />
+            <ItemList
+              items={userStore.currentUser.registeredTo.values()}
+              cardWidth="25%"
+            />
           ) : (
             <p>You have not signed up to a list yet...</p>
           )}
@@ -276,7 +279,7 @@ class UserProfile extends React.Component {
               <u>Lists</u>
             </h4>
             {itemStore.items.size ? (
-              <ItemList items={itemStore.items.values()} />
+              <ItemList items={itemStore.items.values()} cardWidth="25%" />
             ) : (
               <p>This user has not created a list yet..</p>
             )}
