@@ -102,22 +102,19 @@ class Navbar extends Component {
           itemHoverStyle={{backgroundColor: '##3b5998'}}
           items={items}
         />
-        <div
-          className={this.isHomepage() ? "navbar-overlay" : "navbar-background"}
-        />
-        <div className="navbar-custom">
-          <div className="navbar-search" onClick={this.openSidebar.bind(this,true)}>
+        <nav className={`navbar is-primary ${document.location.pathname === "/" ? 'is-transparent' : ''} `}>
+        <div className="navbar-start">
+          <a className="navbar-item" onClick={this.openSidebar.bind(this,true)}>
             <i class="fas fa-bars"></i>
-          </div>
-          <div className="navbar-logo">
-            <h1 className="title is-4">
-              <Link  to="/" style={{ color: "inherit" }}>
-                w8
-              </Link>
-            </h1>
-          </div>
-          
+          </a>
         </div>
+        <div className="navbar-brand navbar-logo">
+          <Link to="/">
+                w8
+          </Link>
+        </div>
+        </nav>
+        
       </div>
     );
   }
