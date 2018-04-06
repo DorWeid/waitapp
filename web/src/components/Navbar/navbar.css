@@ -58,14 +58,27 @@
   );
 }
 
+.nav-title {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.nav-title-text {
+  font-size: medium;
+  margin-left: 10px;
+}
 .navbar-background {
-  height: 9vh;
+  height: 17vh;
   position: absolute;
   top: 0px;
   z-index: 10;
   width: 100%;
   background: rgba(255, 255, 255, 0.9);
   box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.5);
+  color: rgb(255, 255, 255);
+  font-weight: 400;
+  margin: 0px;
+  line-height: 82px;
 }
 
 .navbar-logo {
