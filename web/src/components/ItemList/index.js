@@ -1,7 +1,6 @@
 import React from "react";
 import Item from "../Item";
 import "./itemlist.css";
-
 export default props => {
   const { items = [], cardWidth } = props;
   return (

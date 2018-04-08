@@ -1,21 +1,20 @@
 import React from "react";
-import SliderSlick from "react-slick";
-import {React_Bootstrap_Carousel} from 'react-bootstrap-carousel';
+import {React_Bootstrap_Carousel as ReactBootstrapCarousel} from 'react-bootstrap-carousel';
 import img from "../../pictures/1.jpeg";
 import img2 from "../../pictures/4.jpg";
 import img3 from "../../pictures/5.jpg";
 import img4 from "../../pictures/6.jpg";
 import "./slider.css";
 
-const settings = {
-  infinite: true,
-  speed: 1000,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  autoplay: true,
-  pauseOnHover: false,
-  className: "slider"
-};
+// const settings = {
+//   infinite: true,
+//   speed: 1000,
+//   slidesToShow: 1,
+//   slidesToScroll: 1,
+//   autoplay: true,
+//   pauseOnHover: false,
+//   className: "slider"
+// };
 
 const bootstrap_settings = {
   className:"carousel-fade",
@@ -86,5 +85,5 @@ const Slide = props => {
 // };
 
 export default () => {
-  return <React_Bootstrap_Carousel {...bootstrap_settings}>{slides.map(Slide)}</React_Bootstrap_Carousel>;
+  return <ReactBootstrapCarousel {...bootstrap_settings}>{slides.map(Slide)}</ReactBootstrapCarousel>;
 };
