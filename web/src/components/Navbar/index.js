@@ -8,7 +8,7 @@ import { observer, inject } from "mobx-react";
 import FacebookLogin from "react-facebook-login";
 import Popover from "react-awesome-popover";
 import "./navbar.css";
-import SideNav from 'react-simple-sidenav';
+import SideNav from "react-simple-sidenav";
 
 const menuItems = [
   { text: "Home", link: "/" },
@@ -35,9 +35,9 @@ class Navbar extends Component {
   }
 
   componentDidMount() {}
-  
+
   openSidebar(isOpen) {
-    this.setState({showNav: isOpen});
+    this.setState({ showNav: isOpen });
   }
 
   responseFacebook = response => {
@@ -56,30 +56,29 @@ class Navbar extends Component {
     const { userStore } = this.props.store;
     const items = [
       ...menuItems.map(item => (
-        <Link
-          key={item.text}
-          to={item.link}
-          className="navbar-custom-menuitem"
-        >
+        <Link key={item.text} to={item.link} className="navbar-custom-menuitem">
           {item.text}
         </Link>
-      )), (
+      )),
       <Popover className="navbar-custom-menuitem">
-        Categories
+        Categoriess
         <CategoryPopUp />
-      </Popover>),
+      </Popover>,
       userStore.currentUser.admin ? (
         <Link to="/pendingLists">
           <div className="navbar-custom-menuitem">Pending Lists</div>
         </Link>
       ) : null
-    ]
+    ];
 
     const title = userStore.isUserLoggedIn ? (
       <Link to={`/${userStore.currentUser._id}/profile`}>
         <div className="nav-title">
-          <UserAvatar {...userStore.currentUser} /> <span className="nav-title-text">Hey, {userStore.currentUser.username}</span>
-        </div>        
+          <UserAvatar {...userStore.currentUser} />{" "}
+          <span className="nav-title-text">
+            Hey, {userStore.currentUser.username}
+          </span>
+        </div>
       </Link>
     ) : (
       <FacebookLogin
@@ -90,31 +89,36 @@ class Navbar extends Component {
         cookie
         icon={<i className="fas fa-facebook" />}
       />
-    )
+    );
     return (
       <div>
-        <SideNav style={{zIndex: 120}}
+        <SideNav
+          style={{ zIndex: 120 }}
           title={title}
           showNav={this.state.showNav}
           onHideNav={this.openSidebar.bind(this, false)}
-          titleStyle={{backgroundColor: "#4dd2e4e6", padding: '10px'}}
-          itemStyle={{backgroundColor: '#fff'}}
-          itemHoverStyle={{backgroundColor: '##3b5998'}}
+          titleStyle={{ backgroundColor: "#4dd2e4e6", padding: "10px" }}
+          itemStyle={{ backgroundColor: "#fff" }}
+          itemHoverStyle={{ backgroundColor: "##3b5998" }}
           items={items}
         />
-        <nav className={`navbar is-primary ${document.location.pathname === "/" ? 'is-transparent' : ''} `}>
-        <div className="navbar-start">
-          <a className="navbar-item" onClick={this.openSidebar.bind(this,true)}>
-            <i class="fas fa-bars"></i>
-          </a>
-        </div>
-        <div className="navbar-brand navbar-logo">
-          <Link to="/">
-                w8
-          </Link>
-        </div>
+        <nav
+          className={`navbar is-primary ${
+            document.location.pathname === "/" ? "is-transparent" : ""
+          } `}
+        >
+          <div className="navbar-start">
+            <a
+              className="navbar-item"
+              onClick={this.openSidebar.bind(this, true)}
+            >
+              <i class="fas fa-bars" />
+            </a>
+          </div>
+          <div className="navbar-brand navbar-logo">
+            <Link to="/">w8</Link>
+          </div>
         </nav>
-        
       </div>
     );
   }
