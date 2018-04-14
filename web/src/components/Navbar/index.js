@@ -103,7 +103,7 @@ class Navbar extends Component {
           items={items}
         />
         <nav
-          className={`navbar is-primary ${
+          className={`navbar is-dark ${
             document.location.pathname === "/" ? "is-transparent" : ""
           } `}
         >
