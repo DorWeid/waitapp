@@ -2,9 +2,12 @@ import React, { Component } from "react";
 import WaitingList from "../../components/WaitingList";
 import SliderSlick from "react-slick";
 import { observer, inject } from "mobx-react";
-import {Redirect} from "react-router";
+import { Redirect } from "react-router";
 import img from "../../pictures/1.jpeg";
-import './index.css';
+import moment from "moment";
+import Modal from "react-responsive-modal";
+import "react-responsive-modal/lib/react-responsive-modal.css";
+import "./index.css";
 
 const settings = {
   infinite: true,
@@ -58,7 +61,21 @@ class List extends Component {
     this.disenroll = this.disenroll.bind(this);
     this.accept = this.accept.bind(this);
     this.deny = this.deny.bind(this);
+    this.handleCloseModal = this.handleCloseModal.bind(this);
+    this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.state = {
+      modalOpen: true
+    };
   }
+
+  handleCloseModal() {
+    this.setState({ modalOpen: false });
+  }
+
+  handleOpenModal() {
+    this.setState({ modalOpen: true });
+  }
+
   componentDidMount() {
     const { match } = this.props;
     const itemStore = this.props.store.itemStore;
@@ -70,46 +87,60 @@ class List extends Component {
     const { match: { params }, store: { itemStore, userStore } } = this.props;
     // TODO: enable only if user is logged in
     if (userStore.isUserLoggedIn) {
-      await itemStore.items.get(params.id).enroll(userStore.currentUser.username);
+      await itemStore.items
+        .get(params.id)
+        .enroll(userStore.currentUser.username);
       await itemStore.getItem(params.id);
     }
-
   }
 
   async disenroll() {
     const { match: { params }, store: { itemStore, userStore } } = this.props;
     // TODO: enable only if user is logged in
     if (userStore.isUserLoggedIn) {
-      await itemStore.items.get(params.id).disenroll(userStore.currentUser.username);
-      await itemStore.getItem(params.id)
+      await itemStore.items
+        .get(params.id)
+        .disenroll(userStore.currentUser.username);
+      await itemStore.getItem(params.id);
     }
   }
 
   async accept() {
-    const { match: { params }, store: { userStore: {currentUser}, itemStore } } = this.props;
+    const {
+      match: { params },
+      store: { userStore: { currentUser }, itemStore }
+    } = this.props;
     await currentUser.acceptList(params.id);
     await itemStore.getItem(params.id);
   }
 
   async deny() {
-    const { match: { params }, store: { userStore: {currentUser}, itemStore } } = this.props;
+    const {
+      match: { params },
+      store: { userStore: { currentUser }, itemStore }
+    } = this.props;
     await currentUser.denyList(params.id);
     await itemStore.getItem(params.id);
   }
 
   render() {
-    const { store: { itemStore: { items }, userStore: {currentUser} } } = this.props;
+    const {
+      store: { itemStore: { items }, userStore: { currentUser } }
+    } = this.props;
     const currentItem = items.get(this.props.match.params.id);
     // TODO: Loading indicator here plis
     if (!currentItem) {
       return <div>Loading ...</div>;
     }
-
-    const { title, description, price, currency = "$", users = [] , status } =
+    let timeLeftToReedem = moment().format("h:mm:ss");
+    const { title, description, price, currency = "$", users = [], status } =
       currentItem || {};
     let isSigned = users.includes(currentUser._id);
-    if ((status === "pending" && (!currentUser || !currentUser.admin)) || status === 'deny') {
-      return <Redirect to="/" />
+    if (
+      (status === "pending" && (!currentUser || !currentUser.admin)) ||
+      status === "deny"
+    ) {
+      return <Redirect to="/" />;
     }
 
     return (
@@ -122,7 +153,7 @@ class List extends Component {
         </div>
         <div className="columns" style={{ marginLeft: 15 }}>
           <div className="column is-2">
-            <WaitingList users={users}/>
+            <WaitingList users={users} />
           </div>
           <div className="column is-3" style={{ marginLeft: 40 }}>
             <div className="box">
@@ -168,25 +199,24 @@ class List extends Component {
                 <div className="title is-6">LIMITED TIME OFFER!</div>
               </div>
               <hr />
-              {
-                status === "pending" ? (
-                  <span className="admin-buttons">
-                    <a className="button is-primary" onClick={this.accept}>
-                        <span className="icon is-small">
-                          <i className="fa fa-times" />
-                        </span>
-                        <span>Accept List</span>
-                      </a>
-                      <a className="button is-danger" onClick={this.deny}>
-                      <span className="icon is-small">
-                        <i className="fa fa-times" />
-                      </span>
-                      <span>Deny List</span>
-                    </a>
+              {status === "pending" ? (
+                <span className="admin-buttons">
+                  <a className="button is-primary" onClick={this.accept}>
+                    <span className="icon is-small">
+                      <i className="fa fa-times" />
+                    </span>
+                    <span>Accept List</span>
+                  </a>
+                  <a className="button is-danger" onClick={this.deny}>
+                    <span className="icon is-small">
+                      <i className="fa fa-times" />
+                    </span>
+                    <span>Deny List</span>
+                  </a>
                 </span>
-                ) :
-                status === 'done' ? (<span>This list as already ended!</span>) :
-                isSigned ? (
+              ) : status === "done" ? (
+                <span>This list as already ended!</span>
+              ) : isSigned ? (
                 <a className="button is-danger" onClick={this.disenroll}>
                   <span className="icon is-small">
                     <i className="fa fa-times" />
@@ -216,6 +246,19 @@ class List extends Component {
             </SliderSlick>
           </div>
         </div>
+        <Modal
+          classNames={{ modal: "modal-body" }}
+          open={this.state.modalOpen}
+          onClose={this.handleCloseModal}
+          little
+        >
+          <h2>Congrats!</h2>
+          <h4>You have won the list</h4>
+          <p>{timeLeftToReedem}</p>
+          <button className="button is-link" style={{ fontSize: "medium" }}>
+            Reedem
+          </button>
+        </Modal>
       </div>
     );
   }
