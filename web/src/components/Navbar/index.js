@@ -81,14 +81,16 @@ class Navbar extends Component {
         </div>
       </Link>
     ) : (
-      <FacebookLogin
-        appId={process.env.REACT_APP_FACEBOOK_ID}
-        fields="name,email,picture.width(300).height(300)"
-        callback={this.responseFacebook}
-        cssClass="auth-button"
-        cookie
-        icon={<i className="fas fa-facebook" />}
-      />
+      <div className="nav-title">
+        <FacebookLogin
+          appId={process.env.REACT_APP_FACEBOOK_ID}
+          fields="name,email,picture.width(300).height(300)"
+          callback={this.responseFacebook}
+          cssClass="auth-button"
+          cookie
+          icon={<i className="fas fa-facebook" />}
+        />
+      </div>
     );
     return (
       <div>
@@ -97,7 +99,7 @@ class Navbar extends Component {
           title={title}
           showNav={this.state.showNav}
           onHideNav={this.openSidebar.bind(this, false)}
-          titleStyle={{ backgroundColor: "#4dd2e4e6", padding: "10px" }}
+          titleStyle={{ backgroundColor: "black" }}
           itemStyle={{ backgroundColor: "#fff" }}
           itemHoverStyle={{ backgroundColor: "##3b5998" }}
           items={items}
@@ -112,7 +114,7 @@ class Navbar extends Component {
               className="navbar-item"
               onClick={this.openSidebar.bind(this, true)}
             >
-              <i class="fas fa-bars" />
+              <i className="fas fa-bars" />
             </a>
           </div>
           <div className="navbar-brand navbar-logo">

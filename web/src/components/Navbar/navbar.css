@@ -27,11 +27,12 @@
 
 .navbar {
   height: 6rem;
+  border-radius: 0% !important;
 }
 
 .navbar-logo {
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.9);
   height: 45px;
   width: 45px;
   display: flex;
@@ -72,12 +73,13 @@
 
 .nav-title {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .nav-title-text {
   font-size: medium;
   margin-left: 10px;
+  color: white;
 }
 .navbar-background {
   height: 17vh;
@@ -107,6 +109,8 @@
   color: white;
   border: 1px solid black;
   padding: 5px;
+  font-size: small;
+  border-radius: 4%;
 }
 
 .fa-facebook {
