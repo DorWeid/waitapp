@@ -15,13 +15,13 @@
   padding: 1vh;
 }
 
-.item-list-category-title {
+.item-list-category-container {
   text-align: left;
-  font-size: 2.5vh;
 }
 
-.item-list-category-subtitle {
-  font-size: 1.8vh;
+.item-list-category-title {
+  font-size: 3rem;
+  font-weight: 700;
   color: black;
 }
 
