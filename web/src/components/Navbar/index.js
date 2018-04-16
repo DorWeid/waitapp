@@ -56,7 +56,12 @@ class Navbar extends Component {
     const { userStore } = this.props.store;
     const items = [
       ...menuItems.map(item => (
-        <Link key={item.text} to={item.link} className="navbar-custom-menuitem">
+        <Link
+          key={item.text}
+          to={item.link}
+          onClick={this.openSidebar.bind(this, false)}
+          className="navbar-custom-menuitem"
+        >
           {item.text}
         </Link>
       )),
