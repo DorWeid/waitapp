@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { observer, inject } from "mobx-react";
+import BigItem from "../../components/BigItem";
 import Item from "../../components/Item";
 import ItemList from "../../components/ItemList";
 import "./categoryLists.css";
 import Select from "react-select";
 import scrollToElement from "scroll-to-element";
+import { Parallax } from 'react-parallax';
 
 function importAll(r) {
   let images = {};
@@ -87,13 +89,16 @@ class CategoryLists extends Component {
 
     return (
       <div className="category-lists-container">
-        <div>
-          <img
-            alt="categoryImg"
-            src={images[`category_${match.params.type}.jpg`]}
-            style={{ width: "100%", height: "90vh" }}
-          />
-        </div>
+        <Parallax
+          blur={0}
+          bgImage={images[`category_${match.params.type}.jpg`]}
+          bgImageAlt="categoryImg"
+          bgHeight={"95vh"}
+          bgWidth={"100vw"}
+          strength={500}
+        >
+          <div style={{ height: '95vh', width: '100vw' }} />
+        </Parallax>
         <div
           className="arrow-icon-container"
           onClick={() => {
@@ -124,13 +129,13 @@ class CategoryLists extends Component {
               <div className="category-lists-speacials">
                 {displayedItems
                   .slice(0, 3)
-                  .map(item => <Item key={item._id} {...item} />)}
+                  .map(item => <BigItem key={item._id} {...item} />)}
               </div>
             </div>
             <br />
             <div style={{ width: "90%" }}>
               {" "}
-              <ItemList items={displayedItems.slice(1)} />{" "}
+              <ItemList items={displayedItems.slice(1)} cardWidth="18%" />{" "}
             </div>
           </div>
         ) : (
