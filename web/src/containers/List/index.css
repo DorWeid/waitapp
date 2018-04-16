@@ -11,3 +11,11 @@
   flex-direction: column;
   font-size: large;
 }
+
+.button {
+  font-size: 1.5rem;
+}
+
+.dock-text {
+  margin: auto;
+}

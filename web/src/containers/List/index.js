@@ -6,6 +6,7 @@ import { Redirect } from "react-router";
 import img from "../../pictures/1.jpeg";
 import moment from "moment";
 import Modal from "react-responsive-modal";
+import Dock from "react-dock";
 import "react-responsive-modal/lib/react-responsive-modal.css";
 import "./index.css";
 
@@ -61,10 +62,13 @@ class List extends Component {
     this.disenroll = this.disenroll.bind(this);
     this.accept = this.accept.bind(this);
     this.deny = this.deny.bind(this);
+    this.redeem = this.redeem.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.handleOpenModal = this.handleOpenModal.bind(this);
+    // TODO: change the way we get the status and winner
     this.state = {
-      modalOpen: true
+      modalOpen: false,
+      winner: "not me"
     };
   }
 
@@ -81,6 +85,10 @@ class List extends Component {
     const itemStore = this.props.store.itemStore;
 
     itemStore.getItem(match.params.id);
+  }
+
+  redeem() {
+    alert("you motherfucker!");
   }
 
   async enroll() {
@@ -136,6 +144,7 @@ class List extends Component {
     const { title, description, price, currency = "$", users = [], status } =
       currentItem || {};
     let isSigned = users.includes(currentUser._id);
+    const isWinner = status === "done" && this.state.winner === "me";
     if (
       (status === "pending" && (!currentUser || !currentUser.admin)) ||
       status === "deny"
@@ -214,8 +223,15 @@ class List extends Component {
                     <span>Deny List</span>
                   </a>
                 </span>
-              ) : status === "done" ? (
+              ) : !isWinner && status === "done" ? (
                 <span>This list as already ended!</span>
+              ) : isWinner && status === "done" ? (
+                <a className="button is-primary" onClick={this.redeem}>
+                  <span className="icon is-small">
+                    <i className="fa fa-times" />
+                  </span>
+                  <span>Redeem your item!</span>
+                </a>
               ) : isSigned ? (
                 <a className="button is-danger" onClick={this.disenroll}>
                   <span className="icon is-small">
@@ -259,6 +275,27 @@ class List extends Component {
             Reedem
           </button>
         </Modal>
+        <Dock
+          position="bottom"
+          isVisible={isWinner}
+          fluid
+          size={0.05}
+          dimMode={"none"}
+          dockStyle={{
+            width: "20%",
+            left: "0",
+            right: "0",
+            backgroundColor: "limegreen",
+            fontSize: "1.5rem",
+            margin: "auto"
+          }}
+        >
+          <div style={{ display: "flex" }}>
+            <span className="dock-text">
+              Total order is <strong>{price}</strong>
+            </span>
+          </div>
+        </Dock>
       </div>
     );
   }

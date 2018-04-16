@@ -16,6 +16,7 @@
     "react-cookie": "^2.1.4",
     "react-credit-cards": "^0.7.0",
     "react-datepicker": "^1.0.4",
+    "react-dock": "^0.2.4",
     "react-dom": "^16.2.0",
     "react-facebook-login": "^3.7.2",
     "react-responsive-modal": "^2.0.1",
