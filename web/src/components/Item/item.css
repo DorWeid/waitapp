@@ -16,7 +16,7 @@
 }
 
 .location {
-  font-size: 0.7rem;
+  font-size: 1.1rem;
   color: green;
   text-align: right;
 }
@@ -35,5 +35,5 @@
 .end-date {
   color: red;
   text-align: left;
-  font-size: 0.8rem;
+  font-size: 1.1rem;
 }
