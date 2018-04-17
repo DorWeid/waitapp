@@ -8,6 +8,8 @@ import Lists from "../../containers/Lists";
 import List from "../../containers/List";
 import AddList from "../../containers/AddList";
 import PendingLists from "../../containers/PendingLists";
+import EnrolledLists from "../../containers/EnrolledLists";
+import CreatedLists from "../../containers/CreatedLists";
 import UserProfile from "../../containers/UserProfile";
 import CategoryLists from "../../containers/CategoryLists";
 import { observer, inject } from "mobx-react";
@@ -41,6 +43,8 @@ class App extends Component {
           <Route path="/list/type/:type" component={CategoryLists} />
           <Route path="/list/:id" component={List} />
           <Route path="/pendingLists" component={PendingLists} />
+          <Route path="/createdLists" component={CreatedLists} />
+          <Route path="/enrolledLists" component={EnrolledLists} />
           <Route path="/:userId/addList" component={AddList} />
           <Route path="/:userId/profile" component={UserProfile} />
         </Switch>

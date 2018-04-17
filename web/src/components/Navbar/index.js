@@ -54,6 +54,12 @@ class Navbar extends Component {
 
   render() {
     const { userStore } = this.props.store;
+    if (userStore.isUserLoggedIn) {
+      menuItems.push(
+        { text: "Created Lists", link: "/createdLists" },
+        { text: "Enrolled Lists", link: "/enrolledLists" }  
+      );
+    }
     const items = [
       ...menuItems.map(item => (
         <Link
