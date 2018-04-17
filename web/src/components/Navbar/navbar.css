@@ -1,3 +1,9 @@
+.navbar {
+  position: fixed;
+  width: 100%;
+  z-index: 9999999999;
+}
+
 .navbar-custom {
   display: flex;
   justify-content: space-between;

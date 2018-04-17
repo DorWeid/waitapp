@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import { observer, inject } from "mobx-react";
 import BigItem from "../../components/BigItem";
-import Item from "../../components/Item";
 import ItemList from "../../components/ItemList";
 import "./categoryLists.css";
-import Select from "react-select";
-import scrollToElement from "scroll-to-element";
 import { Parallax } from 'react-parallax';
+import Select from "react-select";
 
 function importAll(r) {
   let images = {};
@@ -50,15 +48,15 @@ class CategoryLists extends Component {
   }
 
   componentDidMount() {
-    let { store: { itemStore }, match } = this.props;
-    itemStore.getListsOfCategory(match.params.type);
+    let { store: { itemStore }, category } = this.props;
+    itemStore.getListsOfCategory(category);
   }
 
   componentWillReceiveProps(nextProps) {
-    let { store: { itemStore }, match } = this.props;
+    let { store: { itemStore }, category } = this.props;
 
-    if (nextProps.match.params.type !== match.params.type) {
-      itemStore.getListsOfCategory(nextProps.match.params.type);
+    if (nextProps.category !== category) {
+      itemStore.getListsOfCategory(nextProps.category);
     }
   }
 
@@ -79,7 +77,7 @@ class CategoryLists extends Component {
   }
 
   render() {
-    const { store: { itemStore: { items } }, match } = this.props;
+    const { store: { itemStore: { items } }, category } = this.props;
 
     const displayedItems = items
       .values()
@@ -90,27 +88,18 @@ class CategoryLists extends Component {
     return (
       <div className="category-lists-container">
         <Parallax
-          blur={0}
-          bgImage={images[`category_${match.params.type}.jpg`]}
-          bgImageAlt="categoryImg"
-          bgHeight={"95vh"}
-          bgWidth={"100vw"}
-          strength={500}
-        >
-          <div style={{ height: '95vh', width: '100vw' }} />
+            blur={0}
+            bgImage={images[`category_${category}.jpg`]}
+            bgImageAlt="categoryImg"
+            bgHeight={"95vh"}
+            bgWidth={"100vw"}
+            strength={500}
+          >
+            <div style={{ height: '35vh', width: '100vw' }} />
         </Parallax>
-        <div
-          className="arrow-icon-container"
-          onClick={() => {
-            scrollToElement(document.querySelector("#category-lists"));
-          }}
-        >
-          <i className="fas fa-arrow-circle-down" />
-        </div>
         {displayedItems.length !== 0 ? (
           <div id="category-lists">
             <div className="category-lists-header">
-              {/* <span className="category-lists-title"> {match.params.type} lists </span> */}
               <Select
                 className="category-lists-select"
                 value={this.state.currentSort}

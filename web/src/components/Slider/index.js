@@ -1,39 +1,20 @@
 import React from "react";
 import {React_Bootstrap_Carousel as ReactBootstrapCarousel} from 'react-bootstrap-carousel';
-import img from "../../pictures/1.jpeg";
 import img2 from "../../pictures/4.jpg";
-import img3 from "../../pictures/5.jpg";
+import img3 from "../../pictures/7.jpg";
 import img4 from "../../pictures/6.jpg";
+import { observer } from "mobx-react";
 import "./slider.css";
-
-// const settings = {
-//   infinite: true,
-//   speed: 1000,
-//   slidesToShow: 1,
-//   slidesToScroll: 1,
-//   autoplay: true,
-//   pauseOnHover: false,
-//   className: "slider"
-// };
 
 const bootstrap_settings = {
   className:"carousel-fade",
-  autoplay: true,
-  slideshowSpeed: 3000,
+  slideshowSpeed: 5000,
   wrap: true,
   indicators: false,
-  defaultActiveIndex: 1,
+  defaultActiveIndex: 0,
 }
 
 const slides = [
-  {
-    src: img,
-    alt: "Hotels",
-    id: "unique-id",
-    description:
-      "W8-App offers you your dream hotels at a bargain price. Find your home away from home.",
-    title: "Hotels"
-  },
   {
     src: img2,
     alt: "Hotels",
@@ -74,16 +55,23 @@ const Slide = props => {
   const { src, alt, id } = props;
   return (
     <div key={id} style={{ width: "100vw", height: "100vh" }}>
-      <img alt={alt} src={src} style={{ width: "100%", height: "100%" }} />
-      <ItemDescriptionThumb {...props} />
+      <img alt={alt} src={src} style={{ width: "100%", height: "100%", opacity: '0.6' }} />
+      {
+        // <ItemDescriptionThumb {...props} />
+      }
     </div>
   );
 };
 
-// export default () => {
-//   return <SliderSlick {...settings}>{slides.map(Slide)}</SliderSlick>;
-// };
-
-export default () => {
-  return <ReactBootstrapCarousel {...bootstrap_settings}>{slides.map(Slide)}</ReactBootstrapCarousel>;
+const Slider = (props) => {
+  return <ReactBootstrapCarousel
+    className="slider"
+    {...bootstrap_settings}
+    onSelect={props.changeCategory}
+    autoplay={(document.documentElement.scrollTop < 10) || false}
+  >
+      {slides.map(Slide)}
+    </ReactBootstrapCarousel>;
 };
+
+export default observer(Slider);
