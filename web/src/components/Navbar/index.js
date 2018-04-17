@@ -2,11 +2,9 @@ import "react-awesome-popover/dest/react-awesome-popover.css";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import CategoryPopUp from "../CategoryPopUp";
 import UserAvatar from "../UserAvatar";
 import { observer, inject } from "mobx-react";
 import FacebookLogin from "react-facebook-login";
-import Popover from "react-awesome-popover";
 import "./navbar.css";
 import SideNav from "react-simple-sidenav";
 
@@ -22,19 +20,19 @@ class Navbar extends Component {
 
     this.state = {
       showPopup: false,
-      showNav: false
+      showNav: false,
+      categoriesActive: false
     };
 
     this.responseFacebook = this.responseFacebook.bind(this);
     this.openSidebar = this.openSidebar.bind(this);
+
     if (!process.env.REACT_APP_FACEBOOK_ID) {
       console.error(
         "Missing REACT_APP_FACEBOOK_ID env variable. Facebook auth will not work!"
       );
     }
   }
-
-  componentDidMount() {}
 
   openSidebar(isOpen) {
     this.setState({ showNav: isOpen });
@@ -65,10 +63,43 @@ class Navbar extends Component {
           {item.text}
         </Link>
       )),
-      <Popover className="navbar-custom-menuitem">
-        Categoriess
-        <CategoryPopUp />
-      </Popover>,
+      <div className="dropdown is-hoverable">
+        <div
+          className="dropdown-trigger navbar-custom-menuitem"
+          style={{ display: "flex" }}
+        >
+          <span style={{ marginRight: "5px" }}>Categories</span>
+          <span className="icon is-small" style={{ margin: "auto" }}>
+            <i className="fas fa-angle-down" />
+          </span>
+        </div>
+        <div className="dropdown-menu">
+          <div className="dropdown-content">
+            <Link
+              to="/list/type/hotel"
+              onClick={this.openSidebar.bind(this, false)}
+              className="dropdown-item navbar-custom-menuitem"
+            >
+              Hotels
+            </Link>
+            <Link
+              to="/list/type/car"
+              onClick={this.openSidebar.bind(this, false)}
+              className="dropdown-item navbar-custom-menuitem"
+              replace
+            >
+              Cars
+            </Link>
+            <Link
+              to="/list/type/flight"
+              onClick={this.openSidebar.bind(this, false)}
+              className="dropdown-item navbar-custom-menuitem"
+            >
+              Flights
+            </Link>
+          </div>
+        </div>
+      </div>,
       userStore.currentUser.admin ? (
         <Link to="/pendingLists">
           <div className="navbar-custom-menuitem">Pending Lists</div>
