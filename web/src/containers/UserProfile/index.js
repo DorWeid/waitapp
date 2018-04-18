@@ -112,53 +112,22 @@ class UserProfile extends React.Component {
           alt={userStore.currentUser.username}
           className="image is-96x96 profile-user-img"
         />
-        <div
-          style={{
-            width: "100%",
-            marginTop: 40
-          }}
-        >
-          <h4 className="title is-4">
-            <u>My Lists</u>
-          </h4>
-          {userStore.currentUser.registeredTo.size ? (
-            <ItemList
-              items={userStore.currentUser.registeredTo.values()}
-              cardWidth="25%"
-            />
-          ) : (
-            <p>You have not signed up to a list yet...</p>
-          )}
-        </div>
+        <Link to={`/${userStore.currentUser._id}/addList`} className="button" style={{marginTop: 10}}>
+          <span className="icon is-small">
+            <i className="fas fa-plus" /> 
+          </span>
+          <span style={{paddingLeft: 5}}>Create a New List</span>
+        </Link>
 
-        <div
-          style={{
-            width: "100%",
-            marginTop: 40
-          }}
-        >
-          <h4 className="title is-4">
-            <u>Created Lists</u>
-          </h4>
-          <Link to={`/${userStore.currentUser._id}/addList`} className="button">
-            <span className="icon is-small">
-              <i className="fas fa-plus" />
-            </span>
-          </Link>
-          <br />
-          <br />
-          {userStore.currentUser.items.size ? (
-            <ItemList items={userStore.currentUser.items.values()} />
-          ) : (
-            <p>You dont have any lists yet...</p>
-          )}
-        </div>
         <div style={{ width: "100%", marginTop: 40 }}>
           <h4 className="title is-4">
             <u>Comments</u>
           </h4>
           {this.renderComments(userStore.currentUser.comments.values())}
         </div>
+       
+        
+
         <section className="section profile-bottom">
           <div className="profile-credit">
             <h4 className="title is-5">Add Credit Card Details</h4>
@@ -257,7 +226,7 @@ class UserProfile extends React.Component {
     const hasUserCommented = !!randomUserObject.comments
       .values()
       .find(cmt => cmt.userId === userStore.currentUser._id);
-
+ 
     return (
       <div className="profile-bg">
         <h1 className="title is-1 profile-title">
@@ -278,8 +247,8 @@ class UserProfile extends React.Component {
             <h4 className="title is-4">
               <u>Lists</u>
             </h4>
-            {itemStore.items.size ? (
-              <ItemList items={itemStore.items.values()} cardWidth="25%" />
+            {randomUserObject.items.size ? (
+              <ItemList items={randomUserObject.items.values()} cardWidth="25%" />
             ) : (
               <p>This user has not created a list yet..</p>
             )}
@@ -291,8 +260,8 @@ class UserProfile extends React.Component {
             <h4 className="title is-4">
               <u>Comments</u>
             </h4>
-            {!hasUserCommented &&
-              userStore.currentUser.isUserLoggedIn && (
+            {(!hasUserCommented &&
+              userStore.isUserLoggedIn) && (
                 <form id="add-comment" className="add-list-form">
                   <h1 className="title is-4">Add a comment</h1>
                   <StarRatingComponent
@@ -328,9 +297,10 @@ class UserProfile extends React.Component {
   };
 
   addComment = () => {
-    this.props.store.userStore.currentUser.addComment({
+    this.props.store.userStore.addComment({
       rating: this.state.rating,
-      content: this.state.content
+      content: this.state.content,
+      userId: this.props.match.params.userId
     });
 
     this.setState({ rating: 0 });

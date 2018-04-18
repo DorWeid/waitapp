@@ -52,10 +52,43 @@ const actions = self => {
     };
   };
 
+  const addComment = flow(function*({ content, rating, userId }) {
+    const options = {
+      data: {
+        content,
+        rating
+      }
+    };
+    try {
+      const result = yield self.store.post(
+        `/user/${userId}/comment`,
+        options
+      );
+
+      if (!result.data.success) {
+        throw new Error("Something went wrong in the server...");
+      }
+
+      // TODO: Get the comment back from the server instead of loading the entire user object again
+      yield getUser(userId);
+
+      // self.comments.put({
+      //   content,
+      //   rating,
+      //   userId: self._id
+      // });
+
+      return true;
+    } catch (error) {
+      console.error("Couldnt add comment: ", error);
+    }
+  });
+
   return {
     getUser,
     authenticateCurrentUser,
-    setUserAuthData
+    setUserAuthData,
+    addComment
   };
 };
 
