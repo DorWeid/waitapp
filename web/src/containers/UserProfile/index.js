@@ -245,7 +245,7 @@ class UserProfile extends React.Component {
                   <strong style={{fontSize: 'x-large'}}><b>{randomUserObject.username}</b></strong>
                   <br />
                   <br />
-                  <span style={{fontSize: 'large'}}>{randomUserObject.items.size} lists</span>
+                  <span style={{fontSize: 'large'}}>{randomUserObject.items.size} Lists</span>
                 </p>
               </div>
             </div>
