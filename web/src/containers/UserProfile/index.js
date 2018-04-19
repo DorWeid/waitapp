@@ -14,6 +14,8 @@ class UserProfile extends React.Component {
     super();
 
     this.state = {
+      isSubscribed: false,
+      selectedTab: 0,
       number: "",
       name: "",
       expiry: "",
@@ -211,7 +213,7 @@ class UserProfile extends React.Component {
   };
 
   renderRandomUserProfile = () => {
-    const { match, store: { userStore, itemStore } } = this.props;
+    const { match, store: { userStore } } = this.props;
     const randomUserObject = userStore.users.get(match.params.userId);
 
     // If user has not been loaded yet or not found...
@@ -223,45 +225,100 @@ class UserProfile extends React.Component {
       );
     }
 
-    const hasUserCommented = !!randomUserObject.comments
-      .values()
-      .find(cmt => cmt.userId === userStore.currentUser._id);
- 
+    
     return (
       <div className="profile-bg">
-        <h1 className="title is-1 profile-title">
-          {randomUserObject.username}
-        </h1>
-        <img
-          src={randomUserObject.picture_url}
-          alt={randomUserObject.username}
-          className="image is-96x96 profile-user-img"
-        />
-        <div
-          style={{
-            width: "100%",
-            marginTop: 50
-          }}
-        >
-          <div style={{ width: "100%" }}>
-            <h4 className="title is-4">
-              <u>Lists</u>
-            </h4>
-            {randomUserObject.items.size ? (
-              <ItemList items={randomUserObject.items.values()} cardWidth="25%" />
-            ) : (
-              <p>This user has not created a list yet..</p>
-            )}
+        <div className="box" style={{width: '90%', padding: 30}}>
+          <article className="media" style={{display: 'flex', alignItems: 'center'}}>
+            <div className="media-left">
+              <figure className="image is-96x96">
+                <img
+                  src={randomUserObject.picture_url}
+                  alt={randomUserObject.username}
+                  className="profile-user-img"
+                />
+              </figure>
+            </div>
+            <div className="media-content">
+              <div className="content">
+                <p>
+                  <strong style={{fontSize: 'x-large'}}><b>{randomUserObject.username}</b></strong>
+                  <br />
+                  <br />
+                  <span style={{fontSize: 'large'}}>{randomUserObject.items.size} lists</span>
+                </p>
+              </div>
+            </div>
+            <div className="media-right" style={{paddingRight: 40, paddingTop: 7, textAlign: 'center'}}>
+              <StarRatingComponent
+                name="user-rating"
+                value={randomUserObject.rating || 4}
+                editing={false}
+              />
+              <br />
+              <br />
+              <strong style={{fontSize: 'medium'}}>Rating</strong>
+            </div>
+            <div className="media-right" style={{textAlign: 'center'}}>
+              <button className={this.state.isSubscribed ? "button is-success is-large" : "button is-primary is-large"} onClick={() => {this.setState({ isSubscribed: !this.state.isSubscribed});}}>
+                {this.state.isSubscribed ?
+                  <div style={{display: 'flex'}}>
+                    <span className="icon is-small" key={1}>
+                      <i className="fa fa-check"/>
+                    </span>
+                    <span style={{paddingLeft: 5}}><strong>Subscribed</strong></span>
+                  </div> :
+                  <div style={{display: 'flex'}}>
+                    <span className="icon is-small" key={2}>
+                      <i className="fa fa-plus" />
+                    </span>
+                    <span style={{paddingLeft: 5}}><strong>Subscribe</strong></span>
+                  </div>
+                }
+              </button> 
+              <br />
+              <strong style={{fontSize: 'small'}}>{randomUserObject.subscribers || 123} Subscribers</strong>
+            </div>
+          </article>
+          <hr />
+          <div className="level">
+            <div className="level-left">
+              <div className="level-item profile-hover-item" style={{fontSize: 'medium'}} onClick={() => {this.setState({selectedTab: 0});}}>
+                {this.state.selectedTab === 0 ? 
+                  <strong>Lists ({randomUserObject.items.size})</strong>:
+                  <span>Lists ({randomUserObject.items.size})</span>
+                }
+              </div>
+              <div className="level-item profile-hover-item" style={{marginLeft: 20, fontSize: 'medium'}} onClick={() => {this.setState({selectedTab: 1});}}>
+                {this.state.selectedTab === 1 ? 
+                  <strong>Comments ({randomUserObject.comments.size})</strong>:
+                  <span>Comments ({randomUserObject.comments.size})</span>
+                }
+              </div>
+            </div>
           </div>
-          <br />
-          <br />
-          <br />
-          <div style={{ width: "100%" }}>
-            <h4 className="title is-4">
-              <u>Comments</u>
-            </h4>
+          <div>
+            {this.renderTabContent({ items: randomUserObject.items.values(), comments: randomUserObject.comments.values() })}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  renderTabContent = ({ items = [], comments = [] }) => {
+    const hasUserCommented = comments.find(cmt => cmt.userId === this.props.store.userStore.currentUser._id);
+
+    switch (this.state.selectedTab) {
+      case 0:
+        return (
+          <ItemList items={items} cardWidth="25%" />
+        );
+      
+      case 1:
+        return (
+          <div>
             {(!hasUserCommented &&
-              userStore.isUserLoggedIn) && (
+              this.props.store.userStore.isUserLoggedIn) && (
                 <form id="add-comment" className="add-list-form">
                   <h1 className="title is-4">Add a comment</h1>
                   <StarRatingComponent
@@ -286,15 +343,14 @@ class UserProfile extends React.Component {
                   </a>
                 </form>
               )}
-            {this.renderComments(randomUserObject.comments.values())}
-            <br />
-            <br />
-            <br />
+              {this.renderComments(comments)}
           </div>
-        </div>
-      </div>
-    );
-  };
+        );
+
+      default:
+        return null;
+    }
+  }
 
   addComment = () => {
     this.props.store.userStore.addComment({
@@ -321,6 +377,7 @@ class UserProfile extends React.Component {
             content={cmt.content}
             author={cmt.username}
             picture_url={cmt.picture_url}
+            authorId={cmt.userId}
           />
         ))}
       </div>

@@ -1,12 +1,17 @@
 import React from "react";
 import StarRatingComponent from "react-star-rating-component";
+import { observer, inject } from "mobx-react";
 import "./Comment.css";
 
-export default class Comment extends React.Component {
+class Comment extends React.Component {
   render() {
-    const { author, content, picture_url, rating } = this.props;
+    const { author, content, picture_url, rating, authorId, store: { userStore } } = this.props;
+
+    const isCurrentUsersComment = userStore.isUserLoggedIn && userStore.currentUser._id === authorId;
+
     return (
       <div className="comment-container">
+        {isCurrentUsersComment && <button className="delete" style={{ marginRight: 5 }}/>}
         <div style={{ paddingRight: 25 }}>
           <img
             src={picture_url}
@@ -31,3 +36,5 @@ export default class Comment extends React.Component {
     );
   }
 }
+
+export default inject("store")(observer(Comment));
