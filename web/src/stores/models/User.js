@@ -129,7 +129,7 @@ const actions = self => {
   const getUserLists = flow(function*() {
     try {
       const userLists = yield self.store.get(`/user/${self._id}/createdLists`);
-
+      
       userLists.data.forEach(item => self.items.put(item));
     } catch (error) {
       console.error("Couldnt fetch items", error);
@@ -159,36 +159,6 @@ const actions = self => {
     }
   });
 
-  const addComment = flow(function*({ content, rating }) {
-    const options = {
-      data: {
-        content,
-        rating
-      }
-    };
-    try {
-      const result = yield self.store.post(
-        `/user/${self._id}/comment`,
-        options
-      );
-
-      if (!result.data.success) {
-        throw new Error("Something went wrong in the server...");
-      }
-
-      // TODO: Push data from server here
-      self.comments.put({
-        content,
-        rating,
-        userId: self._id
-      });
-
-      return true;
-    } catch (error) {
-      console.error("Couldnt add comment: ", error);
-    }
-  });
-
   const update = flow(function*(fields = {}) {
     const options = {
       data: fields
@@ -215,7 +185,6 @@ const actions = self => {
     getUserLists,
     getRegisteredLists,
     getUserDetails,
-    addComment,
     update,
     setUser
   };

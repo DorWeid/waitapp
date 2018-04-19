@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { observer, inject } from "mobx-react";
 import BigItem from "../../components/BigItem";
-import Item from "../../components/Item";
 import ItemList from "../../components/ItemList";
 import "./categoryLists.css";
 import Select from "react-select";

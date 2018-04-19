@@ -1,11 +1,12 @@
 .profile-bg {
-  top: 150px;
+  top: 0.5em;
+  height: 90em;
+  width: 100%;
   z-index: 15;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #dee1e3;
 }
 
 .profile-title {
@@ -35,4 +36,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.profile-hover-item:hover {
+  cursor: pointer;
 }
