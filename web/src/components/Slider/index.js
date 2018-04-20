@@ -68,7 +68,7 @@ const Slider = (props) => {
     className="slider"
     {...bootstrap_settings}
     onSelect={props.changeCategory}
-    autoplay={(document.documentElement.scrollTop < 10) || false}
+    autoplay={false}
   >
       {slides.map(Slide)}
     </ReactBootstrapCarousel>;

@@ -14,18 +14,11 @@ class HomePage extends Component {
 
     this.state = {};
     this.changeCategory = this.changeCategory.bind(this);
-    this.setAutoplay = this.setAutoplay.bind(this);
   }
 
   componentDidMount() {
     let { store: { itemStore: { loadCategories } } } = this.props;
     loadCategories();
-
-    window.onscroll = () => this.setAutoplay(document.documentElement.scrollTop);
-  }
-
-  setAutoplay(heightToTop) {
-    this.autoPlay = heightToTop < 10;
   }
 
   changeCategory(slideNum) {
