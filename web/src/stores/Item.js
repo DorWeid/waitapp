@@ -10,7 +10,8 @@ const Category = types.model("Category", {
 const definition = {
   items: types.optional(types.map(ItemModel), {}),
   categories: types.optional(types.array(Category), []),
-  latestListAdded: ""
+  latestListAdded: "",
+  currDisplayedCatergory: "hotel",
 };
 
 const views = self => ({
@@ -83,6 +84,10 @@ const actions = self => {
     self.latestListAdded = "";
   };
 
+  const changeCurrentCategory = (category) => {
+    self.currDisplayedCatergory = category.en;
+  };
+
   const getListsOfCategory = flow(function* getListsOfCategory(type) {
     try {
       const result = yield self.store.get(`/list?type=${type}`);
@@ -98,7 +103,8 @@ const actions = self => {
     addList,
     loadCategories,
     getListsOfCategory,
-    clearLatest
+    clearLatest,
+    changeCurrentCategory
   };
 };
 

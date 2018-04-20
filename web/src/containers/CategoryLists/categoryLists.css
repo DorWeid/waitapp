@@ -39,24 +39,12 @@
   font-size: 2rem;
 }
 
-.arrow-icon-container {
-  top: -27vh;
-  position: relative;
-  width: 100%;
-}
-
-.fa-arrow-circle-down {
-  font-size: 10vh;
-  cursor: pointer;
-  border-radius: 50%;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
 #category-lists {
   min-height: 85vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 1vh;
 }
 
 /* .category-lists {

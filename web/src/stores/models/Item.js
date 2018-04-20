@@ -1,8 +1,8 @@
 import { types, getParent, flow } from "mobx-state-tree";
 
 export const categories = [
-  { en: "car", he: "מכוניות" },
   { en: "hotel", he: "מלונות" },
+  { en: "car", he: "מכוניות" },
   { en: "flight", he: "טיסות" }
 ];
 
