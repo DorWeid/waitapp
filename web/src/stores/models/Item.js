@@ -18,9 +18,9 @@ const definition = {
   createdAt: types.optional(types.string, ""),
   location: types.optional(types.string, ""),
   users: types.optional(types.array(types.string), []),
-  status: types.optional(types.string, "pending")
+  status: types.optional(types.string, "pending"),
+  creator: types.optional(types.string, "")
 };
-
 
 // Any fact that can be derived from the state in a pure manner should go here.
 const views = self => {

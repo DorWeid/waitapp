@@ -11,7 +11,7 @@ const definition = {
   items: types.optional(types.map(ItemModel), {}),
   categories: types.optional(types.array(Category), []),
   latestListAdded: "",
-  currDisplayedCatergory: "hotel",
+  currDisplayedCatergory: "hotel"
 };
 
 const views = self => ({
@@ -84,7 +84,7 @@ const actions = self => {
     self.latestListAdded = "";
   };
 
-  const changeCurrentCategory = (category) => {
+  const changeCurrentCategory = category => {
     self.currDisplayedCatergory = category.en;
   };
 

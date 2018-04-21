@@ -79,7 +79,7 @@ class List extends Component {
       modalOpen: false,
       winner: "not me",
       enrollModalOpen: false,
-      errorCode: -1,
+      errorCode: -1
     };
   }
 
@@ -95,7 +95,7 @@ class List extends Component {
   }
 
   componentDidMount() {
-    const { match, store: { userStore, itemStore} } = this.props;
+    const { match, store: { userStore, itemStore } } = this.props;
 
     itemStore.getItem(match.params.id);
     userStore.currentUser.getUserDetails();
@@ -106,47 +106,67 @@ class List extends Component {
   }
 
   renderEnrollingModalContent = () => {
-    const { store: { userStore }} = this.props;
+    const { store: { userStore } } = this.props;
     switch (this.state.errorCode) {
       case errorCodes.NOT_LOGGED_IN:
-        return (
-          <p>You must be logged in to enroll</p>
-        );
+        return <p>You must be logged in to enroll</p>;
       case errorCodes.MISSING_CREDIT_CARD:
         return (
           <div>
             <p>You must enter your credit card details before enrolling.</p>
-            <p>You can do so by clicking <Link to={`/${userStore.currentUser._id}/profile`}>here</Link></p>
+            <p>
+              You can do so by clicking{" "}
+              <Link to={`/${userStore.currentUser._id}/profile`}>here</Link>
+            </p>
           </div>
         );
-      case errorCodes.ENROLL_INFO: 
+      case errorCodes.ENROLL_INFO:
         return (
           <div>
-            <p>When you enroll, a small fee will be charged. <b>However</b>, if you do not win, you will be refunded in full.</p>
+            <p>
+              When you enroll, a small fee will be charged. <b>However</b>, if
+              you do not win, you will be refunded in full.
+            </p>
             <br />
             <p>Do you wish to continue ?</p>
             <br />
-            <div style={{display: 'flex', justifyContent: 'space-around'}}>
-              <button className="button is-success is-large" onClick={this.enroll}>Yes</button>
-              <button className="button is-danger is-large" onClick={this.handleCloseEnrollModal}>No</button>
+            <div style={{ display: "flex", justifyContent: "space-around" }}>
+              <button
+                className="button is-success is-large"
+                onClick={this.enroll}
+              >
+                Yes
+              </button>
+              <button
+                className="button is-danger is-large"
+                onClick={this.handleCloseEnrollModal}
+              >
+                No
+              </button>
             </div>
           </div>
-        )
+        );
       default:
         return null;
     }
-  }
+  };
 
   onEnrollClick() {
     const { store: { userStore } } = this.props;
 
     if (!userStore.isUserLoggedIn) {
-      this.setState({ errorCode: errorCodes.NOT_LOGGED_IN, enrollModalOpen: true });
+      this.setState({
+        errorCode: errorCodes.NOT_LOGGED_IN,
+        enrollModalOpen: true
+      });
       return;
     }
 
     if (!userStore.currentUser.doesUserHaveCreditCard) {
-      this.setState({ errorCode: errorCodes.MISSING_CREDIT_CARD, enrollModalOpen: true });
+      this.setState({
+        errorCode: errorCodes.MISSING_CREDIT_CARD,
+        enrollModalOpen: true
+      });
       return;
     }
 
@@ -199,7 +219,15 @@ class List extends Component {
       return <div>Loading ...</div>;
     }
     let timeLeftToReedem = moment().format("h:mm:ss");
-    const { title, description, price, currency = "$", users = [], status } =
+    const {
+      title,
+      description,
+      price,
+      currency = "$",
+      users = [],
+      status,
+      creator
+    } =
       currentItem || {};
     let isSigned = users.includes(currentUser._id);
     const isWinner = status === "done" && this.state.winner === "me";
@@ -215,7 +243,10 @@ class List extends Component {
         <div className="columns" style={{ paddingBottom: 30 }}>
           <div className="column">
             <h1 className="title is-1">{title}</h1>
-            <h6 className="subtitle is-6">{description}</h6>
+            <h3 className="subtitle is-3">{description}</h3>
+            <h5 className="subtitle is-5">
+              <Link to={`/${creator}/profile`}>List by - {creator} </Link>
+            </h5>
           </div>
         </div>
         <div className="columns" style={{ marginLeft: 15 }}>
