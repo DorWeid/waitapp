@@ -10,7 +10,7 @@ import SideNav from "react-simple-sidenav";
 
 const menuItems = [
   { text: "Home", link: "/" },
-  { text: "Lists", link: "/lists" },
+  // { text: "Lists", link: "/lists" },
   { text: "About", link: "/about" }
 ];
 
@@ -26,6 +26,7 @@ class Navbar extends Component {
 
     this.responseFacebook = this.responseFacebook.bind(this);
     this.openSidebar = this.openSidebar.bind(this);
+    this.onCategorySelect = this.onCategorySelect.bind(this);
 
     if (!process.env.REACT_APP_FACEBOOK_ID) {
       console.error(
@@ -44,6 +45,14 @@ class Navbar extends Component {
       accessToken: response.accessToken
     });
   };
+
+  // TODO: Fix
+  onCategorySelect(categoryNum) {
+    const { itemStore: { categories = [], changeCurrentCategory } } = this.props.store;
+
+    this.openSidebar.bind(this, false);
+    changeCurrentCategory(categories[categoryNum]);
+  }
 
   // NOTE: much arab
   isHomepage = () => {
@@ -77,14 +86,14 @@ class Navbar extends Component {
         <div className="dropdown-menu">
           <div className="dropdown-content">
             <Link
-              to="/list/type/hotel"
+              to="/"
               onClick={this.openSidebar.bind(this, false)}
               className="dropdown-item navbar-custom-menuitem"
             >
               Hotels
             </Link>
             <Link
-              to="/list/type/car"
+              to="/"
               onClick={this.openSidebar.bind(this, false)}
               className="dropdown-item navbar-custom-menuitem"
               replace
@@ -92,7 +101,7 @@ class Navbar extends Component {
               Cars
             </Link>
             <Link
-              to="/list/type/flight"
+              to="/"
               onClick={this.openSidebar.bind(this, false)}
               className="dropdown-item navbar-custom-menuitem"
             >
@@ -152,9 +161,7 @@ class Navbar extends Component {
           items={items}
         />
         <nav
-          className={`navbar is-dark ${
-            document.location.pathname === "/" ? "is-transparent" : ""
-          } `}
+          className={`navbar is-dark`}
         >
           <div className="navbar-start">
             <a
