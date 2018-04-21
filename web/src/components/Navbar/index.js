@@ -52,12 +52,7 @@ class Navbar extends Component {
 
   render() {
     const { userStore } = this.props.store;
-    if (userStore.isUserLoggedIn) {
-      menuItems.push(
-        { text: "Created Lists", link: "/createdLists" },
-        { text: "Enrolled Lists", link: "/enrolledLists" }  
-      );
-    }
+
     const items = [
       ...menuItems.map(item => (
         <Link
@@ -110,7 +105,17 @@ class Navbar extends Component {
         <Link to="/pendingLists">
           <div className="navbar-custom-menuitem">Pending Lists</div>
         </Link>
-      ) : null
+      ) : null,
+      userStore.isUserLoggedIn ? (
+        <Link to="/createdLists">
+          <div className="navbar-custom-menuitem">Created Lists</div>
+        </Link>
+      ) : null,
+      userStore.isUserLoggedIn ? (
+        <Link to="/enrolledLists">
+          <div className="navbar-custom-menuitem">Enrolled Lists</div>
+        </Link>
+      ) : null,
     ];
 
     const title = userStore.isUserLoggedIn ? (
