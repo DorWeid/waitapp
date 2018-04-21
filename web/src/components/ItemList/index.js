@@ -6,7 +6,12 @@ export default props => {
   return (
     <div className="item-list">
       {items.map(item => (
-        <Item key={item._id} {...item} cardWidth={cardWidth} />
+        <Item
+          key={item._id}
+          {...item}
+          cardWidth={cardWidth}
+          isOwner={props.isOwner}
+        />
       ))}
     </div>
   );

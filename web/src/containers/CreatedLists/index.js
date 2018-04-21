@@ -14,10 +14,12 @@ class PendingLists extends Component {
   async componentDidMount() {
     const { store: { userStore } } = this.props;
     if (userStore.isUserLoggedIn) {
-      const response = await fetch(`/api/user/${userStore.currentUser._id}/createdLists`, {
-        credentials: "include"
-      });
-      debugger
+      const response = await fetch(
+        `/api/user/${userStore.currentUser._id}/createdLists`,
+        {
+          credentials: "include"
+        }
+      );
       const createdLists = await response.json();
       this.setState({ createdLists });
     }
@@ -30,7 +32,7 @@ class PendingLists extends Component {
     }
     return (
       <div className="lists-container">
-        <ItemList items={this.state.createdLists} />
+        <ItemList items={this.state.createdLists} isOwner />
       </div>
     );
   }

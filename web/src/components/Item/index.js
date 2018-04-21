@@ -4,6 +4,7 @@ import moment from "moment";
 
 export default ({
   _id,
+  creator,
   title,
   img,
   description,
@@ -12,10 +13,10 @@ export default ({
   users,
   location,
   status,
-  cardWidth = "15%"
+  cardWidth = "15%",
+  isOwner
 }) => {
   const cardStyle = { width: cardWidth };
-
   return (
     <div className="card" style={cardStyle}>
       <div className="card-image">
@@ -77,6 +78,16 @@ export default ({
           </time>
         </p>
       </footer>
+      {isOwner && <span>{status} </span>}
+      {isOwner &&
+        status === "approved" && (
+          <button
+            className="button is-primary"
+            onClick={() => alert("list is open")}
+          >
+            Open list
+          </button>
+        )}
     </div>
   );
 };
