@@ -10,7 +10,7 @@ const LOCAL_STORAGE_KEYS = {
   LOCAL_STORAGE_PROFILE_EMAIL: "email",
   LOCAL_STORAGE_PROFILE_CREATED_AT: "createdAt",
   LOCAL_STORAGE_PROFILE_USER_MONGO_ID: "_id",
-  LOCAL_STORAGE_PROFILE_ADMIN: "admin"
+  LOCAL_STORAGE_PROFILE_ADMIN: "admin",
 };
 
 const definition = {
@@ -61,6 +61,9 @@ const views = self => {
 
         return acc;
       }, {});
+    }, 
+    get doesUserHaveCreditCard() {
+      return self.creditCard && self.creditCard.number;
     }
   };
 };
@@ -73,6 +76,7 @@ const actions = self => {
     self.createdAt = user.createdAt;
     self.picture_url = user.picture_url;
     self.admin = user.admin;
+    self.creditCard = user.creditCard;
 
     user.comments.forEach(cmt => self.comments.put(cmt));
   };

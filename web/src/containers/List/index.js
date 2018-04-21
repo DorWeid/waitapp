@@ -3,6 +3,7 @@ import WaitingList from "../../components/WaitingList";
 import SliderSlick from "react-slick";
 import { observer, inject } from "mobx-react";
 import { Redirect } from "react-router";
+import { Link } from "react-router-dom";
 import img from "../../pictures/1.jpeg";
 import moment from "moment";
 import Modal from "react-responsive-modal";
@@ -54,6 +55,12 @@ const slides = [
   }
 ];
 
+const errorCodes = {
+  NOT_LOGGED_IN: 1,
+  MISSING_CREDIT_CARD: 2,
+  ENROLL_INFO: 3
+};
+
 class List extends Component {
   constructor(props) {
     super(props);
@@ -65,13 +72,20 @@ class List extends Component {
     this.redeem = this.redeem.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.handleCloseEnrollModal = this.handleCloseEnrollModal.bind(this);
+    this.onEnrollClick = this.onEnrollClick.bind(this);
     // TODO: change the way we get the status and winner
     this.state = {
       modalOpen: false,
-      winner: "not me"
+      winner: "not me",
+      enrollModalOpen: false,
+      errorCode: -1,
     };
   }
 
+  handleCloseEnrollModal() {
+    this.setState({ enrollModalOpen: false });
+  }
   handleCloseModal() {
     this.setState({ modalOpen: false });
   }
@@ -81,25 +95,69 @@ class List extends Component {
   }
 
   componentDidMount() {
-    const { match } = this.props;
-    const itemStore = this.props.store.itemStore;
+    const { match, store: { userStore, itemStore} } = this.props;
 
     itemStore.getItem(match.params.id);
+    userStore.currentUser.getUserDetails();
   }
 
   redeem() {
     alert("you motherfucker!");
   }
 
+  renderEnrollingModalContent = () => {
+    const { store: { userStore }} = this.props;
+    switch (this.state.errorCode) {
+      case errorCodes.NOT_LOGGED_IN:
+        return (
+          <p>You must be logged in to enroll</p>
+        );
+      case errorCodes.MISSING_CREDIT_CARD:
+        return (
+          <div>
+            <p>You must enter your credit card details before enrolling.</p>
+            <p>You can do so by clicking <Link to={`/${userStore.currentUser._id}/profile`}>here</Link></p>
+          </div>
+        );
+      case errorCodes.ENROLL_INFO: 
+        return (
+          <div>
+            <p>When you enroll, a small fee will be charged. <b>However</b>, if you do not win, you will be refunded in full.</p>
+            <br />
+            <p>Do you wish to continue ?</p>
+            <br />
+            <div style={{display: 'flex', justifyContent: 'space-around'}}>
+              <button className="button is-success is-large" onClick={this.enroll}>Yes</button>
+              <button className="button is-danger is-large" onClick={this.handleCloseEnrollModal}>No</button>
+            </div>
+          </div>
+        )
+      default:
+        return null;
+    }
+  }
+
+  onEnrollClick() {
+    const { store: { userStore } } = this.props;
+
+    if (!userStore.isUserLoggedIn) {
+      this.setState({ errorCode: errorCodes.NOT_LOGGED_IN, enrollModalOpen: true });
+      return;
+    }
+
+    if (!userStore.currentUser.doesUserHaveCreditCard) {
+      this.setState({ errorCode: errorCodes.MISSING_CREDIT_CARD, enrollModalOpen: true });
+      return;
+    }
+
+    this.setState({ errorCode: errorCodes.ENROLL_INFO, enrollModalOpen: true });
+  }
+
   async enroll() {
     const { match: { params }, store: { itemStore, userStore } } = this.props;
-    // TODO: enable only if user is logged in
-    if (userStore.isUserLoggedIn) {
-      await itemStore.items
-        .get(params.id)
-        .enroll(userStore.currentUser.username);
-      await itemStore.getItem(params.id);
-    }
+    this.handleCloseEnrollModal();
+    await itemStore.items.get(params.id).enroll(userStore.currentUser.username);
+    await itemStore.getItem(params.id);
   }
 
   async disenroll() {
@@ -240,7 +298,7 @@ class List extends Component {
                   <span>Disenroll</span>
                 </a>
               ) : (
-                <a className="button is-primary" onClick={this.enroll}>
+                <a className="button is-primary" onClick={this.onEnrollClick}>
                   <span className="icon is-small">
                     <i className="fa fa-check" />
                   </span>
@@ -262,6 +320,15 @@ class List extends Component {
             </SliderSlick>
           </div>
         </div>
+        <Modal
+          classNames={{ modal: "modal-body" }}
+          open={this.state.enrollModalOpen}
+          onClose={this.handleCloseEnrollModal}
+          little
+        >
+          <h2>Hey there!</h2>
+          {this.renderEnrollingModalContent()}
+        </Modal>
         <Modal
           classNames={{ modal: "modal-body" }}
           open={this.state.modalOpen}
