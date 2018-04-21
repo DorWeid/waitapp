@@ -61,7 +61,7 @@ const views = self => {
 
         return acc;
       }, {});
-    }, 
+    },
     get doesUserHaveCreditCard() {
       return self.creditCard && self.creditCard.number;
     }
@@ -133,7 +133,7 @@ const actions = self => {
   const getUserLists = flow(function*() {
     try {
       const userLists = yield self.store.get(`/user/${self._id}/createdLists`);
-      
+
       userLists.data.forEach(item => self.items.put(item));
     } catch (error) {
       console.error("Couldnt fetch items", error);

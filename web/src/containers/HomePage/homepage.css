@@ -11,8 +11,8 @@
 }
 
 .arrow-icon-container {
-  top: -16vh;
-  position: relative;
+  top: 92vh;
+  position: absolute;
   width: 100%;
   display: flex;
   justify-content: center;
