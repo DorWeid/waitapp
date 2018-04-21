@@ -33,7 +33,7 @@ class HomePage extends Component {
     return (
       <div className="homepage-container">
         <TopFive items={items.values().slice(0, 6)}/>
-        <Slider changeCategory={this.changeCategory} autoPlay={this.autoPlay} />
+        <Slider currDisplayedCatergory={currDisplayedCatergory} changeCategory={this.changeCategory} autoPlay={this.autoPlay} />
         <div
           className="arrow-icon-container"
           onClick={() => {
