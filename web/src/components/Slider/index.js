@@ -66,9 +66,7 @@ const Slide = props => {
   return (
     <div key={id} style={{ width: "100vw", height: "100vh" }}>
       <img alt={alt} src={src} style={{ width: "100%", height: "100%", opacity: '0.6' }} />
-      {
-        <ItemDescriptionThumb {...props} />
-      }
+      <ItemDescriptionThumb {...props} />
     </div>
   );
 };

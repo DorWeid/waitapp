@@ -19,6 +19,9 @@ class HomePage extends Component {
   componentDidMount() {
     let { store: { itemStore: { loadCategories } } } = this.props;
     loadCategories();
+
+    // Reset the first displayed category - for the category lists to be in accordance to the slider
+    this.changeCategory(0);
   }
 
   changeCategory(slideNum) {
