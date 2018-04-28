@@ -124,7 +124,7 @@ class CategoryLists extends Component {
             <br />
             <div style={{ width: "90%" }}>
               {" "}
-              <ItemList items={displayedItems.slice(1)} cardWidth="18%" />{" "}
+              <ItemList items={displayedItems.slice(3)} cardWidth="18%" />{" "}
             </div>
           </div>
         ) : (

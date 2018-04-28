@@ -2,6 +2,18 @@ import { types, flow, getParent } from "mobx-state-tree";
 import ItemModel from "./models/Item";
 import { categories } from "./models/Item";
 
+function importAll(r) {
+  let images = {};
+  r.keys().map((item, index) => {
+    return (images[item.replace("./", "")] = r(item));
+  });
+  return images;
+}
+
+const images = importAll(
+  require.context("../pictures/", false, /\.(png|jpe?g|svg)$/)
+);
+
 const Category = types.model("Category", {
   en: types.string,
   he: types.string
@@ -23,6 +35,26 @@ const views = self => ({
 const actions = self => {
   function updateItems(json) {
     self.items.clear();
+
+    // TODO: remove after video
+    json
+      .filter(jsonItem => jsonItem.type === 'hotel')
+      .map((item, idx) => {
+        item.img = images[`${item.type}_${idx}.jpg`];
+        return item;
+      });
+    json
+      .filter(jsonItem => jsonItem.type === 'car')
+      .map((item, idx) => {
+        item.img = images[`${item.type}_${idx}.jpg`];
+        return item;
+      });
+    json
+      .filter(jsonItem => jsonItem.type === 'flight')
+      .map((item, idx) => {
+        item.img = images[`${item.type}_${idx}.jpg`];
+        return item;
+      });
 
     json.forEach(itemJson => {
       self.items.put(itemJson);

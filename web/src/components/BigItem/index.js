@@ -15,7 +15,7 @@ export default ({
   cardWidth = "33%"
 }) => {
   const cardStyle = { width: cardWidth };
-
+  debugger;
   return (
     <div className="card" style={cardStyle}>
       <div className="card-image">
