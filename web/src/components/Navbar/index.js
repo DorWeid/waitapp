@@ -27,6 +27,7 @@ class Navbar extends Component {
     this.responseFacebook = this.responseFacebook.bind(this);
     this.openSidebar = this.openSidebar.bind(this);
     this.onCategorySelect = this.onCategorySelect.bind(this);
+    this.logout = this.logout.bind(this);
 
     if (!process.env.REACT_APP_FACEBOOK_ID) {
       console.error(
@@ -46,9 +47,16 @@ class Navbar extends Component {
     });
   };
 
+  logout() {
+    const { userStore } = this.props.store;
+    userStore.logout();
+  }
+
   // TODO: Fix
   onCategorySelect(categoryNum) {
-    const { itemStore: { categories = [], changeCurrentCategory } } = this.props.store;
+    const {
+      itemStore: { categories = [], changeCurrentCategory }
+    } = this.props.store;
 
     this.openSidebar.bind(this, false);
     changeCurrentCategory(categories[categoryNum]);
@@ -125,6 +133,11 @@ class Navbar extends Component {
           <div className="navbar-custom-menuitem">Enrolled Lists</div>
         </Link>
       ) : null,
+      userStore.isUserLoggedIn ? (
+        <button className="button is-primary" onClick={this.logout}>
+          Logout
+        </button>
+      ) : null
     ];
 
     const title = userStore.isUserLoggedIn ? (
@@ -160,9 +173,7 @@ class Navbar extends Component {
           itemHoverStyle={{ backgroundColor: "##3b5998" }}
           items={items}
         />
-        <nav
-          className={`navbar is-dark`}
-        >
+        <nav className={`navbar is-dark`}>
           <div className="navbar-start">
             <a
               className="navbar-item"

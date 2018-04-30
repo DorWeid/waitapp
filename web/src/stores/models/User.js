@@ -10,7 +10,7 @@ const LOCAL_STORAGE_KEYS = {
   LOCAL_STORAGE_PROFILE_EMAIL: "email",
   LOCAL_STORAGE_PROFILE_CREATED_AT: "createdAt",
   LOCAL_STORAGE_PROFILE_USER_MONGO_ID: "_id",
-  LOCAL_STORAGE_PROFILE_ADMIN: "admin",
+  LOCAL_STORAGE_PROFILE_ADMIN: "admin"
 };
 
 const definition = {
@@ -105,6 +105,14 @@ const actions = self => {
     }
   });
 
+  const logout = function() {
+    try {
+      localStorage.clear();
+    } catch (e) {
+      console.log("Could not logout, error: ", e.message);
+    }
+  };
+
   const acceptList = flow(function*(listId) {
     try {
       yield self.store.post(`/admin/list/${listId}/accept`);
@@ -183,6 +191,7 @@ const actions = self => {
 
   return {
     login,
+    logout,
     acceptList,
     denyList,
     getPendingLists,

@@ -46,6 +46,13 @@ const actions = self => {
     }
   });
 
+  const logout = () => {
+    self.currentUser = UserModel.create({
+      _id: "-1"
+    });
+    self.currentUser.logout();
+  };
+
   const setUserAuthData = data => {
     self.currentUser = {
       ...(data ? data : self.currentUser.getUserAuthDataFromStorage)
@@ -60,10 +67,7 @@ const actions = self => {
       }
     };
     try {
-      const result = yield self.store.post(
-        `/user/${userId}/comment`,
-        options
-      );
+      const result = yield self.store.post(`/user/${userId}/comment`, options);
 
       if (!result.data.success) {
         throw new Error("Something went wrong in the server...");
@@ -88,7 +92,8 @@ const actions = self => {
     getUser,
     authenticateCurrentUser,
     setUserAuthData,
-    addComment
+    addComment,
+    logout
   };
 };
 
