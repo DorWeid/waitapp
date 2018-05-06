@@ -301,7 +301,7 @@ class List extends Component {
                 <span className="admin-buttons">
                   <a className="button is-primary" onClick={this.accept}>
                     <span className="icon is-small">
-                      <i className="fa fa-times" />
+                      <i className="fa fa-check" />
                     </span>
                     <span>Accept List</span>
                   </a>
