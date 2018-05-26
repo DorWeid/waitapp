@@ -58,10 +58,7 @@ const actions = self => {
 
   const startList = flow(function*() {
     try {
-      yield fetch(`/api/list/${self._id}/start`, {
-        credentials: "include",
-        method: "post"
-      });
+      yield self.store.post(`/list/${self._id}/start`);
     } catch (error) {
       console.log("error while starting list", error);
     }

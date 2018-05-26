@@ -79,7 +79,8 @@ class List extends Component {
       modalOpen: false,
       winner: "not me",
       enrollModalOpen: false,
-      errorCode: -1
+      errorCode: -1,
+      similiar: []
     };
   }
 
@@ -94,11 +95,16 @@ class List extends Component {
     this.setState({ modalOpen: true });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { match, store: { userStore, itemStore } } = this.props;
 
     itemStore.getItem(match.params.id);
     userStore.currentUser.getUserDetails();
+    const response = await fetch(`/api/list/${match.params.id}/similiar`, {
+      credentials: "include"
+    });
+    const similiar = await response.json();
+    this.setState({ similiar });
   }
 
   redeem() {
@@ -210,6 +216,7 @@ class List extends Component {
   }
 
   render() {
+    console.log(this.state.similiar);
     const {
       store: { itemStore: { items }, userStore: { currentUser } }
     } = this.props;
