@@ -14,7 +14,8 @@ export default ({
   location,
   status,
   cardWidth = "15%",
-  isOwner
+  isOwner,
+  startList
 }) => {
   const cardStyle = { width: cardWidth };
   return (
@@ -83,7 +84,7 @@ export default ({
         status === "approved" && (
           <button
             className="button is-primary"
-            onClick={() => alert("list is open")}
+            onClick={startList.bind(null, _id)}
           >
             Open list
           </button>

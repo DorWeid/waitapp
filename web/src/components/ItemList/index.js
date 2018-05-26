@@ -2,7 +2,7 @@ import React from "react";
 import Item from "../Item";
 import "./itemlist.css";
 export default props => {
-  const { items = [], cardWidth } = props;
+  const { items = [], cardWidth, startList } = props;
   return (
     <div className="item-list">
       {items.map(item => (
@@ -11,6 +11,7 @@ export default props => {
           {...item}
           cardWidth={cardWidth}
           isOwner={props.isOwner}
+          startList={startList}
         />
       ))}
     </div>

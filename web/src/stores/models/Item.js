@@ -56,6 +56,17 @@ const actions = self => {
     }
   });
 
+  const startList = flow(function*() {
+    try {
+      yield fetch(`/api/list/${self._id}/start`, {
+        credentials: "include",
+        method: "post"
+      });
+    } catch (error) {
+      console.log("error while starting list", error);
+    }
+  });
+
   const disenroll = flow(function*(username) {
     const url = `/list/${self._id}/removeUser`;
     const options = {
@@ -77,6 +88,7 @@ const actions = self => {
   return {
     enroll,
     disenroll,
+    startList,
     isUserInList
   };
 };
