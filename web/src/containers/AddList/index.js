@@ -13,9 +13,12 @@ class AddList extends Component {
     super(props);
 
     this.addList = this.addList.bind(this);
+    this.changeTime = this.changeTime.bind(this);
     this.state = {
         startDate: moment(),
-        endDate: moment()
+        endDate: moment(),
+        startHour: moment(),
+        endTime: moment()
       };
   }
 
@@ -32,8 +35,11 @@ class AddList extends Component {
 
    addList() {
     const { store: { itemStore } } = this.props;
+    const start = moment(this.state.startDate.format('YYYY-MM-DD') + ' ' + this.state.startTime)
+    const end = moment(this.state.endDate.format('YYYY-MM-DD') + ' ' + this.state.endTime)
+
     itemStore
-    .addList(this.state.type, {price: 515} , this.state.title, this.state.description, this.state.price, this.state.location, this.state.startDate, this.state.endDate, this.state.amount);
+    .addList(this.state.type, {price: 515} , this.state.title, this.state.description, this.state.price, this.state.location, start, end, this.state.amount);
     alert('List has been added! we will let you know when we approve or deny it');
   }
 
@@ -42,6 +48,14 @@ class AddList extends Component {
       this.setState({ startDate: date });
     } else {
       this.setState({ endDate: date });
+    }
+  }
+
+  changeTime(when, time) {
+    if (when === "start") {
+      this.setState({ startTime: time });
+    } else {
+      this.setState({ endTime: time });
     }
   }
 
@@ -106,6 +120,12 @@ class AddList extends Component {
                 selected={this.state.startDate}
                 onChange={this.changeDate.bind(this, "start")}
               />
+              <div className="field">
+                <div className="control" style={{display: 'flex', alignItems: 'center'}}>
+                  <label style={{marginBottom: 0}}>Opening time:</label>
+                  <input className="input time-field" type="time" placeholder="Opening time" onChange={(e) => this.changeTime('start', e.target.value)} />
+                </div>
+              </div>
             </span>
             <span className="date-container">
               <span className="date-header">To</span>
@@ -114,6 +134,12 @@ class AddList extends Component {
                 selected={this.state.endDate}
                 onChange={this.changeDate.bind(this, "end")}
               />
+              <div className="field">
+                <div className="control" style={{display: 'flex', alignItems: 'center'}}>
+                  <label style={{marginBottom: 0}}>Ending time:</label>
+                  <input className="input time-field" type="time" placeholder="Ending time" onChange={(e) => this.changeTime('end', e.target.value)} />
+                </div>
+              </div>
             </span>
           </div>
         </div>
