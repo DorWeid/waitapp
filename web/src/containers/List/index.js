@@ -226,6 +226,7 @@ class List extends Component {
       currency = "$",
       users = [],
       status,
+      creatorName,
       creator
     } =
       currentItem || {};
@@ -245,13 +246,13 @@ class List extends Component {
             <h1 className="title is-1">{title}</h1>
             <h3 className="subtitle is-3">{description}</h3>
             <h5 className="subtitle is-5">
-              <Link to={`/${creator}/profile`}>List by - {creator} </Link>
+              <Link to={`/${creator}/profile`}>List by - {creatorName} </Link>
             </h5>
           </div>
         </div>
         <div className="columns" style={{ marginLeft: 15 }}>
           <div className="column is-2">
-            <WaitingList users={users} />
+            <WaitingList users={users.length} />
           </div>
           <div className="column is-3" style={{ marginLeft: 40 }}>
             <div className="box">
