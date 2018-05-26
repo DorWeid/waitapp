@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import WaitingList from "../../components/WaitingList";
+import ItemList from "../../components/ItemList";
 import SliderSlick from "react-slick";
 import { observer, inject } from "mobx-react";
 import { Redirect } from "react-router";
@@ -402,6 +403,10 @@ class List extends Component {
             </span>
           </div>
         </Dock>
+        <div>
+          more like this:
+          <ItemList items={this.state.similiar.slice(0, 5)} />
+        </div>
       </div>
     );
   }
