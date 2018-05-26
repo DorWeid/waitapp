@@ -26,7 +26,15 @@
 }
 
 .location-field {
-    width: 31vw;
+    width: 20vw;
+}
+
+.time-field {
+    width: 6vw;
+}
+
+.time-label-field {
+    width: 7vw;
 }
 
 .amount-field {
