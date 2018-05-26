@@ -93,7 +93,7 @@ class AddList extends Component {
           </div>
           <div className="field">
             <div className="control">
-              <input className="input amount-field" type="text" placeholder="Max users in list" onChange={(e) => this.setState({amount : e.target.value})} />
+              <input className="input amount-field" type="text" placeholder="Max winners" onChange={(e) => this.setState({amount : e.target.value})} />
             </div>
           </div>
         </div>
