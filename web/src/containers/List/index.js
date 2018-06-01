@@ -217,7 +217,6 @@ class List extends Component {
   }
 
   render() {
-    console.log(this.state.similiar);
     const {
       store: { itemStore: { items }, userStore: { currentUser } }
     } = this.props;
