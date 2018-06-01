@@ -42,11 +42,17 @@ class PendingLists extends Component {
     if (!userStore.isUserLoggedIn) {
       return <Redirect to="/"/>;
     }
-    return (
-      <div className="lists-container">
-        <ItemList items={this.state.createdLists} isOwner startList={this.startList}/>
+    return this.state.createdLists.length
+      ? (
+        <div className="lists-container">
+          <ItemList items={this.state.createdLists} isOwner startList={this.startList}/>
+        </div>
+      )
+      : <div style={{
+        fontSize: 'large'
+      }}>
+        You haven't created any list yet!
       </div>
-    );
   }
 }
 
