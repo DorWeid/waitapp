@@ -19,12 +19,15 @@ class AddList extends Component {
     this.changeTime = this
       .changeTime
       .bind(this);
+
+    this.metaRender = this.metaRender.bind(this);
     this.state = {
       startDate: moment(),
       endDate: moment(),
       startHour: moment(),
       endTime: moment(),
-      files: []
+      files: [],
+      meta: {}
     };
   }
 
@@ -50,9 +53,7 @@ class AddList extends Component {
     const start = moment(this.state.startDate.format('YYYY-MM-DD') + ' ' + this.state.startTime)
     const end = moment(this.state.endDate.format('YYYY-MM-DD') + ' ' + this.state.endTime)
 
-    itemStore.addList(this.state.type, {
-      price: 515
-    }, this.state.title, this.state.description, this.state.price, this.state.location, start, end, this.state.amount, this.state.files);
+    itemStore.addList(this.state.type, this.state.meta, this.state.title, this.state.description, this.state.price, this.state.location, start, end, this.state.amount, this.state.files);
     alert('List has been added! we will let you know when we approve or deny it');
   }
 
@@ -73,6 +74,90 @@ class AddList extends Component {
       this.setState({startTime: time});
     } else {
       this.setState({endTime: time});
+    }
+  }
+
+  metaRender(category) {
+    switch (category) {
+      case 'hotel':
+        return (
+          <div className="fields-group" style={{alignItems: 'center'}}>   
+            <div className="field">
+              <Select
+                name="form-field-select"
+                className="form-field-select"
+                value={this.state.meta ? this.state.meta.roomType : ''}
+                placeholder="Room Type"
+                onChange={(option) => this.setState({meta: {...this.state.meta, roomType: option.value}})}
+                options={[{value: 'single', label: 'Single'}, {value: 'double', label: 'Double'}, {value: 'suite', label: 'Suite'}, {value: 'apartment', label: 'Apartment'}, {value: 'villa', label: 'Villa'}, {value: 'accessible', label: 'Accessible'}]}
+              />
+            </div>     
+            <div className="field">
+              <div className="control">
+                <input className="input meta-field" type="text" placeholder="Describe View..." onChange={(e) => this.setState({meta: {...this.state.meta, view: e.target.value}})} />
+              </div>
+            </div>
+            <div className="field">
+              <div className="control">
+                <input className="input meta-field" type="text" placeholder="Staying Plan" onChange={(e) => this.setState({meta: {...this.state.meta, stayingPlan: e.target.value}})} />
+              </div>
+            </div>
+          </div>
+        );
+      case 'car':
+        return (
+          <div className="fields-group" style={{alignItems: 'center'}}>   
+            <div className="field">
+              <Select
+                name="form-field-select"
+                className="form-field-select"
+                value={this.state.meta ? this.state.meta.carType : ''}
+                placeholder="Car Type"
+                onChange={(option) => this.setState({meta: {...this.state.meta, carType: option.value}})}
+                options={[{value: 'mazda', label: 'Mazda'}, {value: 'mercedes', label: 'Mercedes'}, {value: 'bmw', label: 'BMW'}, {value: 'mitsubishi', label: 'Mitsubishi'}, {value: 'chevrolet', label: 'Chevrolet'}, {value: 'skoda', label: 'Skoda'}]}
+              />
+            </div>     
+            <div className="field">
+              <div className="control">
+                <input className="input meta-field" type="number" placeholder="# Seats" onChange={(e) => this.setState({meta: {...this.state.meta, seats: e.target.value}})} />
+              </div>
+            </div>
+            <div className="field">
+              <div className="control">
+                <input className="input meta-field" type="number" placeholder="Year" min="2000" onChange={(e) => this.setState({meta: {...this.state.meta, year: e.target.value}})} />
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'flight':
+        return (
+          <div className="fields-group" style={{alignItems: 'center'}}>   
+            <div className="field">
+              <Select
+                name="form-field-select"
+                className="form-field-select"
+                value={this.state.meta ? this.state.meta.airline : ''}
+                placeholder="Airline"
+                onChange={(option) => this.setState({meta: {...this.state.meta, airline: option.value}})}
+                options={[{value: 'elal', label: 'El-Al'}, {value: 'turkish_airlines', label: 'Turkish Airlines'}, {value: 'air_berlin', label: 'Air Berlin'}, {value: 'aeromexico', label: 'Aeromexico'}, {value: 'vueling', label: 'Vueling'}]}
+              />
+            </div>     
+            <div className="field">
+              <div className="control">
+                <input className="input meta-field" type="text" placeholder="From Destination" onChange={(e) => this.setState({meta: {...this.state.meta, fromDestination: e.target.value}})} />
+              </div>
+            </div>
+            <div className="field">
+              <div className="control">
+                <input className="input meta-field" type="text" placeholder="To Destination" onChange={(e) => this.setState({meta: {...this.state.meta, toDestination: e.target.value}})} />
+              </div>
+            </div>
+          </div>
+        );
+      
+      default:
+        return null;
     }
   }
 
@@ -115,7 +200,7 @@ class AddList extends Component {
                   className="form-field-select"
                   value={this.state.type || ''}
                   placeholder="Category"
-                  onChange={(option) => this.setState({type: option.value})}
+                  onChange={(option) => this.setState({type : option.value, meta: {}})}
                   options={itemStore
                   .categories
                   .map(c => ({value: c.en, label: c.en}))}/>
@@ -158,6 +243,9 @@ class AddList extends Component {
                     onChange={(e) => this.setState({amount: e.target.value})}/>
                 </div>
               </div>
+            </div>
+            <div className="field">
+              {this.metaRender(this.state.type)}
             </div>
             <div className="field">
               <div className="control date-control">

@@ -28,6 +28,7 @@ const definition = {
   status: types.optional(types.string, "pending"),
   creator: types.optional(types.string, ""),
   creatorName: types.optional(types.string, ""),
+  meta: types.optional(types.map(types.frozen), {}),
   images: types.optional(types.array(types.string), [])
 };
 
