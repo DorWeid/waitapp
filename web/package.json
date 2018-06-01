@@ -25,6 +25,7 @@
     "react-dock": "^0.2.4",
     "react-dom": "^16.2.0",
     "react-facebook-login": "^3.7.2",
+    "react-file-base64": "^1.0.3",
     "react-parallax": "^1.7.0",
     "react-responsive-modal": "^2.0.1",
     "react-router": "^4.2.0",

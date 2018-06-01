@@ -1,9 +1,16 @@
-import { types, getParent, flow } from "mobx-state-tree";
+import {types, getParent, flow} from "mobx-state-tree";
 
 export const categories = [
-  { en: "hotel", he: "מלונות" },
-  { en: "car", he: "מכוניות" },
-  { en: "flight", he: "טיסות" }
+  {
+    en: "hotel",
+    he: "מלונות"
+  }, {
+    en: "car",
+    he: "מכוניות"
+  }, {
+    en: "flight",
+    he: "טיסות"
+  }
 ];
 
 // The model definition
@@ -21,7 +28,8 @@ const definition = {
   status: types.optional(types.string, "pending"),
   creator: types.optional(types.string, ""),
   creatorName: types.optional(types.string, ""),
-  meta: types.optional(types.map(types.frozen), {})
+  meta: types.optional(types.map(types.frozen), {}),
+  images: types.optional(types.array(types.string), [])
 };
 
 // Any fact that can be derived from the state in a pure manner should go here.
@@ -40,38 +48,48 @@ const views = self => {
   };
 };
 
-// Modifying nodes can only be done by actions
-// Simply put, state can be changed only by actions
+// Modifying nodes can only be done by actions Simply put, state can be changed
+// only by actions
 // NOTE: Your async functions should probably go here
 const actions = self => {
-  const enroll = flow(function*(username) {
+  const enroll = flow(function * (username) {
     const url = `/list/${self._id}/addUser`;
     const options = {
-      data: { username }
+      data: {
+        username
+      }
     };
     try {
-      yield self.store.post(url, options);
+      yield self
+        .store
+        .post(url, options);
       console.log("Succesfully signed up!");
     } catch (e) {
       console.log("Could not sign up. Error:", e.message);
     }
   });
 
-  const startList = flow(function*() {
+  const startList = flow(function * () {
     try {
-      yield self.store.post(`/list/${self._id}/start`);
+      yield self
+        .store
+        .post(`/list/${self._id}/start`);
     } catch (error) {
       console.log("error while starting list", error);
     }
   });
 
-  const disenroll = flow(function*(username) {
+  const disenroll = flow(function * (username) {
     const url = `/list/${self._id}/removeUser`;
     const options = {
-      data: { username }
+      data: {
+        username
+      }
     };
     try {
-      yield self.store.delete(url, options);
+      yield self
+        .store
+        .delete(url, options);
       console.log("Succesfully disenrolled from list!");
     } catch (e) {
       console.log("Could not disenroll. Error:", e.message);
@@ -80,15 +98,12 @@ const actions = self => {
 
   // TODO: This should be in views
   const isUserInList = username => {
-    return self.users.includes(username);
+    return self
+      .users
+      .includes(username);
   };
 
-  return {
-    enroll,
-    disenroll,
-    startList,
-    isUserInList
-  };
+  return {enroll, disenroll, startList, isUserInList};
 };
 
 const Item = types

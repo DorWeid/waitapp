@@ -1,6 +1,6 @@
-import { types, flow, getParent } from "mobx-state-tree";
+import {types, flow, getParent} from "mobx-state-tree";
 import ItemModel from "./models/Item";
-import { categories } from "./models/Item";
+import {categories} from "./models/Item";
 
 const Category = types.model("Category", {
   en: types.string,
@@ -22,39 +22,39 @@ const views = self => ({
 
 const actions = self => {
   function updateItems(json) {
-    self.items.clear();
+    self
+      .items
+      .clear();
 
     json.forEach(itemJson => {
-      self.items.put(itemJson);
+      self
+        .items
+        .put(itemJson);
     });
   }
 
-  const loadItems = flow(function* loadItems() {
+  const loadItems = flow(function * loadItems() {
     try {
-      const result = yield self.store.get(`/list`);
+      const result = yield self
+        .store
+        .get(`/list`);
       updateItems(result.data);
     } catch (error) {
       console.error("Couldnt fetch items", error);
     }
   });
 
-  const getItem = flow(function* getItem(id) {
-    const result = yield self.store.get(`/list/${id}`);
+  const getItem = flow(function * getItem(id) {
+    const result = yield self
+      .store
+      .get(`/list/${id}`);
     const converted = ItemModel.create(result.data);
-    self.items.set(id, converted);
+    self
+      .items
+      .set(id, converted);
   });
 
-  const addList = flow(function* addList(
-    type,
-    meta,
-    title,
-    description,
-    price,
-    location,
-    startDate,
-    endDate,
-    amount
-  ) {
+  const addList = flow(function * addList(type, meta, title, description, price, location, startDate, endDate, amount, files) {
     const url = `/list/`;
     const options = {
       data: {
@@ -66,12 +66,17 @@ const actions = self => {
         startDate,
         endDate,
         location,
-        amount
+        amount,
+        images: files
       }
     };
-    const result = yield self.store.post(url, options);
+    const result = yield self
+      .store
+      .post(url, options);
     const list = ItemModel.create(result.data);
-    self.items.set(list._id, list);
+    self
+      .items
+      .set(list._id, list);
     self.latestListAdded = list._id;
     return list;
   });
@@ -88,9 +93,11 @@ const actions = self => {
     self.currDisplayedCatergory = category.en;
   };
 
-  const getListsOfCategory = flow(function* getListsOfCategory(type) {
+  const getListsOfCategory = flow(function * getListsOfCategory(type) {
     try {
-      const result = yield self.store.get(`/list?type=${type}`);
+      const result = yield self
+        .store
+        .get(`/list?type=${type}`);
       updateItems(result.data);
     } catch (error) {
       console.error("Couldnt fetch items", error);
