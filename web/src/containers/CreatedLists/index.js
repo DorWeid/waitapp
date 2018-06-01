@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { observer, inject } from "mobx-react";
-import { Redirect } from "react-router";
+import React, {Component} from "react";
+import {observer, inject} from "mobx-react";
+import {Redirect} from "react-router";
 import ItemList from "../../components/ItemList";
 
 class PendingLists extends Component {
@@ -15,38 +15,36 @@ class PendingLists extends Component {
     await this.loadlists();
   }
 
-  loadlists = async () => {
-    const { store: { userStore } } = this.props;
+  loadlists = async() => {
+    const {store: {
+        userStore
+      }} = this.props;
     if (userStore.isUserLoggedIn) {
-      const response = await fetch(
-        `/api/user/${userStore.currentUser._id}/createdLists`,
-        {
-          credentials: "include"
-        }
-      );
+      const response = await fetch(`/api/user/${userStore.currentUser._id}/createdLists`, {credentials: "include"});
       const createdLists = await response.json();
-      this.setState({ createdLists });
+      this.setState({createdLists});
     }
   };
 
   startList = async id => {
-    const { store: { itemStore } } = this.props;
-    await itemStore.items.get(id).startList();
+    await fetch(`/api/list/${id}/start`, {
+      credentials: "include",
+      method: "POST"
+    })
+
     await this.loadlists();
   };
 
   render() {
-    const { store: { userStore } } = this.props;
+    const {store: {
+        userStore
+      }} = this.props;
     if (!userStore.isUserLoggedIn) {
-      return <Redirect to="/" />;
+      return <Redirect to="/"/>;
     }
     return (
       <div className="lists-container">
-        <ItemList
-          items={this.state.createdLists}
-          isOwner
-          startList={this.startList}
-        />
+        <ItemList items={this.state.createdLists} isOwner startList={this.startList}/>
       </div>
     );
   }
