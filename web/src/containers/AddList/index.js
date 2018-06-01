@@ -24,8 +24,8 @@ class AddList extends Component {
     this.state = {
       startDate: moment(),
       endDate: moment(),
-      startHour: moment(),
-      endTime: moment(),
+      startTime: '00:00',
+      endTime: '00:00',
       files: [],
       meta: {}
     };
@@ -50,7 +50,7 @@ class AddList extends Component {
     const {store: {
         itemStore
       }} = this.props;
-    const start = moment(this.state.startDate.format('YYYY-MM-DD') + ' ' + this.state.startTime)
+    const start = moment(this.state.startDate.format('YYYY-MM-DD') + ' ' + this.state.startTime);
     const end = moment(this.state.endDate.format('YYYY-MM-DD') + ' ' + this.state.endTime)
 
     itemStore.addList(this.state.type, this.state.meta, this.state.title, this.state.description, this.state.price, this.state.location, start, end, this.state.amount, this.state.files);
@@ -271,6 +271,7 @@ class AddList extends Component {
                       <input
                         className="input time-field"
                         type="time"
+                        value={this.state.startTime}
                         placeholder="Opening time"
                         onChange={(e) => this.changeTime('start', e.target.value)}/>
                     </div>
@@ -298,6 +299,7 @@ class AddList extends Component {
                       <input
                         className="input time-field"
                         type="time"
+                        value={this.state.endTime}
                         placeholder="Ending time"
                         onChange={(e) => this.changeTime('end', e.target.value)}/>
                     </div>

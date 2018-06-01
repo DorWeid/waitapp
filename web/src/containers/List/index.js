@@ -272,7 +272,6 @@ class List extends Component {
   }
 
   renderMeta({ type, meta = {} }) {
-    debugger
     switch (type) {
       case 'car':
         return (
