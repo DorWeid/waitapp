@@ -78,7 +78,7 @@ const Slider = props => {
       className="slider"
       {...bootstrap_settings}
       onSelect={props.changeCategory}
-      autoplay={props.autoplay}
+      autoplay={false}
       leftIcon={
         <SliderIcon
           direction="left"
