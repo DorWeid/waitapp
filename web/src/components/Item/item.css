@@ -5,6 +5,9 @@
   -webkit-transition: margin-top 0.2s; /* For Safari 3.1 to 6.0 */
   transition: transform 0.2s;
   margin: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .card:hover {
@@ -18,7 +21,6 @@
 .location {
   font-size: 1.1rem;
   color: green;
-  text-align: right;
 }
 
 .price {
@@ -29,7 +31,7 @@
 
 .item-footer {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .end-date {

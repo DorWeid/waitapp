@@ -66,18 +66,18 @@ export default ({
         </div>
       </div>
       <footer className="item-footer">
-        <p className="location">
+        <span className="location">
           <i className="fa fa-map-marker" style={{ marginRight: "3px" }} />
           {location}
-        </p>
-        <p className="end-date">
+        </span>
+        <span className="end-date">
           ends{" "}
           <time dateTime={endDate}>
             {moment(endDate)
               .endOf("day")
               .fromNow()}
           </time>
-        </p>
+        </span>
       </footer>
       {isOwner && <span>{status} </span>}
       {isOwner &&
