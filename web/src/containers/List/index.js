@@ -75,6 +75,7 @@ class List extends Component {
     this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseEnrollModal = this.handleCloseEnrollModal.bind(this);
     this.onEnrollClick = this.onEnrollClick.bind(this);
+    this.renderMeta = this.renderMeta.bind(this);
     // TODO: change the way we get the status and winner
     this.state = {
       modalOpen: false,
@@ -216,6 +217,38 @@ class List extends Component {
     await itemStore.getItem(params.id);
   }
 
+  renderMeta({ type, meta = {} }) {
+    debugger
+    switch (type) {
+      case 'car':
+        return (
+          <tbody>
+            {meta.carType && <tr><td><u>Car Type:</u></td><td>{meta.carType}</td></tr>}
+            {meta.seats && <tr><td><u>Seats:</u></td><td>{meta.seats}</td></tr>}
+            {meta.year && <tr><td><u>Year:</u></td><td>{meta.year}</td></tr>}
+          </tbody>
+        );
+      case 'flight':
+        return (
+          <tbody>
+            {meta.airline && <tr><td><u>Airline:</u></td><td>{meta.airline}</td></tr>}
+            {meta.fromDestination && <tr><td><u>From:</u></td><td>{meta.fromDestination}</td></tr>}
+            {meta.toDestination && <tr><td><u>Airline:</u></td><td>{meta.toDestination}</td></tr>}
+          </tbody>
+        );
+      case 'hotel':
+        return (
+          <tbody>
+            {meta.roomType && <tr><td><u>Room Type:</u></td><td>{meta.roomType}</td></tr>}
+            {meta.view && <tr><td><u>View:</u></td><td>{meta.view}</td></tr>}
+            {meta.stayingPlan && <tr><td><u>Staying Plan:</u></td> <td>{meta.stayingPlan}</td></tr>}
+          </tbody>
+        );
+      default:
+        return null;
+    }
+  }
+
   render() {
     const {
       store: { itemStore: { items }, userStore: { currentUser } }
@@ -234,7 +267,9 @@ class List extends Component {
       users = [],
       status,
       creatorName,
-      creator
+      creator,
+      type,
+      meta
     } =
       currentItem || {};
     let isSigned = users.includes(currentUser._id);
@@ -260,6 +295,10 @@ class List extends Component {
         <div className="columns" style={{ marginLeft: 15 }}>
           <div className="column is-2">
             <WaitingList users={users.length} />
+            <div className="box">
+              <h3 className="title is-3">Additional Info</h3>
+                <table style={{width: '100%'}}>{this.renderMeta({type, meta: meta.toJSON()})}</table>
+            </div>
           </div>
           <div className="column is-3" style={{ marginLeft: 40 }}>
             <div className="box">
