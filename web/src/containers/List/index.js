@@ -9,7 +9,6 @@ import img from "../../pictures/1.jpeg";
 import moment from "moment";
 import Modal from "react-responsive-modal";
 import Dock from "react-dock";
-import axios from "axios"
 import "react-responsive-modal/lib/react-responsive-modal.css";
 import "./index.css";
 import('moment-countdown');
@@ -133,12 +132,9 @@ class List extends Component {
       .currentUser
       .getUserDetails();
     try {
-      const response = await axios.get(
-        `/api/list/${match.params.id}/similiar`,
-        { withCredentials: true }
-      );
-      const similiar = response.data;
-      this.setState({ similiar });
+      const response = await fetch(`/api/list/${match.params.id}/similiar`, {credentials: "include"});
+      const similiar = await response.json();
+      this.setState({similiar});
     } catch (error) {
       console.log("error fetching similar ", error);
     }
