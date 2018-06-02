@@ -88,12 +88,49 @@ const actions = self => {
     }
   });
 
+  const subscribe = flow(function*({ userId }) {
+    try {
+      const result = yield self.store.post(`/user/${userId}/subscribe`);
+
+      if (!result.data.success) {
+        console.error('error', result)
+        throw new Error('Something went wrong, please try again')
+      }
+
+      // yield getUser(userId);
+      return true
+    } catch(error) {
+      console.error('Couldnt subscribe', error)
+      throw new Error("Something went wrong, please try again")
+    }
+  })
+
+  const unsubscribe = flow(function*({ userId }) {
+    try {
+      const result = yield self.store.delete(`/user/${userId}/subscribe`);
+
+      if (!result.data.success) {
+        console.error('error', result)
+        throw new Error('Something went wrong, please try again')
+      }
+
+      // yield getUser(userId);
+      return true
+    } catch(error) {
+      console.error('Couldnt subscribe', error)
+      throw new Error("Something went wrong, please try again")
+    }
+
+  })
+
   return {
     getUser,
     authenticateCurrentUser,
     setUserAuthData,
     addComment,
-    logout
+    logout,
+    unsubscribe,
+    subscribe
   };
 };
 

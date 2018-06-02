@@ -23,7 +23,8 @@ class UserProfile extends React.Component {
       focused: "",
       updateMessage: "",
       content: "",
-      rating: 0
+      rating: 0,
+      subsLength: '0',
     };
   }
 
@@ -32,6 +33,16 @@ class UserProfile extends React.Component {
 
     if (!this.isCurrentUserProfile()) {
       userStore.getUser(match.params.userId).then(user => {
+        this.setState({ user })
+        const userJSON = user.toJSON()
+
+        const subs = Object.keys(userJSON.subs) || []
+        if (subs.indexOf(userStore.currentUser._id) !== -1)  {
+          this.setState({ isSubscribed: true})
+        }
+
+        this.setState({ subsLength: subs.length})
+
         user.getUserLists();
       });
     } else {
@@ -116,7 +127,7 @@ class UserProfile extends React.Component {
         />
         <Link to={`/${userStore.currentUser._id}/addList`} className="button" style={{marginTop: 10}}>
           <span className="icon is-small">
-            <i className="fas fa-plus" /> 
+            <i className="fas fa-plus" />
           </span>
           <span style={{paddingLeft: 5}}>Create a New List</span>
         </Link>
@@ -127,8 +138,8 @@ class UserProfile extends React.Component {
           </h4>
           {this.renderComments(userStore.currentUser.comments.values())}
         </div>
-       
-        
+
+
 
         <section className="section profile-bottom">
           <div className="profile-credit">
@@ -225,7 +236,7 @@ class UserProfile extends React.Component {
       );
     }
 
-    
+
     return (
       <div className="profile-bg">
         <div className="box" style={{width: '90%', padding: 30}}>
@@ -260,7 +271,10 @@ class UserProfile extends React.Component {
               <strong style={{fontSize: 'medium'}}>Rating</strong>
             </div>
             <div className="media-right" style={{textAlign: 'center'}}>
-              <button className={this.state.isSubscribed ? "button is-success is-large" : "button is-primary is-large"} onClick={() => {this.setState({ isSubscribed: !this.state.isSubscribed});}}>
+              <button className={this.state.isSubscribed ? "button is-success is-large" : "button is-primary is-large"} onClick={() => {
+                this.subscribe()
+                // this.setState({ isSubscribed: !this.state.isSubscribed});
+              }}>
                 {this.state.isSubscribed ?
                   <div style={{display: 'flex'}}>
                     <span className="icon is-small" key={1}>
@@ -275,22 +289,22 @@ class UserProfile extends React.Component {
                     <span style={{paddingLeft: 5}}><strong>Subscribe</strong></span>
                   </div>
                 }
-              </button> 
+              </button>
               <br />
-              <strong style={{fontSize: 'small'}}>{randomUserObject.subscribers || 123} Subscribers</strong>
+              <strong style={{fontSize: 'small'}}>{this.state.subsLength} Subscribers</strong>
             </div>
           </article>
           <hr />
           <div className="level">
             <div className="level-left">
               <div className="level-item profile-hover-item" style={{fontSize: 'medium'}} onClick={() => {this.setState({selectedTab: 0});}}>
-                {this.state.selectedTab === 0 ? 
+                {this.state.selectedTab === 0 ?
                   <strong>Lists ({randomUserObject.items.size})</strong>:
                   <span>Lists ({randomUserObject.items.size})</span>
                 }
               </div>
               <div className="level-item profile-hover-item" style={{marginLeft: 20, fontSize: 'medium'}} onClick={() => {this.setState({selectedTab: 1});}}>
-                {this.state.selectedTab === 1 ? 
+                {this.state.selectedTab === 1 ?
                   <strong>Comments ({randomUserObject.comments.size})</strong>:
                   <span>Comments ({randomUserObject.comments.size})</span>
                 }
@@ -313,7 +327,7 @@ class UserProfile extends React.Component {
         return (
           <ItemList items={items} cardWidth="25%" />
         );
-      
+
       case 1:
         return (
           <div>
@@ -352,6 +366,34 @@ class UserProfile extends React.Component {
     }
   }
 
+
+  subscribe = () => {
+    if (!this.state.isSubscribed) {
+      this.props.store.userStore.subscribe({
+        userId: this.props.match.params.userId
+      })
+      .then((res) => {
+        const oldSubs = +this.state.subsLength
+        this.setState({ isSubscribed: true, subsLength: oldSubs + 1 })
+        console.log('res', res)
+      })
+      .catch(e => {
+        console.error('e', e)
+      })
+
+    } else {
+      this.props.store.userStore.unsubscribe({
+        userId: this.props.match.params.userId
+      })
+      .then((res) => {
+        const oldSubs = +this.state.subsLength
+        this.setState({ isSubscribed: false, subsLength: oldSubs - 1 })
+      })
+      .catch(e => {
+        console.error('e', e)
+      })
+    }
+  }
   addComment = () => {
     this.props.store.userStore.addComment({
       rating: this.state.rating,
