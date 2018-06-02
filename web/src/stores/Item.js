@@ -54,7 +54,7 @@ const actions = self => {
       .set(id, converted);
   });
 
-  const addList = flow(function * addList(type, meta, title, description, price, location, startDate, endDate, amount, files) {
+  const addList = flow(function * addList(type, meta, title, description, price, location, startDate, endDate, amount, files, listEndDate) {
     const url = `/list/`;
     const options = {
       data: {
@@ -67,7 +67,8 @@ const actions = self => {
         endDate,
         location,
         amount,
-        images: files
+        images: files,
+        listEndDate,
       }
     };
     const result = yield self
