@@ -159,10 +159,6 @@ class List extends Component {
     }
   }
 
-  redeem() {
-    alert("you motherfucker!");
-  }
-
   renderEnrollingModalContent = () => {
     const {store: {
         userStore
@@ -227,6 +223,23 @@ class List extends Component {
     }
 
     this.setState({errorCode: errorCodes.ENROLL_INFO, enrollModalOpen: true});
+  }
+
+  async redeem() {
+    const {
+      match: {
+        params
+      },
+      store: {
+        itemStore,
+        userStore
+      }
+    } = this.props;
+    await itemStore
+      .items
+      .get(params.id)
+      .redeem(userStore.currentUser.username);
+    await itemStore.getItem(params.id);
   }
 
   async enroll() {

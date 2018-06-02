@@ -96,6 +96,23 @@ const actions = self => {
     }
   });
 
+  const redeem = flow(function * (username) {
+    const url = `/list/${self._id}/redeem`;
+    const options = {
+      data: {
+        username
+      }
+    };
+    try {
+      yield self
+        .store
+        .post(url, options);
+      console.log("Succesfully redeem the item!");
+    } catch (e) {
+      console.log("Could not redeem. Error:", e.message);
+    }
+  });
+
   // TODO: This should be in views
   const isUserInList = username => {
     return self
@@ -103,7 +120,7 @@ const actions = self => {
       .includes(username);
   };
 
-  return {enroll, disenroll, startList, isUserInList};
+  return {enroll, disenroll, startList, isUserInList, redeem};
 };
 
 const Item = types
