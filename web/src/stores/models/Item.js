@@ -32,7 +32,8 @@ const definition = {
   images: types.optional(types.array(types.string), []),
   listEndDate: types.optional(types.string, ""),
   currentRedeemers: types.optional(types.array(types.string), []),
-  currentRedeemersIndex: types.optional(types.number, 0)
+  currentRedeemersIndex: types.optional(types.number, 0),
+  roundEndDate: types.optional(types.string, ""),
 };
 
 // Any fact that can be derived from the state in a pure manner should go here.
