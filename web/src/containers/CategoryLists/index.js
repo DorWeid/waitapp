@@ -6,6 +6,7 @@ import "./categoryLists.css";
 import { Parallax } from 'react-parallax';
 import Select from "react-select";
 import moment from 'moment';
+import DatePicker from 'react-datepicker';
 
 function importAll(r) {
   let images = {};
@@ -40,7 +41,7 @@ class CategoryLists extends Component {
 
     this.state = {
       currentSort: "",
-      filters: {}
+      filters: { start: null, end: null}
     };
 
     this.sortNew = this.sortNew.bind(this);
@@ -48,6 +49,8 @@ class CategoryLists extends Component {
     this.sortPriceHighToLow = this.sortPriceHighToLow.bind(this);
     this.handleSortChange = this.handleSortChange.bind(this);
     this.handleFilterChange = this.handleFilterChange.bind(this);
+    this.handleStartDateChange = this.handleStartDateChange.bind(this);
+    this.handleEndDateChange = this.handleEndDateChange.bind(this);
   }
 
   componentDidMount() {
@@ -65,6 +68,14 @@ class CategoryLists extends Component {
 
   sortNew(a, b) {
     return a.createdAt > b.createdAt;
+  }
+
+  handleStartDateChange(start) {
+    this.setState({ filters: {...this.state.filters, start} });
+  }
+
+  handleEndDateChange(end) {
+    this.setState({ filters: {...this.state.filters, end} });
   }
 
   sortPriceLowToHigh(a, b) {
@@ -104,9 +115,21 @@ class CategoryLists extends Component {
       .sort(
         this.sortOptions.find(o => o.value === this.state.currentSort).func
       ).filter(itm => {
-        const { price = 999999, end = 999999 } = this.state.filters;
+        const { price = 999999, start, end } = this.state.filters;
+        
+        if (price < itm.price) {
+          return false;
+        }
 
-        return itm.price <= price && moment(itm.endDate) < moment().add(end, 'days');
+        if (end && moment(itm.startDate) > end) {
+          return false;
+        }
+
+        if (start && moment(itm.startDate) < start) {
+          return false;
+        }
+
+        return true;
       });
 
     return (
@@ -139,13 +162,8 @@ class CategoryLists extends Component {
                 onChange={this.handleFilterChange('price')}
                 options={[50,100,250,500,1000,2000,3000,9999].map(p => ({ value: p, label: `< ${p}₪` }))}
               />
-              <Select
-                className="category-lists-select"
-                value={this.state.filters.end}
-                placeholder="List ends before..."
-                onChange={this.handleFilterChange('end')}
-                options={[{value: 1, label: 'Tomorrow'},{value: 7, label: 'A week from now'}, {value: 30, label: 'A month from now'}, {value: 90, label: '4 months from now'}, {value: 180, label: 'Half a year from now'},{value: 365, label: 'A year from now'}]}
-              />
+              <DatePicker placeholderText={'From List Start Date'} onChange={this.handleStartDateChange} selected={this.state.filters.start} className="category-lists-date"/>
+              <DatePicker placeholderText={'To List End Date'} onChange={this.handleEndDateChange} selected={this.state.filters.end} className="category-lists-date"/>
             </div>
         {displayedItems.length !== 0 ? (
           <div id="category-lists">

@@ -8,6 +8,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "react-bootstrap-carousel/dist/react-bootstrap-carousel.css";
+import 'react-datepicker/dist/react-datepicker.css';
 import "./index.css";
 import { Provider } from "mobx-react";
 import MainStore from "./stores";
