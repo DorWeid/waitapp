@@ -92,7 +92,9 @@ class List extends Component {
     this.onEnrollClick = this
       .onEnrollClick
       .bind(this);
-    this.renderMeta = this.renderMeta.bind(this);
+    this.renderMeta = this
+      .renderMeta
+      .bind(this);
 
     // TODO: change the way we get the status and winner
     this.state = {
@@ -129,15 +131,20 @@ class List extends Component {
     userStore
       .currentUser
       .getUserDetails();
-    const response = await fetch(`/api/list/${match.params.id}/similiar`, {credentials: "include"});
-    const similiar = await response.json();
+    try {
+      const response = await fetch(`/api/list/${match.params.id}/similiar`, {credentials: "include"});
+      const similiar = await response.json();
+      this.setState({similiar});
+    } catch (error) {
+      console.log("error fetching similar ", error);
+    }
+
     this.interval = setInterval(() => {
       const item = itemStore.items.get(match.params.id);
       if (item) {
         this.setState({ countdown: moment(item.endDate).countdown().toString()})
       }
     }, 1000);
-    this.setState({similiar});
   }
 
   componentWillUnmount() {
@@ -292,30 +299,78 @@ class List extends Component {
     await itemStore.getItem(params.id);
   }
 
-  renderMeta({ type, meta = {} }) {
+  renderMeta({
+    type,
+    meta = {}
+  }) {
     switch (type) {
       case 'car':
         return (
           <tbody>
-            {meta.carType && <tr><td><u>Car Type:</u></td><td>{meta.carType}</td></tr>}
-            {meta.seats && <tr><td><u>Seats:</u></td><td>{meta.seats}</td></tr>}
-            {meta.year && <tr><td><u>Year:</u></td><td>{meta.year}</td></tr>}
+            {meta.carType && <tr>
+              <td>
+                <u>Car Type:</u>
+              </td>
+              <td>{meta.carType}</td>
+            </tr>}
+            {meta.seats && <tr>
+              <td>
+                <u>Seats:</u>
+              </td>
+              <td>{meta.seats}</td>
+            </tr>}
+            {meta.year && <tr>
+              <td>
+                <u>Year:</u>
+              </td>
+              <td>{meta.year}</td>
+            </tr>}
           </tbody>
         );
       case 'flight':
         return (
           <tbody>
-            {meta.airline && <tr><td><u>Airline:</u></td><td>{meta.airline}</td></tr>}
-            {meta.fromDestination && <tr><td><u>From:</u></td><td>{meta.fromDestination}</td></tr>}
-            {meta.toDestination && <tr><td><u>Airline:</u></td><td>{meta.toDestination}</td></tr>}
+            {meta.airline && <tr>
+              <td>
+                <u>Airline:</u>
+              </td>
+              <td>{meta.airline}</td>
+            </tr>}
+            {meta.fromDestination && <tr>
+              <td>
+                <u>From:</u>
+              </td>
+              <td>{meta.fromDestination}</td>
+            </tr>}
+            {meta.toDestination && <tr>
+              <td>
+                <u>Airline:</u>
+              </td>
+              <td>{meta.toDestination}</td>
+            </tr>}
           </tbody>
         );
       case 'hotel':
         return (
           <tbody>
-            {meta.roomType && <tr><td><u>Room Type:</u></td><td>{meta.roomType}</td></tr>}
-            {meta.view && <tr><td><u>View:</u></td><td>{meta.view}</td></tr>}
-            {meta.stayingPlan && <tr><td><u>Staying Plan:</u></td> <td>{meta.stayingPlan}</td></tr>}
+            {meta.roomType && <tr>
+              <td>
+                <u>Room Type:</u>
+              </td>
+              <td>{meta.roomType}</td>
+            </tr>}
+            {meta.view && <tr>
+              <td>
+                <u>View:</u>
+              </td>
+              <td>{meta.view}</td>
+            </tr>}
+            {meta.stayingPlan && <tr>
+              <td>
+                <u>Staying Plan:</u>
+              </td>
+              <td>{meta.stayingPlan}</td>
+            </tr>}
           </tbody>
         );
       default:
@@ -385,10 +440,15 @@ class List extends Component {
           marginLeft: 15
         }}>
           <div className="column is-2">
-            <WaitingList users={users.length} />
+            <WaitingList users={users.length}/>
             <div className="box">
               <h3 className="title is-3">Additional Info</h3>
-                <table style={{width: '100%'}}>{this.renderMeta({type, meta: meta.toJSON()})}</table>
+              <table style={{
+                width: '100%'
+              }}>{this.renderMeta({
+                  type,
+                  meta: meta.toJSON()
+                })}</table>
             </div>
           </div>
           <div className="column is-3" style={{
@@ -556,14 +616,14 @@ class List extends Component {
             </span>
           </div>
         </Dock>
-        <div>
+        {Array.isArray(this.state.similiar) && <div>
           more like this:
           <ItemList
             items={this
             .state
             .similiar
             .slice(0, 5)}/>
-        </div>
+        </div>}
       </div>
     );
   }
