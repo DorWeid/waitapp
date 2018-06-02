@@ -406,6 +406,7 @@ class List extends Component {
       creator,
       images = [],
       meta = {},
+      startDate,
       endDate,
       type
     } = currentItem || {};
@@ -490,10 +491,10 @@ class List extends Component {
               <hr/>
               <div>
                 <span className="icon is-small">
-                  <i className="fa fa-users"/>
+                  <i className="fa fa-calendar-alt"/>
                 </span>
                 <br/>
-                <div className="title is-6">{users.length + ' '} WAITING</div>
+                <div className="title is-6">{moment(startDate).format('DD/MM/YYYY')} - {moment(endDate).format('DD/MM/YYYY')}</div>
               </div>
               <hr/>
               <div>
