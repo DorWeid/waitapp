@@ -11,6 +11,8 @@ import Modal from "react-responsive-modal";
 import Dock from "react-dock";
 import "react-responsive-modal/lib/react-responsive-modal.css";
 import "./index.css";
+import('moment-countdown');
+
 
 const settings = {
   infinite: true,
@@ -98,7 +100,8 @@ class List extends Component {
       winner: "not me",
       enrollModalOpen: false,
       errorCode: -1,
-      similiar: []
+      similiar: [],
+      countdown: null,
     };
   }
 
@@ -128,7 +131,25 @@ class List extends Component {
       .getUserDetails();
     const response = await fetch(`/api/list/${match.params.id}/similiar`, {credentials: "include"});
     const similiar = await response.json();
+    this.interval = setInterval(() => {
+      const item = itemStore.items.get(match.params.id);
+      if (item) {
+        this.setState({ countdown: moment(item.endDate).countdown().toString()})
+      }
+    }, 1000);
     this.setState({similiar});
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const item = nextProps.store.itemStore.items.get(this.props.match.params.id)
+    debugger
+    if (item && item.endDate && !this.state.countdown) {
+      this.setState({ countdown: moment(item.endDate).countdown().toString() })
+    }
   }
 
   redeem() {
@@ -330,6 +351,7 @@ class List extends Component {
       creator,
       images = [],
       meta = {},
+      endDate,
       type
     } = currentItem || {};
     let isSigned = users.includes(currentUser._id);
@@ -411,8 +433,7 @@ class List extends Component {
                   <i className="fa fa-users"/>
                 </span>
                 <br/>
-                <div className="title is-6">{users.length}
-                  WAITING</div>
+                <div className="title is-6">{users.length + ' '} WAITING</div>
               </div>
               <hr/>
               <div>
@@ -420,7 +441,8 @@ class List extends Component {
                   <i className="fas fa-clock"/>
                 </span>
                 <br/>
-                <div className="title is-6">LIMITED TIME OFFER!</div>
+                <div className="title is-6">LIST ENDING IN:</div>
+                <div className="title is-4">{this.state.countdown}</div>
               </div>
               <hr/> {status === "pending"
                 ? (
