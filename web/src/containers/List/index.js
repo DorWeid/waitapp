@@ -152,11 +152,15 @@ class List extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const item = nextProps.store.itemStore.items.get(this.props.match.params.id)
-    debugger
-    if (item && item.endDate && !this.state.countdown) {
-      this.setState({ countdown: moment(item.listEndDate).countdown().toString() })
-    }
+    const item = nextProps.store.itemStore.items.get(this.props.match.params.id);
+    const currentUser = nextProps.store.user.currentUser;
+    const isWinner = item.status === "redeem" && item.currentRedeemers[item.currentRedeemersIndex - 1] === currentUser._id;
+    
+    if (item && item.endDate && !this.state.countdown ) {
+      this.setState({ countdown: moment(item.listEndDate).countdown().toString(), modalOpen: isWinner });
+    } else {
+      this.setState({modalOpen: isWinner})
+    } 
   }
 
   renderEnrollingModalContent = () => {
@@ -407,7 +411,7 @@ class List extends Component {
     if (!currentItem) {
       return <div>Loading ...</div>;
     }
-    let timeLeftToReedem = moment().format("h:mm:ss");
+    
     const {
       title,
       description,
@@ -422,17 +426,21 @@ class List extends Component {
       startDate,
       endDate,
       type,
-      listEndDate
+      listEndDate,
+      currentRedeemers,
+      currentRedeemersIndex
     } = currentItem || {};
+    let timeLeftToReedem = moment().format("h:mm:ss");
     let isSigned = users.includes(currentUser._id);
-    const isWinner = status === "done" && this.state.winner === "me";
-    if ((status === "pending" && (!currentUser || !currentUser.admin)) || status === "deny") {
+    const isWinner = status === "redeem" && currentRedeemers[currentRedeemersIndex - 1] === currentUser._id;
+    const isCreator = creator === currentUser._id;
+    if ((status === "pending" && (!currentUser || !currentUser.admin)) || (status === "deny" && !isCreator)) {
       return <Redirect to="/"/>;
     }
-    console.log(listEndDate)
     const imgs = images.length
       ? images
       : slides;
+
     return (
       <div
         style={{
@@ -517,10 +525,23 @@ class List extends Component {
                   <i className="fas fa-clock"/>
                 </span>
                 <br/>
+                {status === "active" ? (
+                  <React.Fragment>
                 <div className="title is-6">LIST ENDING IN:</div>
                 <div className="title is-4">{this.state.countdown}</div>
+                </React.Fragment>) : <div>
+                  list has already ended
+                </div>}
               </div>
-              <hr/> {status === "pending"
+              <hr/> {status === "deny" && isCreator ? (
+                <a className="button is-danger" disabled>
+                <span className="icon is-small">
+                  <i className="fa fa-times"/>
+                </span>
+                <span>Delete list</span>
+              </a>
+              ) :  
+                status === "pending"
                 ? (
                   <span className="admin-buttons">
                     <a className="button is-primary" onClick={this.accept}>
@@ -541,11 +562,11 @@ class List extends Component {
                   ? (
                     <span>This list as already ended!</span>
                   )
-                  : isWinner && status === "done"
+                  : isWinner && status === "redeem"
                     ? (
                       <a className="button is-primary" onClick={this.redeem}>
                         <span className="icon is-small">
-                          <i className="fa fa-times"/>
+                          <i className="fa fa-check"/>
                         </span>
                         <span>Redeem your item!</span>
                       </a>
@@ -595,7 +616,7 @@ class List extends Component {
           classNames={{
           modal: "modal-body"
         }}
-          open={this.state.modalOpen}
+          open={false}
           onClose={this.handleCloseModal}
           little>
           <h2>Congrats!</h2>
@@ -605,8 +626,8 @@ class List extends Component {
             className="button is-link"
             style={{
             fontSize: "medium"
-          }}>
-            Reedem
+          }} onClick={this.redeem}>
+            Redeem
           </button>
         </Modal>
         <Dock
@@ -627,7 +648,7 @@ class List extends Component {
             display: "flex"
           }}>
             <span className="dock-text">
-              Total order is
+              Total order is{" "}
               <strong>{price}</strong>
             </span>
           </div>

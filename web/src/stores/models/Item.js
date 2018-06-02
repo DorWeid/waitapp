@@ -30,7 +30,9 @@ const definition = {
   creatorName: types.optional(types.string, ""),
   meta: types.optional(types.map(types.frozen), {}),
   images: types.optional(types.array(types.string), []),
-  listEndDate: types.optional(types.string, "")
+  listEndDate: types.optional(types.string, ""),
+  currentRedeemers: types.optional(types.array(types.string), []),
+  currentRedeemersIndex: types.optional(types.number, 0)
 };
 
 // Any fact that can be derived from the state in a pure manner should go here.
