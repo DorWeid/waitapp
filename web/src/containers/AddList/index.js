@@ -26,6 +26,8 @@ class AddList extends Component {
       endDate: moment(),
       startTime: '00:00',
       endTime: '00:00',
+      listEndDate: moment(),
+      listEndTime: '00:00',
       files: [],
       meta: {}
     };
@@ -52,16 +54,19 @@ class AddList extends Component {
       }} = this.props;
     const start = moment(this.state.startDate.format('YYYY-MM-DD') + ' ' + this.state.startTime);
     const end = moment(this.state.endDate.format('YYYY-MM-DD') + ' ' + this.state.endTime)
+    const listEndDate = moment(this.state.listEndDate.format('YYYY-MM-DD') + ' ' + this.state.listEndTime)
 
-    itemStore.addList(this.state.type, this.state.meta, this.state.title, this.state.description, this.state.price, this.state.location, start, end, this.state.amount, this.state.files);
+    itemStore.addList(this.state.type, this.state.meta, this.state.title, this.state.description, this.state.price, this.state.location, start, end, this.state.amount, this.state.files, listEndDate);
     alert('List has been added! we will let you know when we approve or deny it');
   }
 
   changeDate(when, date) {
     if (when === "start") {
       this.setState({startDate: date});
-    } else {
+    } else if (when === "end") {
       this.setState({endDate: date});
+    } else if (when === "listEndDate") {
+      this.setState({ listEndDate: date })
     }
   }
 
@@ -81,7 +86,7 @@ class AddList extends Component {
     switch (category) {
       case 'hotel':
         return (
-          <div className="fields-group" style={{alignItems: 'center'}}>   
+          <div className="fields-group" style={{alignItems: 'center'}}>
             <div className="field">
               <Select
                 name="form-field-select"
@@ -91,7 +96,7 @@ class AddList extends Component {
                 onChange={(option) => this.setState({meta: {...this.state.meta, roomType: option.value}})}
                 options={[{value: 'single', label: 'Single'}, {value: 'double', label: 'Double'}, {value: 'suite', label: 'Suite'}, {value: 'apartment', label: 'Apartment'}, {value: 'villa', label: 'Villa'}, {value: 'accessible', label: 'Accessible'}]}
               />
-            </div>     
+            </div>
             <div className="field">
               <div className="control">
                 <input className="input meta-field" type="text" placeholder="Describe View..." onChange={(e) => this.setState({meta: {...this.state.meta, view: e.target.value}})} />
@@ -106,7 +111,7 @@ class AddList extends Component {
         );
       case 'car':
         return (
-          <div className="fields-group" style={{alignItems: 'center'}}>   
+          <div className="fields-group" style={{alignItems: 'center'}}>
             <div className="field">
               <Select
                 name="form-field-select"
@@ -116,7 +121,7 @@ class AddList extends Component {
                 onChange={(option) => this.setState({meta: {...this.state.meta, carType: option.value}})}
                 options={[{value: 'mazda', label: 'Mazda'}, {value: 'mercedes', label: 'Mercedes'}, {value: 'bmw', label: 'BMW'}, {value: 'mitsubishi', label: 'Mitsubishi'}, {value: 'chevrolet', label: 'Chevrolet'}, {value: 'skoda', label: 'Skoda'}]}
               />
-            </div>     
+            </div>
             <div className="field">
               <div className="control">
                 <input className="input meta-field" type="number" placeholder="# Seats" onChange={(e) => this.setState({meta: {...this.state.meta, seats: e.target.value}})} />
@@ -132,7 +137,7 @@ class AddList extends Component {
 
       case 'flight':
         return (
-          <div className="fields-group" style={{alignItems: 'center'}}>   
+          <div className="fields-group" style={{alignItems: 'center'}}>
             <div className="field">
               <Select
                 name="form-field-select"
@@ -142,7 +147,7 @@ class AddList extends Component {
                 onChange={(option) => this.setState({meta: {...this.state.meta, airline: option.value}})}
                 options={[{value: 'elal', label: 'El-Al'}, {value: 'turkish_airlines', label: 'Turkish Airlines'}, {value: 'air_berlin', label: 'Air Berlin'}, {value: 'aeromexico', label: 'Aeromexico'}, {value: 'vueling', label: 'Vueling'}]}
               />
-            </div>     
+            </div>
             <div className="field">
               <div className="control">
                 <input className="input meta-field" type="text" placeholder="From Destination" onChange={(e) => this.setState({meta: {...this.state.meta, fromDestination: e.target.value}})} />
@@ -155,7 +160,7 @@ class AddList extends Component {
             </div>
           </div>
         );
-      
+
       default:
         return null;
     }
@@ -305,8 +310,38 @@ class AddList extends Component {
                     </div>
                   </div>
                 </span>
+
+                <span className="date-container">
+                  <span className="date-header">List end date</span>
+                  <DatePicker
+                    inline
+                    selected={this.state.listEndDate}
+                    onChange={this
+                    .changeDate
+                    .bind(this, "listEndDate")}/>
+                  <div className="field">
+                    <div
+                      className="control"
+                      style={{
+                      display: 'flex',
+                      alignItems: 'center'
+                    }}>
+                      <label
+                        style={{
+                        marginBottom: 0
+                      }}>At:</label>
+                      <input
+                        className="input time-field"
+                        type="time"
+                        value={this.state.listEndTime}
+                        placeholder="Ending time"
+                        onChange={(e) => this.setState({ listEndTime: e.target.value })}/>
+                    </div>
+                  </div>
+                </span>
               </div>
             </div>
+
 
             <div className="field">
               <FileBase64 multiple onDone={this.fileDone}/>
