@@ -428,11 +428,11 @@ class List extends Component {
       type,
       listEndDate,
       currentRedeemers,
-      currentRedeemersIndex
     } = currentItem || {};
     let timeLeftToReedem = moment().format("h:mm:ss");
     let isSigned = users.includes(currentUser._id);
-    const isWinner = status === "redeem" && currentRedeemers[currentRedeemersIndex - 1] === currentUser._id;
+    const isWinner = status === "redeem" && currentRedeemers.toJSON().includes(currentUser._id)
+    const isLoser = status === "redeem" && users.indexOf(currentUser._id) < users.indexOf(currentRedeemers[0]);
     const isCreator = creator === currentUser._id;
     if ((status === "pending" && (!currentUser || !currentUser.admin)) || (status === "deny" && !isCreator)) {
       return <Redirect to="/"/>;
@@ -561,7 +561,9 @@ class List extends Component {
                 : !isWinner && status === "done"
                   ? (
                     <span>This list as already ended!</span>
-                  )
+                  ) : isLoser && status === "redeem" ? <span>
+                    You have missed your chance!
+                  </span>
                   : isWinner && status === "redeem"
                     ? (
                       <a className="button is-primary" onClick={this.redeem}>
