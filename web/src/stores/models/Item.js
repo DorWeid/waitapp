@@ -29,7 +29,8 @@ const definition = {
   creator: types.optional(types.string, ""),
   creatorName: types.optional(types.string, ""),
   meta: types.optional(types.map(types.frozen), {}),
-  images: types.optional(types.array(types.string), [])
+  images: types.optional(types.array(types.string), []),
+  listEndDate: types.optional(types.string, "")
 };
 
 // Any fact that can be derived from the state in a pure manner should go here.

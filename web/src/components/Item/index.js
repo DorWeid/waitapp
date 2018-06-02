@@ -15,7 +15,8 @@ export default ({
   status,
   cardWidth = "15%",
   isOwner,
-  startList
+  startList,
+  listEndDate
 }) => {
   const cardStyle = { width: cardWidth };
   return (
@@ -73,7 +74,7 @@ export default ({
         <span className="end-date">
           ends{" "}
           <time dateTime={endDate}>
-            {moment(endDate)
+            {moment(listEndDate)
               .fromNow()}
           </time>
         </span>

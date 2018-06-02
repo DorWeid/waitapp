@@ -142,7 +142,7 @@ class List extends Component {
     this.interval = setInterval(() => {
       const item = itemStore.items.get(match.params.id);
       if (item) {
-        this.setState({ countdown: moment(item.endDate).countdown().toString()})
+        this.setState({ countdown: moment(item.listEndDate).countdown().toString()})
       }
     }, 1000);
   }
@@ -155,7 +155,7 @@ class List extends Component {
     const item = nextProps.store.itemStore.items.get(this.props.match.params.id)
     debugger
     if (item && item.endDate && !this.state.countdown) {
-      this.setState({ countdown: moment(item.endDate).countdown().toString() })
+      this.setState({ countdown: moment(item.listEndDate).countdown().toString() })
     }
   }
 
@@ -421,13 +421,15 @@ class List extends Component {
       meta = {},
       startDate,
       endDate,
-      type
+      type,
+      listEndDate
     } = currentItem || {};
     let isSigned = users.includes(currentUser._id);
     const isWinner = status === "done" && this.state.winner === "me";
     if ((status === "pending" && (!currentUser || !currentUser.admin)) || status === "deny") {
       return <Redirect to="/"/>;
     }
+    console.log(listEndDate)
     const imgs = images.length
       ? images
       : slides;
