@@ -1,6 +1,7 @@
 import { types, getParent, flow } from "mobx-state-tree";
 import ItemModel from "./Item";
 import CommentModel from "./Comment.js";
+import SubscribeModel from './Subscribe'
 
 // NOTE: Refer to Item.js model for explanation
 
@@ -23,6 +24,7 @@ const definition = {
   admin: types.optional(types.boolean, false),
   items: types.optional(types.map(ItemModel), {}),
   registeredTo: types.optional(types.map(ItemModel), {}),
+  subs: types.optional(types.map(SubscribeModel), {}),
   creditCard: types.optional(
     types.model({
       number: types.optional(types.string, ""),
@@ -79,6 +81,8 @@ const actions = self => {
     self.creditCard = user.creditCard;
 
     user.comments.forEach(cmt => self.comments.put(cmt));
+    user.subscribers.forEach(cmt => self.subs.put(cmt));
+    // user.comments.forEach(s => self.subscribers.put(s));
   };
 
   const login = flow(function*({ accessToken }) {
