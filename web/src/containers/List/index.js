@@ -465,7 +465,7 @@ class List extends Component {
     const imgs = images.length
       ? images
       : slides;
-
+    console.log(imgs)
     return (
       <div
         style={{
@@ -627,8 +627,8 @@ class List extends Component {
             <SliderSlick {...settings}>
               {imgs.map((item, index) => (<img
                 key={index/* TODO: item.src should be the key*/}
-                src={item.src}
-                alt={item.alt}
+                src={item.src || item.base64}
+                alt={item.alt || item.name} 
                 style={{
                 border: "2px solid white"
               }}/>))}

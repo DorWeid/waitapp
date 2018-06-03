@@ -29,7 +29,7 @@ const definition = {
   creator: types.optional(types.string, ""),
   creatorName: types.optional(types.string, ""),
   meta: types.optional(types.map(types.frozen), {}),
-  images: types.optional(types.array(types.string), []),
+  images: types.optional(types.array(types.frozen), []),
   listEndDate: types.optional(types.string, ""),
   currentRedeemers: types.optional(types.array(types.string), []),
   currentRedeemersIndex: types.optional(types.number, 0),
