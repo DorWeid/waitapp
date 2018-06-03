@@ -22,10 +22,14 @@ class UserProfile extends React.Component {
       cvc: "",
       focused: "",
       updateMessage: "",
+      personalInfoUpdateMessage: '',
       content: "",
       rating: 0,
       subsLength: '0',
+      phone: null,
     };
+
+    this.updateUser = this.updateUser.bind(this);
   }
 
   componentDidMount() {
@@ -111,6 +115,20 @@ class UserProfile extends React.Component {
     document.getElementById("credit-form").reset();
   };
 
+  async updateUser() {
+    const { store: { userStore } } = this.props;
+
+    try {
+      const result = await userStore.currentUser.update({ mobileNumber: this.state.phone })
+      this.setState({
+        personalInfoUpdateMessage: result ? "Updated info" : "Something went wrong.."
+      });
+      
+    } catch (error) {
+      
+    }
+  }
+
   renderCurrentUserProfile = () => {
     const { store: { userStore } } = this.props;
     const { name, number, expiry, cvc, focused } = this.state;
@@ -138,87 +156,110 @@ class UserProfile extends React.Component {
           </h4>
           {this.renderComments(userStore.currentUser.comments.values())}
         </div>
+        <hr style={{color: 'white', width: '100%', height: 2}}/>
 
 
-
-        <section className="section profile-bottom">
-          <div className="profile-credit">
-            <h4 className="title is-5">Add Credit Card Details</h4>
-            {userStore.currentUser.creditCard.number && (
-              <div>
-                <p>Your current credit card:</p>
-                ****-****-****-
-                <b>
-                  {userStore.currentUser.creditCard.number.slice(
-                    userStore.currentUser.creditCard.number.length - 4,
-                    userStore.currentUser.creditCard.number.length
-                  )}
-                </b>
-                <br />
-                <br />
+        <h2 className="title is-2" style={{textAlign: 'center'}}>Personal Area</h2>
+        <div style={{width: '100%', display: 'flex', justifyContent: 'space-around'}}>
+          <section className="section">
+            <div className="profile-credit">
+              <h4 className="title is-5">Add Credit Card Details</h4>
+              {userStore.currentUser.creditCard.number && (
+                <div>
+                  <p>Your current credit card:</p>
+                  ****-****-****-
+                  <b>
+                    {userStore.currentUser.creditCard.number.slice(
+                      userStore.currentUser.creditCard.number.length - 4,
+                      userStore.currentUser.creditCard.number.length
+                    )}
+                  </b>
+                  <br />
+                  <br />
+                </div>
+              )}
+              <Cards
+                number={number}
+                name={name}
+                expiry={expiry}
+                cvc={cvc}
+                focused={focused}
+              />
+              <form
+                id="credit-form"
+                className="add-list-form"
+                style={{ margin: 20 }}
+              >
+                <div>
+                  <input
+                    type="tel"
+                    name="number"
+                    placeholder="Card Number"
+                    onKeyUp={this.handleInputChange}
+                    onFocus={this.handleInputFocus}
+                  />
+                  <div>E.g.: 49..., 51..., 36..., 37...</div>
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Name"
+                    onKeyUp={this.handleInputChange}
+                    onFocus={this.handleInputFocus}
+                  />
+                </div>
+                <div>
+                  <input
+                    type="tel"
+                    name="expiry"
+                    placeholder="Valid Thru"
+                    onKeyUp={this.handleInputChange}
+                    onFocus={this.handleInputFocus}
+                  />
+                  <input
+                    type="tel"
+                    name="cvc"
+                    placeholder="CVC"
+                    onKeyUp={this.handleInputChange}
+                    onFocus={this.handleInputFocus}
+                  />
+                </div>
+              </form>
+              <a
+                className="button submit-btn"
+                onClick={this.updateUserCreditCard}
+              >
+                Submit
+              </a>
+              {this.state.updateMessage && (
+                <p>
+                  <b>{this.state.updateMessage}</b>
+                </p>
+              )}
+            </div>
+          </section>
+          <section className="section" style={{width: '30%'}}>
+            <div className="profile-credit" style={{width: '100%'}}>
+              <h4 className="title is-5">Update Info</h4>
+              <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                <label>Phone: </label>
+                <input type="tel" onChange={e => this.setState({phone: e.target.value})} />
               </div>
-            )}
-            <Cards
-              number={number}
-              name={name}
-              expiry={expiry}
-              cvc={cvc}
-              focused={focused}
-            />
-            <form
-              id="credit-form"
-              className="add-list-form"
-              style={{ margin: 20 }}
-            >
-              <div>
-                <input
-                  type="tel"
-                  name="number"
-                  placeholder="Card Number"
-                  onKeyUp={this.handleInputChange}
-                  onFocus={this.handleInputFocus}
-                />
-                <div>E.g.: 49..., 51..., 36..., 37...</div>
-              </div>
-              <div>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Name"
-                  onKeyUp={this.handleInputChange}
-                  onFocus={this.handleInputFocus}
-                />
-              </div>
-              <div>
-                <input
-                  type="tel"
-                  name="expiry"
-                  placeholder="Valid Thru"
-                  onKeyUp={this.handleInputChange}
-                  onFocus={this.handleInputFocus}
-                />
-                <input
-                  type="tel"
-                  name="cvc"
-                  placeholder="CVC"
-                  onKeyUp={this.handleInputChange}
-                  onFocus={this.handleInputFocus}
-                />
-              </div>
-            </form>
-            <a
-              className="button submit-btn"
-              onClick={this.updateUserCreditCard}
-            >
-              Submit
-            </a>
-            {this.state.updateMessage && (
-              <p>
-                <b>{this.state.updateMessage}</b>
-              </p>
-            )}
-          </div>
-        </section>
+              <a
+                className="button submit-btn"
+                onClick={this.updateUser}
+              >
+                Update
+              </a>
+              {this.state.personalInfoUpdateMessage && (
+                <p>
+                  <b>{this.state.personalInfoUpdateMessage}</b>
+                </p>
+              )}
+            </div>
+          </section>
+        </div>
       </div>
     );
   };

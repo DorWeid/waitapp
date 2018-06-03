@@ -20,6 +20,7 @@ const definition = {
   email: types.optional(types.string, ""),
   createdAt: types.optional(types.string, ""),
   picture_url: types.optional(types.string, ""),
+  mobileNumber: types.optional(types.string, ""),
   comments: types.optional(types.map(CommentModel), {}),
   admin: types.optional(types.boolean, false),
   items: types.optional(types.map(ItemModel), {}),
@@ -79,6 +80,7 @@ const actions = self => {
     self.picture_url = user.picture_url;
     self.admin = user.admin;
     self.creditCard = user.creditCard;
+    self.mobileNumber = user.mobileNumber;
 
     user.comments.forEach(cmt => self.comments.put(cmt));
     user.subscribers.forEach(cmt => self.subs.put(cmt));
