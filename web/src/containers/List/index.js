@@ -465,7 +465,6 @@ class List extends Component {
     const imgs = images.length
       ? images
       : slides;
-    console.log(imgs)
     return (
       <div
         style={{
