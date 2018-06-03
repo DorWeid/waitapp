@@ -104,6 +104,7 @@ class List extends Component {
       errorCode: -1,
       similiar: [],
       countdown: null,
+      roundCountdown: null,
       openRedeemModal: false,
       openErrorModal: false
     };
@@ -143,9 +144,25 @@ class List extends Component {
 
     this.interval = setInterval(() => {
       const item = itemStore.items.get(match.params.id);
-      if (item) {
-        this.setState({ countdown: moment(item.listEndDate).countdown().toString()})
+
+      if (!item) {
+        return;
       }
+
+      // This means the list has ended but the user hasnt refreshed his screen, so fetch item again
+      if (moment(item.listEndDate) < moment() && item.status === 'active') {
+        itemStore.getItem(match.params.id);
+      }
+
+      const currentUser = userStore.currentUser;
+      // const isWinner = item.currentRedeemers[item.currentRedeemersIndex - 1] === currentUser._id;
+
+      if (item.status === 'redeem' && item.roundEndDate) {
+        this.setState({ roundCountdown: moment(item.roundEndDate).countdown().toString() })
+        return;
+      }
+
+      this.setState({ countdown: moment(item.listEndDate).countdown().toString() })
     }, 1000);
   }
 
@@ -153,17 +170,17 @@ class List extends Component {
     clearInterval(this.interval);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const item = nextProps.store.itemStore.items.get(this.props.match.params.id);
-    const currentUser = nextProps.store.user.currentUser;
-    const isWinner = item.status === "redeem" && item.currentRedeemers[item.currentRedeemersIndex - 1] === currentUser._id;
+  // componentWillReceiveProps(nextProps) {
+  //   const item = nextProps.store.itemStore.items.get(this.props.match.params.id);
+  //   const currentUser = nextProps.store.user.currentUser;
+  //   const isWinner = item.status === "redeem" && item.currentRedeemers[item.currentRedeemersIndex - 1] === currentUser._id;
     
-    if (item && item.endDate && !this.state.countdown ) {
-      this.setState({ countdown: moment(item.listEndDate).countdown().toString(), modalOpen: isWinner });
-    } else {
-      this.setState({modalOpen: isWinner})
-    } 
-  }
+  //   if (item && item.endDate && !this.state.countdown ) {
+  //     this.setState({ countdown: moment(item.listEndDate).countdown().toString(), modalOpen: isWinner });
+  //   } else {
+  //     this.setState({modalOpen: isWinner})
+  //   } 
+  // }
 
   renderEnrollingModalContent = () => {
     const {store: {
@@ -452,8 +469,9 @@ class List extends Component {
       listEndDate,
       currentRedeemers,
       winners= [],
+      roundEndDate,
     } = currentItem || {};
-    let timeLeftToReedem = moment().format("h:mm:ss");
+
     let isSigned = users.includes(currentUser._id);
     const isWinner = status === "redeem" && currentRedeemers.toJSON().includes(currentUser._id)
     const isLoser = status === "redeem" && users.indexOf(currentUser._id) < users.indexOf(currentRedeemers[0]);
@@ -549,13 +567,17 @@ class List extends Component {
                   <i className="fas fa-clock"/>
                 </span>
                 <br/>
-                {status === "active" ? (
+                {status === "active" && (
                   <React.Fragment>
                 <div className="title is-6">LIST ENDING IN:</div>
                 <div className="title is-4">{this.state.countdown}</div>
-                </React.Fragment>) : <div>
-                  list has already ended
-                </div>}
+                </React.Fragment>)}
+                {(status === 'redeem' && isWinner && !isRedeemer) && (
+                  <React.Fragment>
+                    <div className="title is-6"><b>TIME LEFT TO REDEEM:</b></div>
+                    <div className="title is-4">{this.state.roundCountdown ? this.state.roundCountdown : 'Just a second...'}</div>
+                  </React.Fragment>
+                )}
               </div>
               <hr/> {status === "deny" && isCreator ? (
                 <a className="button is-danger" disabled>
@@ -590,7 +612,7 @@ class List extends Component {
                   </a> : null :isRedeemer ? <span>You have already redeemed the item</span> 
                 : !isWinner && status === "done"
                   ? (
-                    <span>This list as already ended!</span>
+                    <span>This list has already ended!</span>
                   ) : isLoser && status === "redeem" ? <span>
                     You have missed your chance!
                   </span>
