@@ -81,43 +81,7 @@ class Navbar extends Component {
           {item.text}
         </Link>
       )),
-      <div className="dropdown is-hoverable">
-        <div
-          className="dropdown-trigger navbar-custom-menuitem"
-          style={{ display: "flex" }}
-        >
-          <span style={{ marginRight: "5px" }}>Categories</span>
-          <span className="icon is-small" style={{ margin: "auto" }}>
-            <i className="fas fa-angle-down" />
-          </span>
-        </div>
-        <div className="dropdown-menu">
-          <div className="dropdown-content">
-            <Link
-              to="/"
-              onClick={this.openSidebar.bind(this, false)}
-              className="dropdown-item navbar-custom-menuitem"
-            >
-              Hotels
-            </Link>
-            <Link
-              to="/"
-              onClick={this.openSidebar.bind(this, false)}
-              className="dropdown-item navbar-custom-menuitem"
-              replace
-            >
-              Cars
-            </Link>
-            <Link
-              to="/"
-              onClick={this.openSidebar.bind(this, false)}
-              className="dropdown-item navbar-custom-menuitem"
-            >
-              Flights
-            </Link>
-          </div>
-        </div>
-      </div>,
+
       userStore.currentUser.admin ? (
         <Link to="/pendingLists">
           <div className="navbar-custom-menuitem">Pending Lists</div>
