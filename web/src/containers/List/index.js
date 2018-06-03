@@ -104,6 +104,8 @@ class List extends Component {
       errorCode: -1,
       similiar: [],
       countdown: null,
+      openRedeemModal: false,
+      openErrorModal: false
     };
   }
 
@@ -239,11 +241,16 @@ class List extends Component {
         userStore
       }
     } = this.props;
-    await itemStore
+    try {
+      await itemStore
       .items
       .get(params.id)
       .redeem(userStore.currentUser.username);
-    await itemStore.getItem(params.id);
+      await itemStore.getItem(params.id);
+      this.setState({openRedeemModal: true});
+    } catch (error) {
+      this.setState({openErrorModal: true});
+    }    
   }
 
   async enroll() {
@@ -314,6 +321,14 @@ class List extends Component {
     } = this.props;
     await currentUser.denyList(params.id);
     await itemStore.getItem(params.id);
+  }
+
+  closeRedeemModal = () => {
+    this.setState({openRedeemModal: false})
+  }
+
+  closeErrorModal = () => {
+    this.setState({openErrorModal: false})
   }
 
   renderMeta({
@@ -428,11 +443,13 @@ class List extends Component {
       type,
       listEndDate,
       currentRedeemers,
+      winners= [],
     } = currentItem || {};
     let timeLeftToReedem = moment().format("h:mm:ss");
     let isSigned = users.includes(currentUser._id);
     const isWinner = status === "redeem" && currentRedeemers.toJSON().includes(currentUser._id)
     const isLoser = status === "redeem" && users.indexOf(currentUser._id) < users.indexOf(currentRedeemers[0]);
+    const isRedeemer = winners.toJSON().includes(currentUser._id);
     const isCreator = creator === currentUser._id;
     if ((status === "pending" && (!currentUser || !currentUser.admin)) || (status === "deny" && !isCreator)) {
       return <Redirect to="/"/>;
@@ -557,7 +574,7 @@ class List extends Component {
                       <span>Deny List</span>
                     </a>
                   </span>
-                )
+                ) : isRedeemer ? <span>You have already redeemed the item</span> 
                 : !isWinner && status === "done"
                   ? (
                     <span>This list as already ended!</span>
@@ -618,19 +635,21 @@ class List extends Component {
           classNames={{
           modal: "modal-body"
         }}
-          open={false}
-          onClose={this.handleCloseModal}
+          open={this.state.openRedeemModal}
+          onClose={this.closeRedeemModal}
           little>
           <h2>Congrats!</h2>
-          <h4>You have won the list</h4>
-          <p>{timeLeftToReedem}</p>
-          <button
-            className="button is-link"
-            style={{
-            fontSize: "medium"
-          }} onClick={this.redeem}>
-            Redeem
-          </button>
+          <h4>You have redeemed your item!</h4>          
+        </Modal>
+        <Modal
+          classNames={{
+          modal: "modal-body"
+        }}
+          open={this.state.openErrorModal}
+          onClose={this.closeErrorModal}
+          little>
+          <h2>Oops</h2>
+          <h4>Something went wrong try again later</h4>          
         </Modal>
         <Dock
           position="bottom"
