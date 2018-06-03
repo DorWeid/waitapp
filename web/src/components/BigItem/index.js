@@ -73,7 +73,6 @@ export default ({
           ends{" "}
           <time dateTime={endDate}>
             {moment(endDate)
-              .endOf("day")
               .fromNow()}
           </time>
         </p>
