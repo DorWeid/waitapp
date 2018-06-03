@@ -307,6 +307,14 @@ class List extends Component {
     await itemStore.getItem(params.id);
   }
 
+  openList = async () => {
+    const {match: {params},store: {itemStore}} = this.props;
+    await itemStore
+    .items
+    .get(params.id).startList();
+    await itemStore.getItem(params.id);
+  }
+
   async deny() {
     const {
       match: {
@@ -574,7 +582,13 @@ class List extends Component {
                       <span>Deny List</span>
                     </a>
                   </span>
-                ) : isRedeemer ? <span>You have already redeemed the item</span> 
+                ) : status === "approved" ? isCreator ?
+                 <a className="button is-primary" onClick={this.openList}>
+                  <span className="icon is-small">
+                    <i className="fa fa-check"/>
+                  </span>
+                  <span>Open list</span>
+                  </a> : null :isRedeemer ? <span>You have already redeemed the item</span> 
                 : !isWinner && status === "done"
                   ? (
                     <span>This list as already ended!</span>
