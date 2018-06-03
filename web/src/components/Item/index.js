@@ -6,7 +6,6 @@ export default ({
   _id,
   creator,
   title,
-  img,
   description,
   price,
   endDate,
@@ -16,7 +15,8 @@ export default ({
   cardWidth = "15%",
   isOwner,
   startList,
-  listEndDate
+  listEndDate,
+  images
 }) => {
   const cardStyle = { width: cardWidth };
   return (
@@ -26,7 +26,7 @@ export default ({
           <a href={`/list/${_id}`} target="_blank">
             <img
               src={
-                img || "http://img.mako.co.il/2015/11/17/hamelech_david_i.jpg"
+                images[0] ? images[0].base64 : "http://img.mako.co.il/2015/11/17/hamelech_david_i.jpg"
               }
               alt={_id}
               style={{ width: "100%", height: "100%", objectFit: "fill" }}
