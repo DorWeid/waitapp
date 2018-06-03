@@ -5,7 +5,7 @@ import moment from "moment";
 export default ({
   _id,
   title,
-  img,
+  images,
   description,
   price,
   endDate,
@@ -23,7 +23,7 @@ export default ({
           <a href={`/list/${_id}`} target="_blank">
             <img
               src={
-                img || "https://media.grouponisrael.co.il/_media/media/15188/174256_574_345.jpg?t=1523860086"
+                images[0] ? images[0].base64 : "http://img.mako.co.il/2015/11/17/hamelech_david_i.jpg"
               }
               alt={_id}
               style={{ width: "100%", height: "100%", objectFit: "fill" }}
