@@ -154,7 +154,6 @@ class List extends Component {
         itemStore.getItem(match.params.id);
       }
 
-      const currentUser = userStore.currentUser;
       // const isWinner = item.currentRedeemers[item.currentRedeemersIndex - 1] === currentUser._id;
 
       if (item.status === 'redeem' && item.roundEndDate) {
@@ -358,7 +357,9 @@ class List extends Component {
 
   renderMeta({
     type,
-    meta = {}
+    meta = {},
+    location,
+    amount
   }) {
     switch (type) {
       case 'car':
@@ -382,6 +383,8 @@ class List extends Component {
               </td>
               <td>{meta.year}</td>
             </tr>}
+            {location && <tr><td><u>Location:</u></td><td>{location}</td></tr>}
+            {amount && <tr><td><u>Max Winners:</u></td><td>{amount}</td></tr>}
           </tbody>
         );
       case 'flight':
@@ -405,6 +408,8 @@ class List extends Component {
               </td>
               <td>{meta.toDestination}</td>
             </tr>}
+            {location && <tr><td><u>Location:</u></td><td>{location}</td></tr>}
+            {amount && <tr><td><u>Max Winners:</u></td><td>{amount}</td></tr>}
           </tbody>
         );
       case 'hotel':
@@ -428,6 +433,8 @@ class List extends Component {
               </td>
               <td>{meta.stayingPlan}</td>
             </tr>}
+            {location && <tr><td><u>Location:</u></td><td>{location}</td></tr>}
+            {amount && <tr><td><u>Max Winners:</u></td><td>{amount}</td></tr>}
           </tbody>
         );
       default:
@@ -466,10 +473,10 @@ class List extends Component {
       startDate,
       endDate,
       type,
-      listEndDate,
+      location,
       currentRedeemers,
       winners= [],
-      roundEndDate,
+      amount
     } = currentItem || {};
 
     let isSigned = users.includes(currentUser._id);
@@ -513,7 +520,9 @@ class List extends Component {
                 width: '100%'
               }}>{this.renderMeta({
                   type,
-                  meta: meta.toJSON()
+                  meta: meta.toJSON(),
+                  location,
+                  amount
                 })}</table>
             </div>
           </div>

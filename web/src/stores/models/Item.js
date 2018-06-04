@@ -34,7 +34,8 @@ const definition = {
   currentRedeemers: types.optional(types.array(types.string), []),
   currentRedeemersIndex: types.optional(types.number, 0),
   roundEndDate: types.optional(types.string, ""),
-  winners: types.optional(types.array(types.string), [])
+  winners: types.optional(types.array(types.string), []),
+  amount: types.optional(types.number, 0),
 };
 
 // Any fact that can be derived from the state in a pure manner should go here.
