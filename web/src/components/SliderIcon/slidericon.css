@@ -1,0 +1,11 @@
+.slider-icon-right {
+  position: absolute;
+  right: 2vw;
+  top: 2.5vh;
+}
+
+.slider-icon-left {
+  position: absolute;
+  left: 2vw;
+  top: 2.5vh;
+}

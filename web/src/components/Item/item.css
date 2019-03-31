@@ -1,0 +1,41 @@
+.card {
+  border: 2px solid white;
+  border-radius: 2px;
+  margin-bottom: 15px;
+  -webkit-transition: margin-top 0.2s; /* For Safari 3.1 to 6.0 */
+  transition: transform 0.2s;
+  margin: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card:hover {
+  transform: translate(0, -10px);
+}
+
+.card-content {
+  padding: 0.5rem;
+}
+
+.location {
+  font-size: 1.1rem;
+  color: green;
+}
+
+.price {
+  color: green;
+  font-family: serif;
+  font-weight: 700;
+}
+
+.item-footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.end-date {
+  color: red;
+  text-align: left;
+  font-size: 1.1rem;
+}

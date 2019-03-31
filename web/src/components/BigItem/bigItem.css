@@ -1,0 +1,11 @@
+.big-end-date {
+  color: red;
+  text-align: left;
+  font-size: 1.2rem;
+}
+
+.big-location {
+  font-size: 1.2rem;
+  color: green;
+  text-align: right;
+}

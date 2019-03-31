@@ -1,0 +1,10 @@
+.tab-list {
+ background-color: #fff;
+}
+
+.user-lists-container {
+    top: 150px;
+    position: relative;
+    z-index: 13;
+  }
+  

@@ -1,0 +1,14 @@
+.popup_inner {
+  padding: 0.3vh;
+  width: max-content;
+  /* height: 50vh; */
+  background: white;
+  z-index: 99999;
+  display: flex;
+  flex-direction: row;
+}
+
+.category_image{
+  width: 15vh;
+  height: 15vh;
+}

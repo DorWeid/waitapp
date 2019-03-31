@@ -1,0 +1,80 @@
+.add-list-form {
+  background: white;
+  border: 0 none;
+  border-radius: 3px;
+  box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+  padding: 20px 30px;
+  box-sizing: border-box;
+  width: 60%;
+  margin: auto;
+  position: relative;
+}
+
+.fields-group {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.fa-dollar-sign {
+  vertical-align: -webkit-baseline-middle;
+}
+
+.input {
+  width: 26vw;
+}
+
+.location-field {
+  width: 20vw;
+}
+
+.meta-field {
+    width: 12vw;
+}
+
+.time-field {
+  width: 6vw;
+}
+
+.time-label-field {
+  width: 7vw;
+}
+
+.amount-field {
+  width: 10vw;
+}
+
+.price-field {
+  width: 10vw;
+  margin-right: 0.5vw;
+}
+
+.form-field-select {
+  width: 26vw;
+}
+
+.date-header {
+  color: #363636;
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 2px auto;
+}
+
+.date-container {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.date-control {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.submit-btn {
+  text-align: center;
+  background-color: #209cee;
+  border-color: transparent;
+  color: #fff;
+}

@@ -1,0 +1,144 @@
+.navbar {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.navbar-custom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  padding: 0px;
+  margin: 0px;
+  z-index: 11;
+  top: 20px;
+  width: 100%;
+}
+
+.navbar-searchfield {
+  background-color: transparent;
+  border: none;
+  color: black;
+  margin-left: 10px;
+}
+
+.navbar-item {
+  background-color: #4267b2 !important;
+}
+
+.navbar-item :hover {
+  background-color: #4267b2 !important;
+}
+
+
+.navbar-search {
+  margin-left: 15px;
+}
+
+.navbar.is-transparent {
+  background: transparent !important;
+}
+
+.navbar {
+  height: 6rem;
+  border-radius: 0% !important;
+}
+
+.navbar-logo {
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.9);
+  height: 45px;
+  width: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  transform: translate(-50%, 10%);
+}
+
+.navbar-custom-menu {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.navbar-custom-menuitem {
+  font-size: 18px;
+  color: black;
+  padding-right: 20px;
+  cursor: pointer;
+}
+
+.navbar-overlay {
+  height: 300px;
+  position: absolute;
+  top: 0px;
+  z-index: 9;
+  width: 100%;
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 1)
+  );
+}
+
+.nav-title {
+  display: flex;
+  justify-content: center;
+}
+
+.nav-title-text {
+  font-size: medium;
+  margin-left: 10px;
+  color: white;
+}
+.navbar-background {
+  height: 17vh;
+  position: absolute;
+  top: 0px;
+  z-index: 10;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.5);
+  color: rgb(255, 255, 255);
+  font-weight: 400;
+  margin: 0px;
+  line-height: 82px;
+}
+
+.navbar-logo {
+  justify-content: center;
+  align-content: center;
+}
+
+.logo {
+  height: 100%;
+}
+
+.auth-button {
+  background-color: #3b5998;
+  color: white;
+  border: 1px solid black;
+  padding: 5px;
+  font-size: small;
+  border-radius: 4%;
+}
+
+.fa-facebook {
+  margin-right: 5px;
+}
+
+.avatar-pic {
+  border-radius: 50%;
+}
+
+.avatar-text {
+  display: inline-block;
+}
+
+.navbar {
+  min-height: 4.75rem;
+}
